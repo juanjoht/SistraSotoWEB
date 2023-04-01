@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from '../api/customer';
+import { CustomerBasicInfo } from '../models/customer.model';
 
 @Injectable()
 export class CustomerService {
@@ -25,6 +26,13 @@ export class CustomerService {
         return this.http.get<any>('assets/demo/data/customers-large.json')
             .toPromise()
             .then(res => res.data as Customer[])
+            .then(data => data);
+    }
+
+    getCustomersList() {
+        return this.http.get<any>('assets/ui/data/customers.json')
+            .toPromise()
+            .then(res => res.data as CustomerBasicInfo[])
             .then(data => data);
     }
 }

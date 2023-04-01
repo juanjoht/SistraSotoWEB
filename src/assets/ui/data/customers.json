@@ -1,0 +1,39 @@
+{
+	"data": [
+		{
+			"id": "1000",
+			"docNumber": "1241",
+            "name": "Cliente Uno",
+			"phone": "3114569871",
+			"isActive": true
+		},
+		{
+			"id": "1001",
+			"docNumber": "1242",
+            "name": "Cliente dos",
+			"phone": "3114569871",
+			"isActive": true
+		},
+		{
+			"id": "1002",
+			"docNumber": "1243",
+            "name": "Cliente tres",
+			"phone": "3114569871",
+			"isActive": false
+		},
+		{
+			"id": "1003",
+			"docNumber": "1244",
+            "name": "Cliente cuatro",
+			"phone": "3114569871",
+			"isActive": true
+		},
+		{
+			"id": "1004",
+			"docNumber": "1245",
+            "name": "Cliente cinco",
+			"phone": "3114569871",
+			"isActive": true
+		}
+	]
+}
