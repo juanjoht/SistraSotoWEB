@@ -1,0 +1,18 @@
+{
+	"data": [
+		{
+			"id": "1",			
+            "name": "Obra 1",
+			"city": "Medellin",
+			"address": "Dir 1",
+			"isActive": true
+		},
+		{
+			"id": "2",
+            "name": "Obra 2",
+			"city": "Don Matias",
+			"address": "Dir 2",
+			"isActive": true
+		}
+	]
+}

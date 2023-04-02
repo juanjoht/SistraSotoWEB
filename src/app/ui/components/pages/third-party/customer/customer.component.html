@@ -48,117 +48,20 @@
                 </ng-template>
             </p-table>
         </div>
-        <p-dialog [(visible)]="customerDialog" [style]="{width: '1024px',height: '700px'}" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="customerDialog" [style]="{width: '1024px',height: '700px'}" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-customer">
             <ng-template pTemplate="header">
                 <span class="text-xl font-bold text-center">Crear/Editar Cliente</span>
             </ng-template>
             <ng-template pTemplate="content">
-                    <p-tabView>
+                    <p-tabView (onChange)="onChangeTab($event)" >
                         <p-tabPanel header="Información Basica">
-                            <div class="formgrid grid">
-                                <div class="field col-12 sm:col-4">
-                                    <label for="docTypeSelect" class="font-bold">Tipo Documento*</label>
-                                    <p-dropdown id="docTypeSelect" [options]="documentTypes" [(ngModel)]="documentTypeSelected" optionLabel="name"></p-dropdown>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="docNumberInput" class="font-bold">Número Documento*</label>
-                                    <input id="docNumberInput" type="text" pInputText [(ngModel)]="customerBasic.docNumber" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && !customerBasic.docNumber}" >
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && !customerBasic.docNumber">Número Documento es requerido.</small>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="nameInput" class="font-bold">Nombre*</label>
-                                    <input id="nameInput" type="text" pInputText [(ngModel)]="customerBasic.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && !customerBasic.name}" >
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && !customerBasic.name">Nombre es requerido.</small>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="phoneInput" class="font-bold">Teléfono*</label>
-                                    <input id="phoneInput" type="text" pInputText  [(ngModel)]="customerBasic.phone" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && !customerBasic.phone}">
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && !customerBasic.phone">Teléfono es requerido.</small>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="cellPhoneInput" class="font-bold">Celular</label>
-                                    <input id="cellPhoneInput" type="text" pInputText >
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="emailInput" class="font-bold">Correo Electrónico</label>
-                                    <input id="emailInput" type="text" pInputText>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="DeptSelect" class="font-bold">Departamento*</label>
-                                    <p-dropdown id="DeptSelect" [options]="depts" [(ngModel)]="deptSelected" optionLabel="name"></p-dropdown>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="CitySelect" class="font-bold">Municipio*</label>
-                                    <p-dropdown id="CitySelect" [options]="cities" [(ngModel)]="citySelected" optionLabel="name"></p-dropdown>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="addressInput" class="font-bold">Dirección*</label>
-                                    <input id="addressInput" type="text" pInputText [(ngModel)]="customerBasic.address" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && !customerBasic.address}">
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && !customerBasic.address">Dirección es requerido.</small>
-                                </div>
-                            </div>
+                            <app-customer-basic-edit #edit></app-customer-basic-edit>
                         </p-tabPanel>
                         <p-tabPanel [disabled]="commercialInfoTab" header="Información Comercial">
-                            <div class="formgrid grid">
-                                <div class="field col-12 sm:col-12">
-                                    <label for="docTypeSelect" class="font-bold text-center">Cliente uno</label>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="priorityGroupSelect" class="font-bold">Grupo de prioridad*</label>
-                                    <p-dropdown id="priorityGroupSelect" [options]="priorityGroups" [(ngModel)]="priorityGroupSelected" optionLabel="name"></p-dropdown>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="clientTipeSelect" class="font-bold">Tipo Cliente*</label>
-                                    <p-dropdown id="clientTipeSelect" [options]="clientTypes" [(ngModel)]="clientTypeSelected" optionLabel="name"></p-dropdown>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="ivaInput" class="font-bold">IVA*</label>
-                                    <input id="ivaInput" type="text" pInputText [(ngModel)]="customerCommercial.iva" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submittedCommercial && !customerCommercial.iva}" >
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && !customerCommercial.iva">Iva es requerido.</small>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="assignedQuotaInput" class="font-bold">Cupo Asignado</label>
-                                    <input id="assignedQuotaInput" type="text" pInputText [(ngModel)]="customerCommercial.assignedQuota"  >
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="usedQuotaInput" class="font-bold">Cupo Utilizado</label>
-                                    <input id="usedQuotaInput" type="text" pInputText [(ngModel)]="customerCommercial.usedQuota"  >
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="availableQuotaInput" class="font-bold">Cupo Disponible</label>
-                                    <input id="availableQuotaInput" type="text" pInputText [(ngModel)]="customerCommercial.availableQuota"  >
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="maturityDaysInput" class="font-bold">Días Vencimiento*</label>
-                                    <input id="maturityDaysInput" type="text" pInputText [(ngModel)]="customerCommercial.maturityDays" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submittedCommercial && !customerCommercial.maturityDays}"  >
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && !customerCommercial.maturityDays">Dias Vencimiento es requerido.</small>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="additionalDaysInput" class="font-bold">Días Adicionales</label>
-                                    <input id="additionalDaysInput" type="text" pInputText [(ngModel)]="customerCommercial.additionalDays"  >
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="delayDaysInput" class="font-bold">Dias de Mora</label>
-                                    <input id="delayDaysInput" type="text" pInputText [(ngModel)]="customerCommercial.delayDays"  >
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="intermediationPercentageInput" class="font-bold">Porcentaje Intermediación*</label>
-                                    <input id="intermediationPercentageInput" type="text" pInputText [(ngModel)]="customerCommercial.intermediationPercentage" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submittedCommercial && !customerCommercial.intermediationPercentage}"  >
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && !customerCommercial.intermediationPercentage">Porcentaje Intermediación es requerido.</small>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                    <label for="measureUnitSelect" class="font-bold">Unidad de medida*</label>
-                                    <p-dropdown id="measureUnitSelect" [options]="measureUnits" [(ngModel)]="measureUnitSelected" optionLabel="name"></p-dropdown>
-                                </div>
-                                <div class="field col-12 sm:col-4">
-                                </div>
-                            </div>
+                            <app-customer-commercial-edit></app-customer-commercial-edit>
                         </p-tabPanel>
-                        <p-tabPanel [disabled]="true" header="Obras">
-                            <p>
-                                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                                qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                            </p>
+                        <p-tabPanel [disabled]="buildingListTab" header="Obras"  >
+                            <app-customer-buildings-list></app-customer-buildings-list>
                         </p-tabPanel>
                         <p-tabPanel [disabled]="true" header="Transportadores">
                             <p>
@@ -174,10 +77,12 @@
                         </p-tabPanel>
                     </p-tabView>
             </ng-template>
-
-            <ng-template pTemplate="footer">
+            
+            <ng-template  pTemplate="footer">
+                <ng-container *ngIf="showOptions">
                 <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveCustomerBasic()"></button>
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                </ng-container>   
             </ng-template>
         </p-dialog>
     </div>

@@ -1,0 +1,59 @@
+<form [formGroup]="formGroupCommercial" >
+<div class="formgrid grid">
+    <div class="field col-12 sm:col-12">
+        <label for="docTypeSelect" class="font-bold text-center">Cliente uno</label>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="priorityGroupSelect" class="font-bold">Grupo de prioridad*</label>
+        <p-dropdown id="priorityGroupSelect" placeholder="Seleccione un Grupo de prioridad" formControlName="priorityGroupSelected" [options]="priorityGroups"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.priorityGroupSelected.errors }" ></p-dropdown>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.priorityGroupSelected?.errors?.required">Grupo de prioridad es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="clientTipeSelect" class="font-bold">Tipo Cliente*</label>
+        <p-dropdown id="clientTipeSelect" [options]="clientTypes" placeholder="Seleccione un Tipo Cliente" formControlName="clientTypeSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.priorityGroupSelected.errors }"></p-dropdown>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.clientTypeSelected?.errors?.required">Tipo Cliente es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="ivaInput" class="font-bold">IVA*</label>
+        <p-inputNumber id="ivaInput" inputId="percent" formControlName="iva" suffix=" %" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.iva.errors }"> </p-inputNumber>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.iva?.errors?.required">IVA es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="assignedQuotaInput" class="font-bold">Cupo Asignado</label>
+        <p-inputNumber id="assignedQuotaInput" formControlName="assignedQuota" inputId="integeronly" > </p-inputNumber>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="usedQuotaInput" class="font-bold">Cupo Utilizado</label>
+        <p-inputNumber id="usedQuotaInput" formControlName="usedQuota" inputId="integeronly" > </p-inputNumber>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="availableQuotaInput" class="font-bold">Cupo Disponible</label>
+        <p-inputNumber id="availableQuotaInput" formControlName="availableQuota" inputId="integeronly" > </p-inputNumber>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="maturityDaysInput" class="font-bold">Días Vencimiento*</label>
+        <p-inputNumber id="maturityDaysInput" formControlName="maturityDays" inputId="integeronly" [ngClass]="{'ng-invalid ng-dirty' : submittedCommercial && f.maturityDays.errors}" > </p-inputNumber>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.maturityDays?.errors?.required">Dias Vencimiento es requerido.</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="additionalDaysInput" class="font-bold">Días Adicionales</label>
+        <p-inputNumber id="additionalDaysInput" formControlName="additionalDays" inputId="integeronly"  > </p-inputNumber>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="delayDaysInput" class="font-bold">Dias de Mora</label>
+        <p-inputNumber id="delayDaysInput" formControlName="delayDays" inputId="integeronly"  > </p-inputNumber>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="intermediationPercentageInput" class="font-bold">Porcentaje Intermediación*</label>
+        <p-inputNumber id="intermediationPercentageInput" inputId="percent" formControlName="intermediationPercentage" suffix=" %" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.intermediationPercentage.errors }"> </p-inputNumber>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.intermediationPercentage?.errors?.required">Porcentaje Intermediación es requerido.</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="measureUnitSelect" class="font-bold">Unidad de medida*</label>
+        <p-dropdown id="measureUnitSelect" placeholder="Seleccione una Unidad de medida" formControlName="measureUnitSelected" [options]="measureUnits" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.measureUnitSelected.errors }"></p-dropdown>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.measureUnitSelected?.errors?.required">Unidad de medida es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+    </div>
+</div>
+</form>

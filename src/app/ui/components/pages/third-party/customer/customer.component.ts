@@ -1,53 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { CustomerBasicInfo, CustomerCommercialInfo } from 'src/app/ui/models/customer.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
+import { CustomerBasicEditComponent } from './customer-basic-edit.component';
+import { CustomerCommercialEditComponent } from './customer-commercial-edit.component';
 
-interface DocTypes {
-  name: string;
-}
-interface Depts {
-  name: string;
-}
-interface Cities {
-  name: string;
-}
-interface PriorityGroups {
-  name: string;
-}
-interface ClientTypes {
-  name: string;
-}
-interface measureUnits {
-  name: string;
-}
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
+  styles: [''],
   providers: [MessageService]
 })
 export class CustomerComponent implements OnInit {
+  @ViewChild(CustomerBasicEditComponent)editBasic!: CustomerBasicEditComponent;
+  @ViewChild(CustomerCommercialEditComponent)editCommercial!: CustomerCommercialEditComponent;
   customers: CustomerBasicInfo[] = [];
-  customerBasic: CustomerBasicInfo = {};
-  customerCommercial: CustomerCommercialInfo = {};
   cols: any[] = [];
-  submittedBasic: boolean = false;
-  submittedCommercial: boolean = false;
   customerDialog: boolean = false;
-  documentTypes: DocTypes[] = [];
-  documentTypeSelected!: DocTypes;
-  depts: Depts[] = [];
-  deptSelected!: Depts;
-  cities: Cities[] = [];
-  citySelected!: Cities;
   commercialInfoTab: boolean = true;
-  priorityGroups: PriorityGroups[] = [];
-  priorityGroupSelected!: PriorityGroups;
-  clientTypes: ClientTypes[] = [];
-  clientTypeSelected!: ClientTypes;
-  measureUnits: measureUnits[] = [];
-  measureUnitSelected!: measureUnits;
+  buildingListTab: boolean = true;
+  showOptions: boolean = true;
   constructor(private customerService: CustomerService, private messageService: MessageService) { }
 
 
@@ -60,53 +33,34 @@ export class CustomerComponent implements OnInit {
         { field: 'phone', header: 'Teléfono' },
         { field: 'isActive', header: 'Estado' }
     ];
-    this.documentTypes = [
-      { name: 'CC' },
-      { name: 'CE' },
-      { name: 'Passaporte' }
-     ];
-     this.depts = [
-      { name: 'Antioquia' },
-      { name: 'Cundinamarca' },
-      { name: 'Atlantico' }
-     ];
-     this.cities = [
-      { name: 'Medellin' },
-      { name: 'Itagui' },
-      { name: 'Envigado' }
-     ];
-     this.priorityGroups = [
-      { name: '1' },
-      { name: '2' },
-      { name: '3' }
-     ];
-     this.clientTypes = [
-      { name: 'Crédito' },
-      { name: 'Contado' }
-     ];
-     this.measureUnits = [
-      { name: 'm3' },
-      { name: 'ton' }
-     ];
   }
 
   openNew() {
-    this.customerBasic = {};
-    this.submittedBasic = false;
-    this.submittedCommercial = false;
+    //this.customerBasic = {};
+    //this.editBasic.submittedBasic = false;
+    //this.submittedCommercial = false;
     this.customerDialog = true;
   }
 
   hideDialog() {
     this.customerDialog = false;
-    this.submittedBasic = false;
-    this.submittedCommercial = false;
+    this.editBasic.submittedBasic = false;
+    //this.submittedCommercial = false;
   }
 
   saveCustomerBasic(){
-    this.submittedBasic = true;
+    this.editBasic.submittedBasic = true;
+    console.log(this.editBasic.formGrouBasic)
+    console.log(this.editCommercial.formGroupCommercial)
     //this.submittedCommercial = true;
     this.commercialInfoTab = false;
+    this.buildingListTab = false;
+    this.editCommercial.submittedCommercial = true;
+  }
+
+  onChangeTab(event: any){
+    console.log(event)
+    this.showOptions = event.index === 2 ? false: true;
   }
 
 

@@ -1,0 +1,48 @@
+<form [formGroup]="formGrouBasic" >
+<div class="formgrid grid">
+    <div class="field col-12 sm:col-4">
+        <label for="docTypeSelect" class="font-bold">Tipo Documento*</label>
+        <p-dropdown id="docTypeSelect"  placeholder="Seleccione un Tipo Documento" formControlName="documentTypeSelected" [options]="documentTypes" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.documentTypeSelected.errors }"></p-dropdown>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.documentTypeSelected?.errors?.required">Tipo Documento es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="docNumberInput" class="font-bold">Número Documento*</label>
+        <input id="docNumberInput" type="text" pInputText formControlName="docNumber" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.docNumber.errors }" >
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.docNumber?.errors?.required">Número Documento es requerido.</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="nameInput" class="font-bold">Nombre*</label>
+        <input id="nameInput" type="text" pInputText formControlName="name"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.name.errors}" >
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.name?.errors?.required">Nombre es requerido.</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="phoneInput" class="font-bold">Teléfono*</label>
+        <p-inputMask mask="(999) 999-9999" formControlName="phone" placeholder="(999) 999-9999" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.phone.errors}"></p-inputMask>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.phone?.errors?.required">Teléfono es requerido.</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="cellPhoneInput" class="font-bold" cellphone >Celular</label>
+        <p-inputMask mask="(999) 999-9999" formControlName="cellphone" placeholder="(999) 999-9999"></p-inputMask>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="emailInput" class="font-bold">Correo Electrónico</label>
+        <input id="emailInput" type="email" pInputText formControlName="email" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.email.errors}" >
+        <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.email?.errors?.email">Correo Electrónico Invalido.</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="DeptSelect" class="font-bold">Departamento*</label>
+        <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" formControlName="deptSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.deptSelected.errors }" ></p-dropdown>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.deptSelected?.errors?.required">Departamento es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="CitySelect" class="font-bold">Municipio*</label>
+        <p-dropdown id="CitySelect" [options]="cities" placeholder="Seleccione un Municipio" formControlName="citySelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.citySelected.errors }"></p-dropdown>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.citySelected?.errors?.required">Municipio es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-4">
+        <label for="addressInput" class="font-bold">Dirección*</label>
+        <input id="addressInput" type="text" pInputText formControlName="address" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.address.errors}">
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.address?.errors?.required">Dirección es requerido.</small>
+    </div>
+</div>
+</form>
