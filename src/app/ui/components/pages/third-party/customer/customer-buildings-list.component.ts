@@ -9,6 +9,7 @@ import { CustomerService } from 'src/app/ui/service/customer.service';
 })
 export class CustomerBuildingsListComponent implements OnInit {
   customersBuildings: CustomerBuildings[] = [];
+  customerBuildingDialog: boolean = false;
   cols: any[] = [];
   constructor(private customerService: CustomerService) { }
   
@@ -24,5 +25,7 @@ export class CustomerBuildingsListComponent implements OnInit {
   }
 
   openNewBuilding()
-  {}
+  {
+    this.customerBuildingDialog = true;
+  }
 }

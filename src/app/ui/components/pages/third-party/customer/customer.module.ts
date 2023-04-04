@@ -2,6 +2,7 @@ import { CustomerComponent } from './customer.component';
 import { CustomerBasicEditComponent } from './customer-basic-edit.component';
 import { CustomerCommercialEditComponent } from './customer-commercial-edit.component';
 import { CustomerBuildingsListComponent } from './customer-buildings-list.component';
+import { CustomerBuildingsEditComponent } from './customer-buildings-edit.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,8 +19,11 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FieldsetModule } from 'primeng/fieldset';
+
 @NgModule({
-  declarations: [CustomerComponent,CustomerBasicEditComponent, CustomerCommercialEditComponent, CustomerBuildingsListComponent],
+  declarations: [CustomerComponent,CustomerBasicEditComponent, CustomerCommercialEditComponent, CustomerBuildingsListComponent, CustomerBuildingsEditComponent],
   imports: [
     CommonModule,
     CustomerRoutingModule,
@@ -35,7 +39,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     DialogModule,
     DropdownModule,
     InputMaskModule,
-    InputNumberModule
+    InputNumberModule,
+    CheckboxModule,
+    FieldsetModule
   ]
 })
 export class CustomerModule { }
