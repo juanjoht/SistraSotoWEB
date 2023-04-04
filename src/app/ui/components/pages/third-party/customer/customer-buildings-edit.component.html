@@ -1,0 +1,143 @@
+<form [formGroup]="formGroupCustomerBuildings" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-4">
+            <label for="nameInput" class="font-bold">Nombre*</label>
+            <input id="nameInput" type="text" pInputText formControlName="name"  [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.name.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.name?.errors?.required">Nombre es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="phoneInput" class="font-bold">Teléfono*</label>
+            <p-inputMask mask="(999) 999-9999" formControlName="phone" placeholder="(999) 999-9999" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.phone.errors}"></p-inputMask>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.phone?.errors?.required">Teléfono es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="contactNameInput" class="font-bold">Nombre Contacto*</label>
+            <input id="contactNameInput" type="text" pInputText formControlName="contactName"  [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.contactName.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.contactName?.errors?.required">Nombre Contacto es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="DeptSelect" class="font-bold">Departamento*</label>
+            <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" formControlName="deptSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.deptSelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.deptSelected?.errors?.required">Departamento es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="CitySelect" class="font-bold">Municipio*</label>
+            <p-dropdown id="CitySelect" [options]="cities" placeholder="Seleccione un Municipio" formControlName="citySelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.citySelected.errors }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.citySelected?.errors?.required">Municipio es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="addressInput" class="font-bold">Dirección*</label>
+            <input id="addressInput" type="text" pInputText formControlName="address" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.address.errors}">
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.address?.errors?.required">Dirección es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="emailInput" class="font-bold">Correo Electrónico</label>
+            <input id="emailInput" type="email" pInputText formControlName="email" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.email.errors}" >
+            <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.email?.errors?.email">Correo Electrónico Invalido.</small>
+        </div>
+        <div class="field col-12 sm:col-2">
+            <label for="latitudeInput" class="font-bold">Latitud*</label>
+            <input id="latitudeInput" type="text" pInputText formControlName="latitude"  >
+        </div>
+        <div class="field col-12 sm:col-2">
+            <label for="lengthInput" class="font-bold">Longitud*</label>
+            <input id="lengthInput" type="text" pInputText formControlName="length"  >
+        </div>
+        <div class="field col-12 sm:col-2">
+            <label for="ScaleYesorNot" class="font-bold">Bascula</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="scaleSelected" [binary]="true" inputId="ScaleYesorNot"></p-checkbox>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-2">
+            <label for="YesorNot" class="font-bold" >Administra Soto 13</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="manageSoto13" [binary]="true" inputId="YesorNot"></p-checkbox>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="queueWaitingTimeInput" class="font-bold" cellphone >Tiempo de espera en cola*</label>
+            <p-inputNumber id="queueWaitingTimeInput" formControlName="queueWaitingTime" inputId="integeronly" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.queueWaitingTime.errors}" > </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.queueWaitingTime?.errors?.required">Dias Vencimiento es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="tolerancePercentageInput" class="font-bold" cellphone >Porcentaje de tolerancia*</label>
+            <p-inputNumber id="tolerancePercentageInput" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.tolerancePercentage?.errors?.required">Dias Vencimiento es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="deliveryConfirmationSelect" class="font-bold">Confirmación de entrega*</label>
+            <p-dropdown id="deliveryConfirmationSelect" [options]="deliveryConfirmations" placeholder="Seleccione una confirmación de entrega" formControlName="deliveryConfirmationSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.deliveryConfirmationSelected.errors }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.deliveryConfirmationSelected?.errors?.required">Municipio es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-6"   >
+            <label for="deliveryConfirmationSelect" class="font-bold">Horarios de recepción*</label>
+            <div  class="formgrid grid" formArrayName="days">
+                    <div class="field col-12 sm:col-3">
+                        <label  class="font-bold">Día</label>
+                    </div>
+                    <div class="field col-12 sm:col-2">
+                        <label  class="font-bold">Recibe</label>
+                    </div>
+                    <div class="field col-12 sm:col-7">
+                        <label  class="font-bold">Horarios</label>
+                    </div>
+                    <div class="field col-12 sm:col-12" *ngFor="let item of getControls(); let i = index">
+                        <div class="grid" [formGroupName]="i">
+                            <div class="field col-12 sm:col-3">
+                                <input id="disabled-input" type="text" pInputText  formControlName="day" />
+                            </div>
+                            <div class="field col-12 sm:col-2 flex align-items-center">
+                                <p-checkbox  [binary]="true" inputId="binary" formControlName="receive"></p-checkbox>
+                            </div>
+                            <div class="field col-12 sm:col-7">
+                                <input id="timeMonday" type="text" pInputText  formControlName="times" >
+                            </div>
+                        </div>
+                    </div>
+                   
+                
+            </div>
+        </div>
+        <div class="field col-12 sm:col-1">
+        </div>
+        <div class="field col-12 sm:col-4">
+            <div class="formgrid grid">
+                <div class="field col-12 sm:col-12">
+                    <label for="allowedVehicleTypesSelect" class="font-bold">Tipo de Vehículo permitidos*</label>
+                    <p-dropdown id="allowedVehicleTypesSelect" [options]="allowedVehicleTypes" placeholder="Seleccione un Tipo de Vehículo permitidos" formControlName="allowedVehicleTypesSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.allowedVehicleTypesSelected.errors }"></p-dropdown>
+                    <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.allowedVehicleTypesSelected?.errors?.required">Tipo de Vehículo permitidos es requerido</small>
+                </div>
+        <div class="field col-12 sm:col-12 flex justify-content-center">
+            <p-fieldset legend="Tiempo de cargue*">
+                <div class="field col-12 sm:col-12">
+                    <span class="p-float-label">
+                        <small>Sencillo</small>
+                        <p-inputNumber inputId="integeronly"  formControlName="simpleLoadingTime" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.simpleLoadingTime.errors }"> </p-inputNumber>
+                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.simpleLoadingTime?.errors?.required">Sencillo es requerido</small>
+                    </span>
+                </div>
+                <div class="field col-12 sm:col-12">
+                    <span class="p-float-label">
+                        <small>Doble</small>
+                        <p-inputNumber inputId="integeronly" formControlName="doubleLoadingTime" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.doubleLoadingTime.errors }"> </p-inputNumber>
+                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.doubleLoadingTime?.errors?.required">Doble es requerido</small>
+                    </span>
+                </div>
+                <div class="field col-12 sm:col-12">
+                    <span class="p-float-label">
+                        <small>Tractomula</small>
+                        <p-inputNumber inputId="integeronly" formControlName="truckLoadingTime" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.truckLoadingTime.errors }"> </p-inputNumber>
+                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.truckLoadingTime?.errors?.required">Tractomula es requerido</small>
+                    </span>
+                </div>
+            </p-fieldset>
+            </div>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-1">
+        </div>
+    </div>
+      
+
+    </form>
