@@ -7,6 +7,8 @@ const routes: Routes = [];
 @NgModule({
   imports: [
       RouterModule.forRoot([
+          //{ path: '', pathMatch: 'full', redirectTo: 'login' },
+          //{ path: 'login', loadChildren: () => import('./ui/components/auth/login/login.module').then(m => m.LoginModule) },
           {
               path: '', component: AppLayoutComponent,
               children: [

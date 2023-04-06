@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from '../api/customer';
-import { CustomerBasicInfo, CustomerBuildings } from '../models/customer.model';
+import { CustomerBasicInfo, CustomerBuildings, CustomerShipping, CustomerTransport } from '../models/customer.model';
 
 @Injectable()
 export class CustomerService {
@@ -40,6 +40,20 @@ export class CustomerService {
         return this.http.get<any>('assets/ui/data/customers-buildings.json')
             .toPromise()
             .then(res => res.data as CustomerBuildings[])
+            .then(data => data);
+    }
+
+    getCustomerTransportersList() {
+        return this.http.get<any>('assets/ui/data/customers-transporters.json')
+            .toPromise()
+            .then(res => res.data as CustomerTransport[])
+            .then(data => data);
+    }
+
+    getCustomerShippingList() {
+        return this.http.get<any>('assets/ui/data/customers-shippings.json')
+            .toPromise()
+            .then(res => res.data as CustomerShipping[])
             .then(data => data);
     }
 

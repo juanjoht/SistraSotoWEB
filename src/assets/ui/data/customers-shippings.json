@@ -1,0 +1,28 @@
+{
+	"data": [
+		{
+			"rateId": "1",			
+            "origin": "Santa fe de Antioquia",
+			"destination": "Obra 1",
+			"material": "Arena de concreto",
+			"measureUnit": "m3",
+			"shippingValue": "18,000"
+		},
+		{
+			"rateId": "2",
+            "origin": "Llanogrande",
+			"destination": "Obra 2",
+			"material": "Arena de concreto",
+			"measureUnit": "m3",
+			"shippingValue": "18,000"
+		},
+		{
+			"rateId": "3",
+            "origin": "Santa fe de Antioquia",
+			"destination": "Obra 2",
+			"material": "Triturado 1/2",
+			"measureUnit": "Ton",
+			"shippingValue": "18,000"
+		}
+	]
+}

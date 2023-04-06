@@ -60,11 +60,13 @@ export interface BuildingsReceptionTimes{
 export interface CustomerTransport{
     customerId?: number;
     transportId?: number;
+    transportName?: string;
     status?: string;
 }
 
 export interface CustomerShipping{
     customerId?: number;
+    rateId?: number;
     origin?: number;
     destination?: number;
     material?: number;

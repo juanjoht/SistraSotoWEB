@@ -20,6 +20,8 @@ export class CustomerComponent implements OnInit {
   customerDialog: boolean = false;
   commercialInfoTab: boolean = true;
   buildingListTab: boolean = true;
+  transporterListTab: boolean = true;
+  shippingListTab: boolean = true;
   showOptions: boolean = true;
   constructor(private customerService: CustomerService, private messageService: MessageService) { }
 
@@ -55,12 +57,15 @@ export class CustomerComponent implements OnInit {
     //this.submittedCommercial = true;
     this.commercialInfoTab = false;
     this.buildingListTab = false;
+    this.transporterListTab = false;
+    this.transporterListTab = false;
+    this.shippingListTab = false;
     this.editCommercial.submittedCommercial = true;
   }
 
   onChangeTab(event: any){
     console.log(event)
-    this.showOptions = event.index === 2 ? false: true;
+    this.showOptions = event.index === 2 || event.index === 3 || event.index === 4 ? false: true;
   }
 
 

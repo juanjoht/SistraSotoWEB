@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { ProductService } from './ui/service/product.service';
 import { CustomerService } from './ui/service/customer.service';
+import { CustomerModule } from './ui/components/pages/third-party/customer/customer.module';
 
 @NgModule({
   declarations: [

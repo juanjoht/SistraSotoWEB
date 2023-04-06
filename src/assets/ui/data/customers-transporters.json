@@ -1,0 +1,19 @@
+{
+	"data": [
+		{
+			"transportId": "1",			
+            "transportName": "Transportador 1",
+			"status": "Autorizado"
+		},
+		{
+			"transportId": "2",
+            "transportName": "Transportador 2",
+			"status": "Autorizado"
+		},
+		{
+			"transportId": "3",
+            "transportName": "Transportador 3",
+			"status": "Pendiente Autorización"
+		}
+	]
+}

@@ -61,16 +61,8 @@ export class CustomerBuildingsEditComponent implements OnInit {
       { name: 'Volqueta' },
       { name: 'Camión' }
      ]
-     const objMonday = this.formBuilder.group(
-      {day1:['Lunes'],receive1:[true],times1:['juan']}
-      );
-      const objTuesday = this.formBuilder.group(
-      {day1:['Martes'],receive1:[false],times1:['juan1']}
-      );
 
-
-
-     this.formGroupCustomerBuildings = this.formBuilder.group({
+    this.formGroupCustomerBuildings = this.formBuilder.group({
       name: ['', [Validators.required]],
       phone: ['', [Validators.required]],
       contactName: ['', [Validators.required]],

@@ -1,0 +1,29 @@
+<form [formGroup]="formGroupShippingRate" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-4">
+            <label for="originSelect" class="font-bold">Origen*</label>
+            <p-dropdown id="originSelect"  placeholder="Seleccione un Origen" formControlName="originSelected" [options]="origins" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.originSelected.errors }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.originSelected?.errors?.required">Origen es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="DestinationSelect" class="font-bold">Destino*</label>
+            <p-dropdown id="DestinationSelect" [options]="destinations" placeholder="Seleccione un Destino" formControlName="destinationSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.destinationSelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.destinationSelected?.errors?.required">Destino es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="MaterialSelect" class="font-bold">Material*</label>
+            <p-dropdown id="MaterialSelect" [options]="materials" placeholder="Seleccione un Material" formControlName="materialSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.materialSelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.materialSelected?.errors?.required">Material es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="MeasureUnitInput" class="font-bold">Unidad de medida*</label>
+            <input id="MeasureUnitInput" type="text" pInputText formControlName="measureUnit" [ngClass]="{'ng-invalid ng-dirty' : submittedShippingRate && f.measureUnit.errors}">
+            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.measureUnit?.errors?.required">Unidad de medida es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="ShippingValuerInput" class="font-bold">Valor Flete*</label>
+            <p-inputNumber id="ShippingValuerInput" inputId="integeronly"  formControlName="shippingValue"  [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.shippingValue.errors }"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.shippingValue?.errors?.required">Valor Flete es requerido.</small>
+        </div>
+    </div>
+    </form>
