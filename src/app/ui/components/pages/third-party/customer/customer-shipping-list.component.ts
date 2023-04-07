@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CustomerShipping } from 'src/app/ui/models/customer.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
 
@@ -8,6 +8,7 @@ import { CustomerService } from 'src/app/ui/service/customer.service';
   styleUrls: ['./customer-shipping-list.component.scss']
 })
 export class CustomerShippingListComponent implements OnInit {
+  @Input() feature: string = '';
   customersShippingRate: CustomerShipping[] = [];
   customerShippingRateDialog: boolean = false;
   cols: any[] = [];
@@ -21,7 +22,9 @@ export class CustomerShippingListComponent implements OnInit {
         { field: 'destination', header: 'Destino' },
         { field: 'material', header: 'Material' },
         { field: 'measureUnit', header: 'm3/ton' },
-        { field: 'shippingValue', header: 'Valor Flete' }
+        { field: 'shippingValue', header: 'Valor Flete' },
+        { field: 'm3Value', header: 'Valor m3' },
+        { field: 'tonValue', header: 'Valor ton' }
     ];
   }
 

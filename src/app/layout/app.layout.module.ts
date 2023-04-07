@@ -17,7 +17,7 @@ import { AppFooterComponent } from './app.footer.component';
 import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
-import { GridThirdComponent } from './grid-third/grid-third.component';
+
 
 @NgModule({
     declarations: [
@@ -26,8 +26,7 @@ import { GridThirdComponent } from './grid-third/grid-third.component';
         AppFooterComponent,
         AppMenuComponent,
         AppSidebarComponent,
-        AppLayoutComponent,
-        GridThirdComponent,
+        AppLayoutComponent
     ],
     imports: [
         BrowserModule,

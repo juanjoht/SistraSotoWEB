@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 interface Origins {
   name: string;
@@ -15,6 +15,7 @@ interface Materials {
   styleUrls: ['./customer-shipping-edit.component.scss']
 })
 export class CustomerShippingEditComponent implements OnInit {
+  @Input() isTransporter: boolean = false;
   formGroupShippingRate!: FormGroup;
   submittedShippingRate: boolean = false;
   origins: Origins[] = [];
@@ -42,8 +43,17 @@ export class CustomerShippingEditComponent implements OnInit {
       destinationSelected: ['', [Validators.required]],
       materialSelected: ['', [Validators.required]],
       measureUnit: ['', [Validators.required]],
-      shippingValue: ['', [Validators.required]]
+      shippingValue: ['', [Validators.required]],
+      m3Value: ['',],
+      tonValue: ['', ]
      });
+     if(this.isTransporter)
+     {
+      this.f["m3Value"].setValidators(Validators.required);
+      this.formGroupShippingRate.get("m3Value")?.updateValueAndValidity();
+      this.f["tonValue"].setValidators(Validators.required);
+      this.formGroupShippingRate.get("tonValue")?.updateValueAndValidity();
+     }
 
 
   }

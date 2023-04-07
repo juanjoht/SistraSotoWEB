@@ -2,8 +2,14 @@
 <div class="formgrid grid">
     <div class="field col-12 sm:col-4">
         <label for="docTypeSelect" class="font-bold">Tipo Documento*</label>
-        <p-dropdown id="docTypeSelect"  placeholder="Seleccione un Tipo Documento" formControlName="documentTypeSelected" [options]="documentTypes" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.documentTypeSelected.errors }"></p-dropdown>
-        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.documentTypeSelected?.errors?.required">Tipo Documento es requerido</small>
+        <p-dropdown id="docTypeSelect"  placeholder="Seleccione un Tipo Documento" 
+        formControlName="documentTypeSelected" [options]="documentTypes" optionLabel="name" 
+        [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.documentTypeSelected.errors }">
+        </p-dropdown>
+        <small class="ng-dirty ng-invalid" 
+        *ngIf="submittedBasic && f?.documentTypeSelected?.errors?.required">
+        Tipo Documento es requerido
+        </small>
     </div>
     <div class="field col-12 sm:col-4">
         <label for="docNumberInput" class="font-bold">Número Documento*</label>
@@ -31,7 +37,7 @@
     </div>
     <div class="field col-12 sm:col-4">
         <label for="DeptSelect" class="font-bold">Departamento*</label>
-        <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" formControlName="deptSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.deptSelected.errors }" ></p-dropdown>
+        <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" formControlName="deptSelected" optionLabel="name"  [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.deptSelected.errors }" ></p-dropdown>
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.deptSelected?.errors?.required">Departamento es requerido</small>
     </div>
     <div class="field col-12 sm:col-4">
@@ -43,6 +49,13 @@
         <label for="addressInput" class="font-bold">Dirección*</label>
         <input id="addressInput" type="text" pInputText formControlName="address" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.address.errors}">
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.address?.errors?.required">Dirección es requerido.</small>
+    </div>
+    <div *ngIf="isTransporter" class="field col-12 sm:col-4">
+        <label for="payDeadline" class="font-bold">Plazo para pago*</label>
+        <input id="payDeadline" type="text" pInputText formControlName="payDeadline"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.payDeadline.errors}" >        
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.payDeadline?.errors?.required">Plazo para pago es requerido</small>
+    </div>
+    <div class="field col-12 sm:col-8">
     </div>
 </div>
 </form>

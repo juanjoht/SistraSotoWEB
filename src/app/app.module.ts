@@ -6,7 +6,12 @@ import { AppComponent } from './app.component';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { ProductService } from './ui/service/product.service';
 import { CustomerService } from './ui/service/customer.service';
-import { CustomerModule } from './ui/components/pages/third-party/customer/customer.module';
+import { AuthGuardService } from './ui/service/auth-guard.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './common/jwt.interceptor';
+import { JwtModule } from '@auth0/angular-jwt';
+import { Common } from './common/common';
+import { ParamStaticService } from './ui/service/param-static.service';
 
 @NgModule({
   declarations: [
@@ -15,9 +20,24 @@ import { CustomerModule } from './ui/components/pages/third-party/customer/custo
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AppLayoutModule
+    AppLayoutModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return Common.Token;
+        },
+        allowedDomains: ['localhost'],
+        disallowedRoutes: ['localhost/auth/login']
+      }
+    })
   ],
-  providers: [ProductService, CustomerService],
+  providers: [
+      AuthGuardService,
+      { provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+     },
+    ProductService, CustomerService,ParamStaticService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

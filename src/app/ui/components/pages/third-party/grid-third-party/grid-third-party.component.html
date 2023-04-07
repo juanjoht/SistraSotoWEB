@@ -49,26 +49,26 @@
     <ng-template pTemplate="content">
             <p-tabView (onChange)="onChangeTab($event)" >
                 <p-tabPanel header="Información Basica">
-                    <app-customer-basic-edit #edit></app-customer-basic-edit>
+                    <app-customer-basic-edit #edit  [isTransporter]="feature === 'Transportador'" ></app-customer-basic-edit>
                 </p-tabPanel>
-                <p-tabPanel [disabled]="commercialInfoTab" header="Información Comercial">
+                <p-tabPanel *ngIf="feature === 'Cliente'" [disabled]="commercialInfoTab" header="Información Comercial">
                     <app-customer-commercial-edit></app-customer-commercial-edit>
                 </p-tabPanel>
-                <p-tabPanel [disabled]="buildingListTab" header="Obras"  >
+                <p-tabPanel *ngIf="feature === 'Cliente'" [disabled]="buildingListTab" header="Obras"  >
                     <app-customer-buildings-list></app-customer-buildings-list>
                 </p-tabPanel>
-                <p-tabPanel [disabled]="transporterListTab" header="Transportadores">
+                <p-tabPanel *ngIf="feature === 'Cliente'" [disabled]="transporterListTab" header="Transportadores">
                    <app-customer-transporters-list></app-customer-transporters-list>
                 </p-tabPanel>   
-                <p-tabPanel [disabled]="shippingListTab" header="Tarifas Fletes">
-                    <app-customer-shipping-list></app-customer-shipping-list>
+                <p-tabPanel  header="Tarifas Fletes">
+                    <app-customer-shipping-list [feature]="feature"></app-customer-shipping-list>
                 </p-tabPanel>
             </p-tabView>
     </ng-template>
     
     <ng-template  pTemplate="footer">
         <ng-container *ngIf="showOptions">
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveCustomerBasic()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveCustomerTabs()"></button>
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
         </ng-container>   
     </ng-template>
