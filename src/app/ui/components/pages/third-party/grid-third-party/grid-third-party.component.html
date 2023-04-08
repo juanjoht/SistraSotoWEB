@@ -30,12 +30,12 @@
                 {{customer.phone}}
             </td>
             <td style="width:20%; min-width:10rem;">
-                <span class="p-column-title">isActive</span>
-                {{customer.isActive}}
+                <span class="p-column-title">state</span>
+                {{customer.state}}
             </td>
             <td>
                 <div class="flex">
-                    <button title="Editar" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2"></button>
+                    <button title="Editar" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editCustomer(customer)"></button>
                     <button title="Ver" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning"></button>
                 </div>
             </td>
@@ -49,26 +49,44 @@
     <ng-template pTemplate="content">
             <p-tabView (onChange)="onChangeTab($event)" >
                 <p-tabPanel header="Información Basica">
-                    <app-customer-basic-edit #edit  [isTransporter]="feature === 'Transportador'" ></app-customer-basic-edit>
+                    <app-customer-basic-edit #edit [customerBasicEdit]="customerBasic"  [isTransporter]="feature === 'Transportador'" ></app-customer-basic-edit>
                 </p-tabPanel>
-                <p-tabPanel *ngIf="feature === 'Cliente'" [disabled]="commercialInfoTab" header="Información Comercial">
-                    <app-customer-commercial-edit></app-customer-commercial-edit>
+                <p-tabPanel *ngIf="feature === 'Cliente'"  header="Información Comercial" [disabled]="commercialInfoTab">
+                    <app-customer-commercial-edit [clientName]="clientName" [customerCommercialEdit]="customerCommercialInfo" ></app-customer-commercial-edit>
                 </p-tabPanel>
-                <p-tabPanel *ngIf="feature === 'Cliente'" [disabled]="buildingListTab" header="Obras"  >
-                    <app-customer-buildings-list></app-customer-buildings-list>
+                <p-tabPanel *ngIf="feature === 'Cliente'"  header="Obras" [disabled]="buildingListTab" >
+                    <app-customer-buildings-list [clientName]="clientName" [clientId]="clientId"></app-customer-buildings-list>
                 </p-tabPanel>
-                <p-tabPanel *ngIf="feature === 'Cliente'" [disabled]="transporterListTab" header="Transportadores">
+                <p-tabPanel *ngIf="feature === 'Cliente'"  header="Transportadores" [disabled]="transporterListTab">
                    <app-customer-transporters-list></app-customer-transporters-list>
                 </p-tabPanel>   
-                <p-tabPanel  header="Tarifas Fletes">
+                <p-tabPanel *ngIf="feature === 'Cliente' || feature === 'Transportador'" header="Tarifas Fletes" [disabled]="shippingListTab">
                     <app-customer-shipping-list [feature]="feature"></app-customer-shipping-list>
+                </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Rutas">
+                    <app-transporter-route-list></app-transporter-route-list>
+                </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Conductor'" header="Información General">
+                    <app-driver-general-info></app-driver-general-info>
+                 </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Transportador' || feature === 'Conductor'" header="Documentos">
+                    <app-transporter-document-list></app-transporter-document-list>
+                </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Vehículos">
+                    <app-transporter-vehicle-list></app-transporter-vehicle-list>
+                </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Conductores">
+                    <app-transporter-driver-list></app-transporter-driver-list>
+                </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Conductores">
+                    <app-transporter-driver-list></app-transporter-driver-list>
                 </p-tabPanel>
             </p-tabView>
     </ng-template>
     
     <ng-template  pTemplate="footer">
         <ng-container *ngIf="showOptions">
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveCustomerTabs()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveContentTabs()"></button>
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
         </ng-container>   
     </ng-template>

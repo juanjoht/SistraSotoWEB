@@ -27,14 +27,27 @@ export class CustomerComponent implements OnInit {
 
 
   ngOnInit() {
-    this.customerService.getCustomersList().then(data => this.customers = data);
+    this.getGridData();
 
     this.cols = [
         { field: 'docNumber', header: 'Número documento' },
         { field: 'name', header: 'Nombre' },
         { field: 'phone', header: 'Teléfono' },
-        { field: 'isActive', header: 'Estado' }
+        { field: 'state', header: 'Estado' }
     ];
+  }
+
+  getGridData(){
+    this.customerService.getCustomerBasic()
+    .subscribe({
+        next: (data:any) => {
+          this.customers = data;
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          console.log(error);
+        }
+    });
   }
 
   openNew() {

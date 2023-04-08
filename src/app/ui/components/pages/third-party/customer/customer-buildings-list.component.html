@@ -1,10 +1,9 @@
 <div class="formgrid grid">
     <div class="field col-12 sm:col-12">
-        <label class="font-bold text-center">Cliente uno</label>
+        <label class="font-bold text-center">{{clientName}}</label>
     </div>
     <div class="col-12">
        
-            <p-toast></p-toast>
 
             <p-table #dtBuildings [value]="customersBuildings" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
@@ -20,7 +19,7 @@
                         <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
                         <th pSortableColumn="name">Municipio <p-sortIcon field="city"></p-sortIcon></th>
                         <th pSortableColumn="address">Dirección <p-sortIcon field="address"></p-sortIcon></th>
-                        <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                        <th pSortableColumn="isActive">Estado <p-sortIcon field="state"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -39,8 +38,8 @@
                             {{building.address}}
                         </td>
                         <td style="width:20%; min-width:10rem;">
-                            <span class="p-column-title">isActive</span>
-                            {{building.isActive}}
+                            <span class="p-column-title">state</span>
+                            {{building.state}}
                         </td>
                         <td>
                             <div class="flex">
@@ -62,8 +61,8 @@
     </ng-template>
     <ng-template  pTemplate="footer">
         <ng-container>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" ></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveCustomerBuilding()" ></button>
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()" ></button>
         </ng-container>   
     </ng-template>
 </p-dialog>

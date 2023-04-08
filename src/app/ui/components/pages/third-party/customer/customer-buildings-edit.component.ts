@@ -1,19 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { Cities, Depts } from 'src/app/ui/models/param-static.model';
+import { params } from 'src/app/ui/models/param.model';
+import { ParamStaticService } from 'src/app/ui/service/param-static.service';
+import { ParamService } from 'src/app/ui/service/param.service';
 
-interface Depts {
-  name: string;
-}
-interface Cities {
-  name: string;
-}
-interface deliveryConfirmations{
-  name: string;
-}
-interface AllowedVehicleTypes
-{
-  name: string;
-}
+
 
 @Component({
   selector: 'app-customer-buildings-edit',
@@ -24,10 +17,15 @@ export class CustomerBuildingsEditComponent implements OnInit {
   formGroupCustomerBuildings!: FormGroup;
   depts: Depts[] = [];
   cities: Cities[] = [];
-  deliveryConfirmations: deliveryConfirmations[] = [];
-  allowedVehicleTypes: AllowedVehicleTypes[] = [];
+  deliveryConfirmations: params[] = [];
+  allowedVehicleTypes: params[] = [];
   submittedCustomerBuilding: boolean = false;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private paramStaticService: ParamStaticService,
+    private paramService: ParamService,
+    private messageService: MessageService
+    ) { }
   
   getControls(){
     return (<FormArray>this.formGroupCustomerBuildings.get('days')).controls;
@@ -35,32 +33,19 @@ export class CustomerBuildingsEditComponent implements OnInit {
   get days() : FormArray {
     return this.formGroupCustomerBuildings.get('days') as FormArray
   }
+
   newDay(d: string,r:boolean,t:string): FormGroup {
     return this.formBuilder.group({
       day: [{value:d, disabled: true}],
       receive: r,
-      times: t
+      times: [t,Validators.required]
     })
   }
   ngOnInit() {
 
-     this.depts = [
-      { name: 'Antioquia' }
-     ];
-     this.cities = [
-      { name: 'Medellin' },
-      { name: 'Itagui' },
-      { name: 'Envigado' }
-     ];
-     this.deliveryConfirmations = [
-      { name: 'Aplicación' },
-      { name: 'Registro Fotográfico' },
-      { name: 'Bolsa"' }
-     ];
-     this.allowedVehicleTypes = [
-      { name: 'Volqueta' },
-      { name: 'Camión' }
-     ]
+    this.getDepts();
+    this.getDeliveryConfirmations();
+    this.getAllowedVehicleTypes();
 
     this.formGroupCustomerBuildings = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -91,8 +76,67 @@ export class CustomerBuildingsEditComponent implements OnInit {
      this.days.push(this.newDay("Sabado",false,""));
      this.days.push(this.newDay("Domingo",false,"")); 
 
+     this.formGroupCustomerBuildings.controls.deptSelected.valueChanges.subscribe((data) => {
+      this.getCities(data.id)
+     });
   }
   get f() { return this.formGroupCustomerBuildings?.controls; }
   
+  changeDept(event: any)
+  {
+    let deptId = this.depts.find(x=>x.name === event.value)?.id as string;
+    this.getCities(deptId);
+  }
+
+  getDepts(){
+    this.paramStaticService.getDepts()
+            .subscribe({
+                next: (data:any) => {
+                  this.depts = data;
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+                  console.log(error);
+                }
+            });
+  }
+
+  getCities(id: string){
+    this.paramStaticService.getCitiesByDept(id)
+    .subscribe({
+        next: (data:any) => {
+          console.log(data);
+          this.cities = data;
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          console.log(error);
+        }
+    });
+  }
+
+  getDeliveryConfirmations(){
+    this.paramService.getParamByType('Confirmación de entrega')
+            .subscribe({
+                next: (data:any) => {
+                  this.deliveryConfirmations = data;
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });                  
+                }
+            });
+  }
+
+  getAllowedVehicleTypes(){
+    this.paramService.getParamByType('Tipos de vehículos permitidos')
+            .subscribe({
+                next: (data:any) => {
+                  this.allowedVehicleTypes = data;
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });                  
+                }
+            });
+  }
  
 }

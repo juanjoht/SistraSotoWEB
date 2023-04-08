@@ -9,10 +9,11 @@ export interface CustomerBasicInfo {
     dept?: string;
     city?: string;
     address?: string;
-    isActive?: boolean;
+    state?: string;
 }
 
 export interface CustomerCommercialInfo {
+    id?: number;
     customerId?: number;
     priorityGroup?: string;
     customerType?: string;
@@ -36,18 +37,20 @@ export interface CustomerBuildings{
     city?:string;
     address?: string;
     email?: string;
-    scale?:string;
+    scale?:boolean;
     latitude?: number;
     length?: number;
     isAdminBySoto13?: boolean;
     queueWaitingTime?: number;
     tolerancePercentage?: number;
     deliveryConfirmation?: string;
-    receptionTimes? : BuildingsReceptionTimes[];
-    allowedVehicleTypes: string;
-    simpleLoadingTime: number;
-    doubleLoadingTime: number;
-    truckLoadingTime: number;
+    receptionTimes? : string;
+    allowedVehicleTypes?: string;
+    loadingTime?: string;
+    simpleLoadingTime?: number;
+    doubleLoadingTime?: number;
+    truckLoadingTime?: number;
+    state?:string;
 }
 
 export interface BuildingsReceptionTimes{

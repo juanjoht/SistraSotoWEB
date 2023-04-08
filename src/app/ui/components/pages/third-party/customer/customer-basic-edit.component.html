@@ -3,8 +3,8 @@
     <div class="field col-12 sm:col-4">
         <label for="docTypeSelect" class="font-bold">Tipo Documento*</label>
         <p-dropdown id="docTypeSelect"  placeholder="Seleccione un Tipo Documento" 
-        formControlName="documentTypeSelected" [options]="documentTypes" optionLabel="name" 
-        [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.documentTypeSelected.errors }">
+        formControlName="documentTypeSelected" dataKey="id" [options]="documentTypes" optionValue="name"  optionLabel="name" 
+        [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.documentTypeSelected.errors }"  >
         </p-dropdown>
         <small class="ng-dirty ng-invalid" 
         *ngIf="submittedBasic && f?.documentTypeSelected?.errors?.required">
@@ -37,12 +37,12 @@
     </div>
     <div class="field col-12 sm:col-4">
         <label for="DeptSelect" class="font-bold">Departamento*</label>
-        <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" formControlName="deptSelected" optionLabel="name"  [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.deptSelected.errors }" ></p-dropdown>
+        <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" (onChange)="changeDept($event)" optionValue="name" formControlName="deptSelected" optionLabel="name"  [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.deptSelected.errors }" ></p-dropdown>
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.deptSelected?.errors?.required">Departamento es requerido</small>
     </div>
     <div class="field col-12 sm:col-4">
         <label for="CitySelect" class="font-bold">Municipio*</label>
-        <p-dropdown id="CitySelect" [options]="cities" placeholder="Seleccione un Municipio" formControlName="citySelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.citySelected.errors }"></p-dropdown>
+        <p-dropdown id="CitySelect" [options]="cities" placeholder="Seleccione un Municipio" optionValue="name" formControlName="citySelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.citySelected.errors }"></p-dropdown>
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.citySelected?.errors?.required">Municipio es requerido</small>
     </div>
     <div class="field col-12 sm:col-4">

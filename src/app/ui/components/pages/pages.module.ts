@@ -25,8 +25,32 @@ import { CustomerBuildingsEditComponent } from './third-party/customer/customer-
 import { CustomerTransportersListComponent } from './third-party/customer/customer-transporters-list.component';
 import { CustomerShippingListComponent } from './third-party/customer/customer-shipping-list.component';
 import { CustomerShippingEditComponent } from './third-party/customer/customer-shipping-edit.component';
+import { TransporterRouteListComponent } from './third-party/transporter/transporter-route-list.component';
+import { TransporterDocumentListComponent } from './third-party/transporter/transporter-document-list.component';
+import { TransporterVehicleListComponent } from './third-party/transporter/transporter-vehicle-list.component';
+import { TransporterDriverListComponent } from './third-party/transporter/transporter-driver-list.component';
+import { DriverComponent } from './third-party/driver/driver.component';
+import { DriverGeneralInfoComponent } from './third-party/driver/driver-general-info.component';
+
 @NgModule({
-    declarations: [TransporterComponent,CustomerComponent,GridThirdPartyComponent,CustomerBasicEditComponent, CustomerCommercialEditComponent, CustomerBuildingsListComponent, CustomerBuildingsEditComponent, CustomerTransportersListComponent, CustomerShippingListComponent, CustomerShippingEditComponent],
+    declarations: [
+        TransporterComponent,
+        CustomerComponent,
+        GridThirdPartyComponent,
+        CustomerBasicEditComponent,
+        CustomerCommercialEditComponent, 
+        CustomerBuildingsListComponent, 
+        CustomerBuildingsEditComponent, 
+        CustomerTransportersListComponent, 
+        CustomerShippingListComponent, 
+        CustomerShippingEditComponent,
+        TransporterRouteListComponent,
+        TransporterDocumentListComponent,
+        TransporterVehicleListComponent,
+        TransporterDriverListComponent,
+        DriverComponent,
+        DriverGeneralInfoComponent
+    ],
     imports: [
         CommonModule,
         PagesRoutingModule,
