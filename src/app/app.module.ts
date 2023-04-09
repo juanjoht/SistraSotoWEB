@@ -13,6 +13,9 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { Common } from './common/common';
 import { ParamStaticService } from './ui/service/param-static.service';
 import { ParamService } from './ui/service/param.service';
+import { TransporterService } from './ui/service/transporter.service';
+import { VehicleService } from './ui/service/vehicle.service';
+import { DriverService } from './ui/service/driver.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,7 @@ import { ParamService } from './ui/service/param.service';
       useClass: JwtInterceptor,
       multi: true
      },
-    ProductService, CustomerService,ParamStaticService, ParamService],
+    ProductService, CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

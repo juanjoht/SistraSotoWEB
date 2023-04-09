@@ -1,1 +1,97 @@
-<p>transporter-vehicle-list works!</p>
+<div class="formgrid grid">
+    <div class="field col-12 sm:col-12">
+        <label class="font-bold text-center">{{transporterName}}</label>
+    </div>
+    <div class="field col-12 sm:col-12">
+       
+
+            <p-table #dtTransporterVehicles [value]="transporterVehicles" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Vehículos del Transportador</h5>
+                        <span *ngIf="!viewMode" class="block mt-2 md:mt-0">
+                            <button pButton pRipple title="Adicionar Nuevo Vehículo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewVehicle()"></button>                            
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:12%" pSortableColumn="licensePlate">Placa <p-sortIcon field="licensePlate"></p-sortIcon></th>
+                        <th style="width:12%" pSortableColumn="type">Tipo <p-sortIcon field="type"></p-sortIcon></th>
+                        <th style="width:12%" pSortableColumn="capacityTon">Capacidad ton <p-sortIcon field="capacityTon"></p-sortIcon></th>
+                        <th style="width:12%" pSortableColumn="capacityM3">Capacidad m3 <p-sortIcon field="capacityM3"></p-sortIcon></th>
+                        <th style="width:12%" pSortableColumn="status">Estado <p-sortIcon field="status"></p-sortIcon></th>
+                        <th  *ngIf="!viewMode" style="width:12%"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-transporterVehicle>
+                    <tr>
+                        <td style="width:20%; min-width:15rem;">
+                            <span class="p-column-title">licensePlate</span>
+                            {{transporterVehicle.licensePlate}}
+                        </td>
+                        <td style="width:20%; min-width:15rem;">
+                            <span class="p-column-title">type</span>
+                            {{transporterVehicle.type}}
+                        </td>
+                        <td style="width:20%; min-width:15rem;">
+                            <span class="p-column-title">capacityTon</span>
+                            {{transporterVehicle.capacityTon}}
+                        </td>
+                        <td style="width:20%; min-width:15rem;">
+                            <span class="p-column-title">capacityM3</span>
+                            {{transporterVehicle.capacityM3}}
+                        </td>
+                        <td style="width:20%; min-width:10rem;">
+                            <span class="p-column-title">status</span>
+                            {{transporterVehicle.status}}
+                        </td>
+                        <td style="width:10%; min-width:10rem;" *ngIf="!viewMode">
+                            <button title="Eliminar" *ngIf="transporterVehicle.status === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterVehicle()"></button>
+                            <button title="Editar" *ngIf="transporterVehicle.status === 'Pendiente Autorización'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+<p-dialog [(visible)]="transporterVehicleDialog" [style]="{width: '500px',height: '250px'}" [breakpoints]="{ '960px': '75vw' }" [draggable]="false" [maximizable]="true"  [modal]="true" class="p-fluid">
+    <ng-template pTemplate="header">
+        <span class="text-xl font-bold text-center">{{action}} Vehículo</span>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <form [formGroup]="formTransporterVehicle" >
+         <div class="formgrid grid mb-10">
+            <div *ngIf="!showVarCode" class="field col-12 sm:col-8">
+                <label for="transporterSelect" class="font-bold">Seleccione el Vehículo</label>
+                <p-dropdown id="transporterSelect" scrollHeight="100px" formControlName="vehicleSelected"  [options]="vehicles" placeholder="Seleccione un vehículo" optionValue="id"  optionLabel="licensePlate" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterVehicle && f.vehicleSelected.errors }" ></p-dropdown>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterVehicle && f?.vehicleSelected?.errors?.required">Vehículo es requerido</small>
+            </div>
+            <div *ngIf="!showVarCode" class="field col-12 sm:col-4 align-self-end">
+                <button pButton pRipple label="Guardar" (click)="saveTransporterVehicle()" icon="pi pi-check" class="p-button-text" ></button>    
+            </div>
+                <div *ngIf="showVarCode" class="field col-12 sm:col-8">
+                    <label class="font-bold">Ingrese el código de verificación</label>
+                    <input type="text" pInputText formControlName="verificationCode" [ngClass]="{ 'is-invalid ng-dirty': validateTransporterVehicle && f.verificationCode.errors }"  />
+                    <small class="ng-dirty ng-invalid" *ngIf="validateTransporterVehicle && f?.verificationCode?.errors?.required">código de verificación es requerido</small>
+                </div>
+                <div *ngIf="showVarCode" class="field col-12 sm:col-4 align-self-end">
+                    <button pButton pRipple label="Validar" icon="pi pi-check" class="p-button-text" (click)="validateVehicle()" ></button>    
+                </div>
+        </div>
+    </form>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteTransporterVehicleDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Esta seguro que desea eliminar el vehículo?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteTransporterVehicleDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+    </ng-template>
+</p-dialog>
+</div>
+
+

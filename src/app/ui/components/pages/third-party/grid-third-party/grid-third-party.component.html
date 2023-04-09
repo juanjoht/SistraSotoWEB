@@ -36,50 +36,47 @@
             <td>
                 <div class="flex">
                     <button title="Editar" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editCustomer(customer)"></button>
-                    <button title="Ver" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning"></button>
+                    <button title="Ver" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning" (click)="editCustomer(customer,true)"></button>
                 </div>
             </td>
         </tr>
     </ng-template>
 </p-table>
-<p-dialog [(visible)]="customerDialog" [draggable]="false" [style]="{width: '1024px',height: '700px'}" [maximizable]="true" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-customer">
+<p-dialog [(visible)]="customerDialog" (onHide)="reloadGridAfterSave()" [draggable]="false" [style]="{width: '1024px',height: '700px'}" [maximizable]="true" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-customer">
     <ng-template pTemplate="header">
         <span class="text-xl font-bold text-center">Crear/Editar {{feature}}</span>
     </ng-template>
     <ng-template pTemplate="content">
             <p-tabView (onChange)="onChangeTab($event)" >
                 <p-tabPanel header="Información Basica">
-                    <app-customer-basic-edit #edit [customerBasicEdit]="customerBasic"  [isTransporter]="feature === 'Transportador'" ></app-customer-basic-edit>
+                    <app-customer-basic-edit #edit [customerBasicEdit]="customerBasic" [viewMode]="isViewMode"  [isTransporter]="feature === 'Transportador'" ></app-customer-basic-edit>
                 </p-tabPanel>
                 <p-tabPanel *ngIf="feature === 'Cliente'"  header="Información Comercial" [disabled]="commercialInfoTab">
-                    <app-customer-commercial-edit [clientName]="clientName" [customerCommercialEdit]="customerCommercialInfo" ></app-customer-commercial-edit>
+                    <app-customer-commercial-edit [clientName]="clientName" [viewMode]="isViewMode" [customerCommercialEdit]="customerCommercialInfo" ></app-customer-commercial-edit>
                 </p-tabPanel>
                 <p-tabPanel *ngIf="feature === 'Cliente'"  header="Obras" [disabled]="buildingListTab" >
-                    <app-customer-buildings-list [clientName]="clientName" [clientId]="clientId"></app-customer-buildings-list>
+                    <app-customer-buildings-list [clientName]="clientName" [clientId]="clientId" [viewMode]="isViewMode"></app-customer-buildings-list>
                 </p-tabPanel>
                 <p-tabPanel *ngIf="feature === 'Cliente'"  header="Transportadores" [disabled]="transporterListTab">
-                   <app-customer-transporters-list></app-customer-transporters-list>
+                   <app-customer-transporters-list [clientName]="clientName" [clientId]="clientId" [viewMode]="isViewMode"></app-customer-transporters-list>
                 </p-tabPanel>   
                 <p-tabPanel *ngIf="feature === 'Cliente' || feature === 'Transportador'" header="Tarifas Fletes" [disabled]="shippingListTab">
-                    <app-customer-shipping-list [feature]="feature"></app-customer-shipping-list>
+                    <app-customer-shipping-list [feature]="feature" [clientName]="clientName" [viewMode]="isViewMode" [clientId]="clientId"></app-customer-shipping-list>
                 </p-tabPanel>
-                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Rutas">
-                    <app-transporter-route-list></app-transporter-route-list>
+                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Rutas" [disabled]="routesListTab">
+                    <app-transporter-route-list [transporterName]="clientName" [viewMode]="isViewMode" [transporterId]="clientId"  ></app-transporter-route-list>
                 </p-tabPanel>
-                <p-tabPanel  *ngIf="feature === 'Conductor'" header="Información General">
-                    <app-driver-general-info></app-driver-general-info>
+                <p-tabPanel  *ngIf="feature === 'Conductor'" header="Información General" [disabled]="driversGeneralInfoTab">
+                    <app-driver-general-info [driverGeneralEdit]="driverGeneralInfo" [driverId]="clientId" [viewMode]="isViewMode"></app-driver-general-info>
                  </p-tabPanel>
-                <p-tabPanel  *ngIf="feature === 'Transportador' || feature === 'Conductor'" header="Documentos">
-                    <app-transporter-document-list></app-transporter-document-list>
+                <p-tabPanel  *ngIf="feature === 'Transportador' || feature === 'Conductor'" header="Documentos" [disabled]="documentsListTab">
+                    <app-transporter-document-list [transporterName]="clientName" [feature]="feature" [viewMode]="isViewMode" [transporterId]="clientId" ></app-transporter-document-list>
                 </p-tabPanel>
-                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Vehículos">
-                    <app-transporter-vehicle-list></app-transporter-vehicle-list>
+                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Vehículos" [disabled]="vehiclesListTab">
+                    <app-transporter-vehicle-list [transporterName]="clientName" [viewMode]="isViewMode" [transporterId]="clientId"></app-transporter-vehicle-list>
                 </p-tabPanel>
-                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Conductores">
-                    <app-transporter-driver-list></app-transporter-driver-list>
-                </p-tabPanel>
-                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Conductores">
-                    <app-transporter-driver-list></app-transporter-driver-list>
+                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Conductores" [disabled]="driversListTab">
+                    <app-transporter-driver-list [transporterName]="clientName" [viewMode]="isViewMode" [transporterId]="clientId"></app-transporter-driver-list>
                 </p-tabPanel>
             </p-tabView>
     </ng-template>

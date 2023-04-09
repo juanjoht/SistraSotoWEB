@@ -37,6 +37,14 @@ export class CustomerComponent implements OnInit {
     ];
   }
 
+  reloadGrid(eventData: { reloadGrid: boolean })
+  {
+    if(eventData.reloadGrid)
+    {
+      this.getGridData();
+    }
+  }
+
   getGridData(){
     this.customerService.getCustomerBasic()
     .subscribe({

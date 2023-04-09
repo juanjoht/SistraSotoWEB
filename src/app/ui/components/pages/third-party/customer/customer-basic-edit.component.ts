@@ -16,6 +16,7 @@ import { ParamService } from 'src/app/ui/service/param.service';
 export class CustomerBasicEditComponent implements OnInit  {
   @Input() isTransporter: boolean = false;
   @Input() customerBasicEdit!: CustomerBasicInfo;
+  @Input() viewMode: boolean = false;
   formGrouBasic!: FormGroup;
   customerBasic: CustomerBasicInfo = {};
   submittedBasic: boolean = false;
@@ -51,15 +52,16 @@ export class CustomerBasicEditComponent implements OnInit  {
     }else
     {
       this.formGrouBasic = this.formBuilder.group({
-        documentTypeSelected: [this.customerBasicEdit.docType,[Validators.required]],
-        docNumber: [this.customerBasicEdit.docNumber, [Validators.required]],
-        name: [this.customerBasicEdit.name, [Validators.required]],
-        phone: [this.customerBasicEdit.phone, [Validators.required]],
-        cellphone: [this.customerBasicEdit.cellPhone, []],
-        email : [this.customerBasicEdit.email, [Validators.email]],
-        deptSelected:[this.customerBasicEdit.dept,[Validators.required]],
-        citySelected:[this.customerBasicEdit.city,[Validators.required]],
-        address:[this.customerBasicEdit.address, [Validators.required]]
+        documentTypeSelected: [{value: this.customerBasicEdit.docType , disabled: this.viewMode},[Validators.required]],
+        docNumber: [{value:this.customerBasicEdit.docNumber, disabled: this.viewMode}, [Validators.required]],
+        name: [{value:this.customerBasicEdit.name, disabled: this.viewMode}, [Validators.required]],
+        phone: [{value:this.customerBasicEdit.phone, disabled: this.viewMode}, [Validators.required]],
+        cellphone: [{value: this.customerBasicEdit.cellPhone, disabled: this.viewMode}, []],
+        email : [{value: this.customerBasicEdit.email, disabled: this.viewMode}, [Validators.email]],
+        deptSelected:[{value: this.customerBasicEdit.dept, disabled: this.viewMode},[Validators.required]],
+        citySelected:[{value: this.customerBasicEdit.city, disabled: this.viewMode},[Validators.required]],
+        address:[{value: this.customerBasicEdit.address, disabled: this.viewMode}, [Validators.required]],
+        payDeadline:[{value: this.customerBasicEdit.payDeadline, disabled: this.viewMode}, [Validators.required]],
        });
     }
      

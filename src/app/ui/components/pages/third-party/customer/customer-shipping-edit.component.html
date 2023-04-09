@@ -2,23 +2,22 @@
     <div class="formgrid grid">
         <div class="field col-12 sm:col-4">
             <label for="originSelect" class="font-bold">Origen*</label>
-            <p-dropdown id="originSelect"  placeholder="Seleccione un Origen" formControlName="originSelected" [options]="origins" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.originSelected.errors }"></p-dropdown>
+            <p-dropdown id="originSelect"  placeholder="Seleccione un Origen" formControlName="originSelected" [options]="origins" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.originSelected.errors }"></p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.originSelected?.errors?.required">Origen es requerido</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="DestinationSelect" class="font-bold">Destino*</label>
-            <p-dropdown id="DestinationSelect" [options]="destinations" placeholder="Seleccione un Destino" formControlName="destinationSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.destinationSelected.errors }" ></p-dropdown>
+            <p-dropdown id="DestinationSelect" [options]="destinations" placeholder="Seleccione un Destino" formControlName="destinationSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.destinationSelected.errors }" ></p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.destinationSelected?.errors?.required">Destino es requerido</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="MaterialSelect" class="font-bold">Material*</label>
-            <p-dropdown id="MaterialSelect" [options]="materials" placeholder="Seleccione un Material" formControlName="materialSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.materialSelected.errors }" ></p-dropdown>
+            <p-dropdown id="MaterialSelect" [options]="materials" placeholder="Seleccione un Material" formControlName="materialSelected"  optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.materialSelected.errors }" ></p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.materialSelected?.errors?.required">Material es requerido</small>
         </div>
         <div *ngIf="!isTransporter" class="field col-12 sm:col-4">
-            <label for="MeasureUnitInput" class="font-bold">Unidad de medida*</label>
-            <input id="MeasureUnitInput" type="text" pInputText formControlName="measureUnit" [ngClass]="{'ng-invalid ng-dirty' : submittedShippingRate && f.measureUnit.errors}">
-            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.measureUnit?.errors?.required">Unidad de medida es requerido.</small>
+            <label for="MeasureUnitInput" class="font-bold">Unidad de medida</label>
+            <input id="MeasureUnitInput" type="text" pInputText formControlName="measureUnit">
         </div>
         <div *ngIf="!isTransporter" class="field col-12 sm:col-4">
             <label for="ShippingValuerInput" class="font-bold">Valor Flete*</label>
@@ -29,7 +28,7 @@
         </div>
         <div *ngIf="isTransporter" class="field col-12 sm:col-4">
             <label for="m3Value" class="font-bold">Valor m3*</label>
-            <input id="m3Value" type="text" pInputText formControlName="m3Value" [ngClass]="{'ng-invalid ng-dirty' : submittedShippingRate && f.m3Value.errors}">
+            <p-inputNumber id="tonValue" inputId="integeronly"  formControlName="m3Value"  [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.m3Value.errors }"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.m3Value?.errors?.required">Valor m3 es requerido.</small>
         </div>
         <div *ngIf="isTransporter" class="field col-12 sm:col-4">

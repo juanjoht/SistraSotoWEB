@@ -1,16 +1,13 @@
 <div class="formgrid grid">
     <div class="field col-12 sm:col-12">
-        <label class="font-bold text-center">Cliente uno</label>
+        <label class="font-bold text-center">{{clientName}}</label>
     </div>
     <div class="col-12">
-       
-            <p-toast></p-toast>
-
-            <p-table #dtShippingRates [value]="customersShippingRate"  styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '70rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="rateId">
+           <p-table #dtShippingRates [value]="customersShippingRate"  styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '70rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="rateId">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Tarifas de fletes del {{feature}}</h5>
-                        <span class="block mt-2 md:mt-0">
+                        <span *ngIf="!viewMode" class="block mt-2 md:mt-0">
                             <button pButton pRipple title="Adicionar nueva tarifa de flete" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewShippingRate()"></button>                            
                         </span>
                     </div>
@@ -24,7 +21,7 @@
                         <th *ngIf="feature === 'Cliente'" pSortableColumn="shippingValue">Valor Flete<p-sortIcon field="shippingValue"></p-sortIcon></th>
                         <th *ngIf="feature === 'Transportador'" pSortableColumn="m3Value">Valor m3 <p-sortIcon field="m3Value"></p-sortIcon></th>
                         <th *ngIf="feature === 'Transportador'" pSortableColumn="tonValue">Valor Ton<p-sortIcon field="tonValue"></p-sortIcon></th>
-                        <th></th>
+                        <th *ngIf="!viewMode"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-ShippingRate>
@@ -57,9 +54,9 @@
                             <span class="p-column-title">tonValue</span>
                             {{ShippingRate.tonValue}}
                         </td>
-                        <td>
+                        <td *ngIf="!viewMode">
                             <div class="flex">
-                                <button title="Editar" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
+                                <button title="Editar" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCustomerShipping(ShippingRate)" ></button>
                             </div>
                         </td>
                     </tr>
@@ -72,11 +69,11 @@
         <span class="text-xl font-bold text-center">Crear/Editar Flete</span>
     </ng-template>
     <ng-template pTemplate="content">
-        <app-customer-shipping-edit [isTransporter]="feature === 'Transportador'"></app-customer-shipping-edit>
+        <app-customer-shipping-edit [customerShippingEdit]="customerShippingRate" [isTransporter]="feature === 'Transportador'"></app-customer-shipping-edit>
     </ng-template>
     <ng-template  pTemplate="footer">
         <ng-container>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveContentDialog()" ></button>
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" ></button>
         </ng-container>   
     </ng-template>

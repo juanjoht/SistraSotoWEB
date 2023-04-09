@@ -1,17 +1,16 @@
 <div class="formgrid grid">
     <div class="field col-12 sm:col-12">
-        <label class="font-bold text-center">Cliente uno</label>
+        <label class="font-bold text-center">{{clientName}}</label>
     </div>
     <div class="field col-12 sm:col-2"></div>
     <div class="field col-12 sm:col-8">
        
-            <p-toast></p-toast>
 
             <p-table #dtCustomerTransporters [value]="customersTransporters" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="transportId">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Transportadores autorizados del Cliente</h5>
-                        <span class="block mt-2 md:mt-0">
+                        <span *ngIf="!viewMode" class="block mt-2 md:mt-0">
                             <button pButton pRipple title="Adicionar nuevo Transportador" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewTransporter()"></button>                            
                         </span>
                     </div>
@@ -20,7 +19,7 @@
                     <tr>
                         <th style="width:12%" pSortableColumn="transportName">Nombre <p-sortIcon field="transportName"></p-sortIcon></th>
                         <th style="width:12%" pSortableColumn="status">Estado <p-sortIcon field="status"></p-sortIcon></th>
-                        <th style="width:12%"></th>
+                        <th  *ngIf="!viewMode" style="width:12%"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-customerTransporters>
@@ -33,7 +32,7 @@
                             <span class="p-column-title">status</span>
                             {{customerTransporters.status}}
                         </td>
-                        <td style="width:10%; min-width:10rem;">
+                        <td style="width:10%; min-width:10rem;" *ngIf="!viewMode">
                             <button title="Eliminar" *ngIf="customerTransporters.status === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteCustomerTransporter()"></button>
                             <button title="Editar" *ngIf="customerTransporters.status === 'Pendiente Autorización'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
                         </td>
@@ -51,7 +50,7 @@
          <div class="formgrid grid mb-10">
             <div *ngIf="!showVarCode" class="field col-12 sm:col-8">
                 <label for="transporterSelect" class="font-bold">Seleccione el transportador</label>
-                <p-dropdown id="transporterSelect" scrollHeight="100px" formControlName="transporterSelected"  [options]="customersTransporters" placeholder="Seleccione un transportador"  optionLabel="transportName" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerTransporter && f.transporterSelected.errors }" ></p-dropdown>
+                <p-dropdown id="transporterSelect" scrollHeight="100px" formControlName="transporterSelected"  [options]="Transporters" placeholder="Seleccione un transportador" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerTransporter && f.transporterSelected.errors }" ></p-dropdown>
                 <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerTransporter && f?.transporterSelected?.errors?.required">Transportador es requerido</small>
             </div>
             <div *ngIf="!showVarCode" class="field col-12 sm:col-4 align-self-end">

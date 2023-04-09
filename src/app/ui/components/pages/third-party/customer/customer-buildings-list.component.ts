@@ -11,12 +11,15 @@ import { CustomerBuildingsEditComponent } from './customer-buildings-edit.compon
 })
 export class CustomerBuildingsListComponent implements OnInit {
   @Input() clientName: string = '';
-  @Input() clientId: number = 0;
+  @Input() clientId: number = 0; 
+  @Input() viewMode: boolean = false;
   @ViewChild(CustomerBuildingsEditComponent)editBuilding!: CustomerBuildingsEditComponent;
   customersBuildings: CustomerBuildings[] = [];
+  customerBuilding: CustomerBuildings = {};
   customerBuildingDialog: boolean = false;
-  
-
+  editMode: boolean = false;
+  viewModeDialog: boolean = false;
+  buildingId: number = 0;
   cols: any[] = [];
   constructor(
     private customerService: CustomerService,
@@ -35,6 +38,17 @@ export class CustomerBuildingsListComponent implements OnInit {
   openNewBuilding()
   {
     this.customerBuildingDialog = true;
+    this.editMode = false;
+    this.viewModeDialog= false;
+    this.customerBuilding = {};
+  }
+
+  editCustomerBuilding(customerBuilding: CustomerBuildings, isviewMode: boolean = false) {
+    this.customerBuildingDialog = true;
+    this.editMode = true;
+    this.customerBuilding  = customerBuilding;
+    this.viewModeDialog= isviewMode;
+    this.buildingId = customerBuilding.id as number;
   }
 
   getGridData(){
@@ -44,7 +58,7 @@ export class CustomerBuildingsListComponent implements OnInit {
           this.customersBuildings = data;
         },
         error: error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.details, life: 5000 });
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
           console.log(error);
         }
     });
@@ -64,15 +78,34 @@ export class CustomerBuildingsListComponent implements OnInit {
     let formValues  = this.editBuilding.f;
     let formValuesArray  = this.editBuilding.f.days.value;
     let recTimes : string = '';
-    formValuesArray.forEach((element: any) => {
-      recTimes = `lunes=recibe:${element.receive},tiempo:${element.times}};
-      martes=recibe:${element.receive},tiempo:${element.times}};
-      miercoles=recibe:${element.receive},tiempo:${element.times}};
-      jueves=recibe:${element.receive},tiempo:${element.times}};
-      viernes=recibe:${element.receive},tiempo:${element.times}};
-      sabado=recibe:${element.receive},tiempo:${element.times}};
-      domingo=recibe:${element.receive},tiempo:${element.times}};
-      `
+    formValuesArray.forEach((element: any, index: number) => {
+      let day:string = '';
+        switch (index) {
+          case 0:
+            day = "Lunes"
+          break;
+          case 1:
+            day = "Martes"
+          break;
+          case 2:
+            day = "Miercoles"
+          break;
+          case 3:
+            day = "Jueves"
+          break;
+          case 4:
+            day = "Viernes"
+          break;
+          case 5:
+            day = "Sabado"
+          break; 
+          case 6:
+            day = "Domingo"
+          break;
+          default:
+            break;
+        }
+      recTimes += `${day}=recibe:${element.receive},tiempo:${element.times};`
     });
     let objbuilding: CustomerBuildings = {
       customerId:this.clientId,          
@@ -90,25 +123,43 @@ export class CustomerBuildingsListComponent implements OnInit {
       queueWaitingTime: formValues.queueWaitingTime.value,
       tolerancePercentage: formValues.tolerancePercentage.value,
       deliveryConfirmation: formValues.deliveryConfirmationSelected.value,
-      receptionTimes: recTimes,
+      receptionTimes: recTimes.slice(0, -1),
       allowedVehicleTypes: formValues.allowedVehicleTypesSelected.value,
       loadingTime:`simple:${formValues.simpleLoadingTime.value};doble:${formValues.doubleLoadingTime.value};tractomula:${formValues.truckLoadingTime.value}`,
       state: "Activo"      
     }
-    this.customerService.postCustomerBuilding(objbuilding)
-            .subscribe({
-                next: (data) => {
-                  if(data !== null)
-                  {
-                    this.customerBuildingDialog = false;
-                    this.getGridData();
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Obra del Cliente Creada', life: 3000 });
+    if (this.editMode){
+      objbuilding.id = this.buildingId;
+      this.customerService.putCustomerBuilding(objbuilding)
+      .subscribe({
+          next: (data) => {
+            if(data !== null)
+            {
+              this.customerBuildingDialog = false;
+              this.getGridData();
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Obra del Cliente Actualizada', life: 3000 });
+            }
+          },
+          error: error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          }
+      });
+    }else{
+      this.customerService.postCustomerBuilding(objbuilding)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      this.customerBuildingDialog = false;
+                      this.getGridData();
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Obra del Cliente Creada', life: 3000 });
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+                    console.log(error);
                   }
-                },
-                error: error => {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
-                  console.log(error);
-                }
-            });
+              });
+      }
   }
 }

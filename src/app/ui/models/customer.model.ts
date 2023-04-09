@@ -10,6 +10,7 @@ export interface CustomerBasicInfo {
     city?: string;
     address?: string;
     state?: string;
+    payDeadline? :string;
 }
 
 export interface CustomerCommercialInfo {
@@ -29,6 +30,7 @@ export interface CustomerCommercialInfo {
 }
 
 export interface CustomerBuildings{
+    id?: number;
     customerId?: number;
     name?: string;
     phone?: string;
@@ -69,10 +71,13 @@ export interface CustomerTransport{
 
 export interface CustomerShipping{
     customerId?: number;
-    rateId?: number;
-    origin?: number;
-    destination?: number;
-    material?: number;
-    measureUnit: number;
-    shippingValue: number;
+    id?: number;
+    origin?: string;
+    destination?: string;
+    material?: string;
+    measureUnit?: string;
+    shippingValue?: number;
+    tonValue?: number;
+    m3Value?: number;
+
 }

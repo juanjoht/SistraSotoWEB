@@ -9,6 +9,6 @@ import { DriverRoutingModule } from './driver-routing.module';
   imports: [
     CommonModule,
     DriverRoutingModule
-  ]
+    ]
 })
 export class DriverModule { }

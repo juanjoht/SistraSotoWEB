@@ -34,7 +34,8 @@ import { DialogModule } from 'primeng/dialog';
         DropdownModule,
         RadioButtonModule,
         InputNumberModule,
-        DialogModule
+        DialogModule,
+        InputTextareaModule
     ],
     declarations: [CrudComponent]
 })

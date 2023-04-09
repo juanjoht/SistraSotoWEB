@@ -72,7 +72,7 @@ export class CustomerService {
                     name: item.nombre,
                     phone: item.telefono,
                     cellPhone:item.celular,
-                    email: item.CorreoElectronico,
+                    email: item.correoElectronico,
                     dept: item.departamento,
                     city: item.municipio,
                     address: item.direccion,
@@ -85,22 +85,20 @@ export class CustomerService {
     getCommercialInfoByClient(clientId: number) {
         let newCommerciaInfo: CustomerCommercialInfo; 
         return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiCustomerCommercialInfo}?ClienteId=${clientId}`)
-        .pipe(map(data => {
-            return data?.informacionComercial?.map((item: any) =>{
+        .pipe(map(item => {
                  return newCommerciaInfo =  {
-                    id: item.id,
-                    priorityGroup: item.grupoPrioridad,
-                    customerType: item.tipoCliente,
-                    iva: item.iva,
-                    assignedQuota: item.cupoAsignado,
-                    usedQuota: item.cupoUtilizado,
-                    availableQuota: item.cupoDisponible,
-                    maturityDays: item.diasVencimiento,
-                    delayDays: item.diasMora,
-                    intermediationPercentage: item.porcentajeIntermediacion,
-                    measureUnit: item.unidadMedida
+                    id: item.informacionComercial.id,
+                    priorityGroup: item.informacionComercial.grupoPrioridad,
+                    customerType: item.informacionComercial.tipoCliente,
+                    iva: item.informacionComercial.iva,
+                    assignedQuota: item.informacionComercial.cupoAsignado,
+                    usedQuota: item.informacionComercial.cupoUtilizado,
+                    availableQuota: item.informacionComercial.cupoDisponible,
+                    maturityDays: item.informacionComercial.diasVencimiento,
+                    delayDays: item.informacionComercial.diasMora,
+                    intermediationPercentage: item.informacionComercial.porcentajeIntermediacion,
+                    measureUnit: item.informacionComercial.unidadMedida
                 }
-            })
         }));
     }
 
@@ -110,6 +108,7 @@ export class CustomerService {
         .pipe(map(data => {
             return data?.obras?.map((item: any) =>{
                  return newCommerciaInfo =  {
+                    id: item.id,
                     customerId: item.clienteId,
                     name: item.nombre,
                     phone: item.telefono,
@@ -125,12 +124,45 @@ export class CustomerService {
                     queueWaitingTime: item.tiempoEsperaCola,
                     tolerancePercentage: item.porcentajeTolerancia,
                     deliveryConfirmation: item.confirmacionEntrega,
-                    //receptionTimes : item[];
+                    receptionTimes : item.horariosRecepcion,
                     allowedVehicleTypes: item.tipoVehiculoPermitido,
-                    simpleLoadingTime: parseInt((item.tiempoDescargue as string).split(';')[0]),
-                    doubleLoadingTime: parseInt((item.tiempoDescargue as string).split(';')[1]),
-                    truckLoadingTime: parseInt((item.tiempoDescargue as string).split(';')[2]),
+                    simpleLoadingTime: parseInt((item.tiempoDescargue as string)?.split(';')[0]?.split(':')[1]),
+                    doubleLoadingTime: parseInt((item.tiempoDescargue as string)?.split(';')[1]?.split(':')[1]),
+                    truckLoadingTime: parseInt((item.tiempoDescargue as string)?.split(';')[2]?.split(':')[1]),
                     state : item.estado
+                }
+            })
+        }));
+    }
+
+    getTransportersByClient(clientId: number) {
+        let newInfo: CustomerTransport; 
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiTransportersByClient}?ClienteId=${clientId}`)
+        .pipe(map(data => {
+            return data?.transportadores?.map((item: any) =>{
+                 return newInfo =  {
+                    transportId: item.id,
+                    transportName: item.nombre,
+                    status: item.estado
+                }
+            })
+        }));
+    }
+
+    getShippingRatesByThirdParty(clientId: number) {
+        let newInfo: CustomerShipping; 
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiShippingRateByClient}?ClienteId=${clientId}`)
+        .pipe(map(data => {
+            return data?.tarifaFletes?.map((item: any) =>{
+                 return newInfo =  {
+                    id: item.id,
+                    origin: item.origen,
+                    destination: item.destino,
+                    material: item.material,
+                    measureUnit: item.unidadMedida,
+                    shippingValue: item.valorFlete,
+                    m3Value: item.valorMetroCubico,
+                    tonValue: item.valorTonelada
                 }
             })
         }));
@@ -138,7 +170,6 @@ export class CustomerService {
 
 
     postCustomerBasic(requestCustmerBasic: CustomerBasicInfo){
-            let action = this.http.post<any>;
             return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiCustomer}`,
             {
                 cliente: {
@@ -150,7 +181,8 @@ export class CustomerService {
                   CorreoElectronico: requestCustmerBasic.email,
                   departamento: requestCustmerBasic.dept,
                   municipio: requestCustmerBasic.city,
-                  direccion: requestCustmerBasic.address
+                  direccion: requestCustmerBasic.address,
+                  estado: 'Activo'
                 }
               })
                 .pipe(map(user => {
@@ -159,6 +191,30 @@ export class CustomerService {
                     }
                 }));
     }
+
+    putCustomerBasic(requestCustmerBasic: CustomerBasicInfo){
+        return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiCustomer}`,
+        {
+            cliente: {
+              id: requestCustmerBasic.id,
+              tipoDocumento: requestCustmerBasic.docType,
+              numeroDocumento: requestCustmerBasic.docNumber,
+              nombre: requestCustmerBasic.name,
+              telefono: requestCustmerBasic.phone,
+              celular: requestCustmerBasic.cellPhone,
+              CorreoElectronico: requestCustmerBasic.email,
+              departamento: requestCustmerBasic.dept,
+              municipio: requestCustmerBasic.city,
+              direccion: requestCustmerBasic.address,
+              estado: 'Activo'
+            }
+          })
+            .pipe(map(user => {
+                if (user.cliente?.id !== 0 && user.cliente?.id != null) {
+                    return user.cliente; 
+                }
+            }));
+}
 
     postCustomerCommercial(requestCustmerCommercial: CustomerCommercialInfo){
         return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiCustomerCommercialInfo}`,
@@ -181,6 +237,30 @@ export class CustomerService {
                     return client.informacionComercial; 
                 }
             }));
+}
+
+putCustomerCommercial(requestCustmerCommercial: CustomerCommercialInfo){
+    return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiCustomerCommercialInfo}`,
+    {
+        informacionComercial: {
+          id: requestCustmerCommercial.id,
+          clienteId: requestCustmerCommercial.customerId,
+          GrupoPrioridad: requestCustmerCommercial.priorityGroup,
+          TipoCliente: requestCustmerCommercial.customerType,
+          IVA: requestCustmerCommercial.iva,
+          CupoAsignado: requestCustmerCommercial.assignedQuota,
+          CupoUtilizado: requestCustmerCommercial.usedQuota,
+          DiasVencimiento: requestCustmerCommercial.maturityDays,
+          DiasMora: requestCustmerCommercial.delayDays,
+          PorcentajeIntermediacion: requestCustmerCommercial.intermediationPercentage,
+          UnidadMedida: requestCustmerCommercial.measureUnit
+        }
+      })
+        .pipe(map(client => {
+            if (client.informacionComercial?.id !== 0 && client.informacionComercial?.id != null) {
+                return client.informacionComercial; 
+            }
+        }));
 }
 
 postCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
@@ -215,5 +295,93 @@ postCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
         }));
 }
 
-    
+putCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
+    return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiBuilding}`,
+    {
+        obra: {
+            id: requestCustmerBuilding.id,
+            nombre: requestCustmerBuilding.name,
+            telefono: requestCustmerBuilding.phone,
+            nombreContacto: requestCustmerBuilding.contactName,
+            departamento: requestCustmerBuilding.dept,
+            municipio: requestCustmerBuilding.city,
+            direccion: requestCustmerBuilding.address,
+            correoElectronico: requestCustmerBuilding.email,
+            bascula: requestCustmerBuilding.scale ? 'Si': 'No',
+            latitud: requestCustmerBuilding.latitude,
+            longitud: requestCustmerBuilding.length,
+            administraSotoTrece: requestCustmerBuilding.isAdminBySoto13 ? 'Si': 'No',
+            tiempoEsperaCola: requestCustmerBuilding.queueWaitingTime,
+            porcentajeTolerancia: requestCustmerBuilding.tolerancePercentage,
+            confirmacionEntrega: requestCustmerBuilding.deliveryConfirmation,
+            horariosRecepcion: requestCustmerBuilding.receptionTimes,
+            tipoVehiculoPermitido: requestCustmerBuilding.allowedVehicleTypes,
+            tiempoDescargue: requestCustmerBuilding.loadingTime,
+            estado: requestCustmerBuilding.state     
+        }
+      })
+        .pipe(map(client => {
+            if (client.obra?.id !== 0 && client.obra?.id != null) {
+                return client.obra; 
+            }
+        }));
+}
+
+postCustomerShipping(requestCustmerShipping: CustomerShipping){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiCustomerRateShipping}`,
+    {
+        tarifaFleteCliente: {
+            clienteId: requestCustmerShipping.customerId,
+            origen: requestCustmerShipping.origin,
+            destino: requestCustmerShipping.destination,
+            material: requestCustmerShipping.material,
+            unidadMedida: requestCustmerShipping.measureUnit,
+            valorFlete: requestCustmerShipping.shippingValue,
+            estado: "Activo" 
+        }
+      })
+        .pipe(map(client => {
+            if (client.tarifaFlete?.id !== 0 && client.tarifaFlete?.id != null) {
+                return client.tarifaFlete; 
+            }
+        }));
+}
+
+putCustomerShipping(requestCustmerShipping: CustomerShipping){
+    return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiRateShipping}`,
+    {
+        tarifaFlete: {
+            id: requestCustmerShipping.id,
+            origen: requestCustmerShipping.origin,
+            destino: requestCustmerShipping.destination,
+            material: requestCustmerShipping.material,
+            valorMetroCubico: requestCustmerShipping.m3Value,
+            valorTonelada: requestCustmerShipping.tonValue,
+            unidadMedida: requestCustmerShipping.measureUnit,
+            valorFlete: requestCustmerShipping.shippingValue,
+            estado: "Activo" 
+        }
+      })
+        .pipe(map(client => {
+            if (client.tarifaFlete?.id !== 0 && client.tarifaFlete?.id != null) {
+                return client.tarifaFlete; 
+            }
+        }));
+}
+
+postLinkCustomerTransporter(requestCustmerTransporter: CustomerTransport){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiLinkClientTransporter}`,
+    {
+        clienteRelacionTransportador: {
+            clienteId: requestCustmerTransporter.customerId,
+            transportadorId: requestCustmerTransporter.transportId,
+        }
+      })
+        .pipe(map(client => {
+            if (client.cliente?.id !== 0 && client.cliente?.id != null) {
+                return client.cliente; 
+            }
+        }));
+}
+
 }

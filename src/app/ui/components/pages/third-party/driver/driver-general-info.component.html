@@ -1,1 +1,38 @@
-<p>driver-general-info works!</p>
+<form [formGroup]="formDriverGeneralBasic" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-6">
+            <label for="docTypeSelect" class="font-bold">Tipo de Sangre*</label>
+            <p-dropdown id="bloodTypeSelect"  placeholder="Seleccione un Tipo de Sangre" 
+            formControlName="bloodTypeSelected" dataKey="id" [options]="bloodType" optionValue="name"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.bloodTypeSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" 
+            *ngIf="submittedBasic && f?.bloodTypeSelected?.errors?.required">
+            Tipo de Sangre es requerido
+            </small>
+        </div>
+        <div class="field col-12 sm:col-6">
+            <label for="docNumberInput" class="font-bold">Tiempo de Descanso*</label>
+            <p-inputNumber id="restTimeInput" formControlName="restTime" inputId="integeronly" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.restTime.errors}" > </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.restTime?.errors?.required">Tiempo de Descanso es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-6">
+            <label for="contactInput" class="font-bold">Persona de Contacto*</label>
+            <input id="contactInput" type="text" pInputText formControlName="contact"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.contact.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.contact?.errors?.required">Nombre es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-6">
+            <label for="phoneInput" class="font-bold">Teléfono*</label>
+            <p-inputMask mask="(999) 999-9999" formControlName="phone" placeholder="(999) 999-9999" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.phone.errors}"></p-inputMask>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.phone?.errors?.required">Teléfono es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-12">
+            <label for="float-input" class="font-bold">Observaciones*</label>
+            <div>
+                <textarea id="float-input" rows="5" cols="60" pInputTextarea formControlName="comments"></textarea>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-8">
+        </div>
+    </div>
+    </form>

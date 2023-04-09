@@ -18,6 +18,7 @@ interface PriorityGroups {
 export class CustomerCommercialEditComponent implements OnInit {
   @Input() clientName: string = '';
   @Input() customerCommercialEdit!: CustomerCommercialInfo;
+  @Input() viewMode: boolean = false;
   formGroupCommercial!: FormGroup;
   priorityGroups: PriorityGroups[] = [];
   measureUnits: params[] = [];
@@ -38,35 +39,36 @@ export class CustomerCommercialEditComponent implements OnInit {
      this.getDocTypes();
      this.getMeasureUnits();
 
+     this.assignedQuotaDisabled = this.viewMode;
      if (Object.keys(this.customerCommercialEdit).length === 0){
      this.formGroupCommercial = this.formBuilder.group({
-      priorityGroupSelected: ['',[Validators.required]],
-      clientTypeSelected:['',[Validators.required]],
-      iva:['',[Validators.required]],
+      priorityGroupSelected: [{value:'',disabled: this.viewMode},[Validators.required]],
+      clientTypeSelected:[{value:'',disabled: this.viewMode},[Validators.required]],
+      iva:[{value:'',disabled: this.viewMode},[Validators.required]],
       assignedQuota:[{ value: '', disabled: this.assignedQuotaDisabled},[]],
-      usedQuota:['',[]],
-      availableQuota:['',[]],
-      maturityDays:['',[Validators.required]],
-      additionalDays:['',[]],
-      delayDays:['',[]],
-      intermediationPercentage:['',[Validators.required]],
-      measureUnitSelected:['',[Validators.required]]
+      usedQuota:[{value:'',disabled: this.viewMode},[]],
+      availableQuota:[{value:'',disabled: this.viewMode},[]],
+      maturityDays:[{value:'',disabled: this.viewMode},[Validators.required]],
+      additionalDays:[{value:'',disabled: this.viewMode},[]],
+      delayDays:[{value: '',disabled: this.viewMode},[]],
+      intermediationPercentage:[{value: '',disabled: this.viewMode},[Validators.required]],
+      measureUnitSelected:[{value: '',disabled: this.viewMode},[Validators.required]]
      });
     }
     else
     {
       this.formGroupCommercial = this.formBuilder.group({
-        priorityGroupSelected: [this.customerCommercialEdit.priorityGroup,[Validators.required]],
-        clientTypeSelected:[this.customerCommercialEdit.customerType,[Validators.required]],
-        iva:[this.customerCommercialEdit.iva,[Validators.required]],
+        priorityGroupSelected: [{value:this.customerCommercialEdit.priorityGroup, disabled: this.viewMode},[Validators.required]],
+        clientTypeSelected:[{value:this.customerCommercialEdit.customerType, disabled: this.viewMode},[Validators.required]],
+        iva:[{value: this.customerCommercialEdit.iva, disabled: this.viewMode},[Validators.required]],
         assignedQuota:[{ value: this.customerCommercialEdit.assignedQuota, disabled: this.assignedQuotaDisabled},[]],
-        usedQuota:[this.customerCommercialEdit.usedQuota,[]],
-        availableQuota:[this.customerCommercialEdit.availableQuota,[]],
-        maturityDays:[this.customerCommercialEdit.maturityDays,[Validators.required]],
-        additionalDays:[this.customerCommercialEdit.additionalDays,[]],
-        delayDays:[this.customerCommercialEdit.delayDays,[]],
-        intermediationPercentage:[this.customerCommercialEdit.intermediationPercentage,[Validators.required]],
-        measureUnitSelected:[this.customerCommercialEdit.measureUnit,[Validators.required]]
+        usedQuota:[{value: this.customerCommercialEdit.usedQuota, disabled: this.viewMode},[]],
+        availableQuota:[{value: this.customerCommercialEdit.availableQuota, disabled: this.viewMode},[]],
+        maturityDays:[{value: this.customerCommercialEdit.maturityDays, disabled: this.viewMode},[Validators.required]],
+        additionalDays:[{value: this.customerCommercialEdit.additionalDays, disabled: this.viewMode},[]],
+        delayDays:[{value: this.customerCommercialEdit.delayDays, disabled: this.viewMode},[]],
+        intermediationPercentage:[{value: this.customerCommercialEdit.intermediationPercentage, disabled: this.viewMode},[Validators.required]],
+        measureUnitSelected:[{value: this.customerCommercialEdit.measureUnit, disabled: this.viewMode},[Validators.required]]
        });
     }
      this.formGroupCommercial.controls.clientTypeSelected.valueChanges.subscribe((data) => {
@@ -81,6 +83,26 @@ export class CustomerCommercialEditComponent implements OnInit {
     })
   }
   get f() { return this.formGroupCommercial?.controls; }
+
+
+  setValuesEdit(CustomerCommercialInfo : CustomerCommercialInfo)
+  {
+    if (Object.keys(CustomerCommercialInfo).length !== 0){
+    this.formGroupCommercial = this.formBuilder.group({
+      priorityGroupSelected: [{value:CustomerCommercialInfo.priorityGroup, disabled: this.viewMode},[Validators.required]],
+      clientTypeSelected:[{value:CustomerCommercialInfo.customerType, disabled: this.viewMode},[Validators.required]],
+      iva:[{value: CustomerCommercialInfo.iva, disabled: this.viewMode},[Validators.required]],
+      assignedQuota:[{ value: CustomerCommercialInfo.assignedQuota, disabled: this.assignedQuotaDisabled},[]],
+      usedQuota:[{value: CustomerCommercialInfo.usedQuota, disabled: this.viewMode},[]],
+      availableQuota:[{value: CustomerCommercialInfo.availableQuota, disabled: this.viewMode},[]],
+      maturityDays:[{value: CustomerCommercialInfo.maturityDays, disabled: this.viewMode},[Validators.required]],
+      additionalDays:[{value: CustomerCommercialInfo.additionalDays, disabled: this.viewMode},[]],
+      delayDays:[{value: CustomerCommercialInfo.delayDays, disabled: this.viewMode},[]],
+      intermediationPercentage:[{value: CustomerCommercialInfo.intermediationPercentage, disabled: this.viewMode},[Validators.required]],
+      measureUnitSelected:[{value: CustomerCommercialInfo.measureUnit, disabled: this.viewMode},[Validators.required]]
+     });
+    }
+  }
 
   getDocTypes(){
     this.paramService.getParamByType('Tipo Cliente')
