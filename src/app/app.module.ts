@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppLayoutModule } from './layout/app.layout.module';
-import { ProductService } from './ui/service/product.service';
 import { CustomerService } from './ui/service/customer.service';
 import { AuthGuardService } from './ui/service/auth-guard.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -41,7 +40,7 @@ import { DriverService } from './ui/service/driver.service';
       useClass: JwtInterceptor,
       multi: true
      },
-    ProductService, CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService],
+     CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,7 +5,7 @@ import { CustomerBasicInfo, CustomerBuildings, CustomerCommercialInfo, CustomerS
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { TransporterBasicInfo, TransporterDocuments, TransporterDriver, TransporterRoutes, TransporterVehicles } from '../models/transporter.model';
+import { TransporterBasicInfo, TransporterDocuments, TransporterDriver, TransporterRoutes, TransporterVehicles, transporterShipping } from '../models/transporter.model';
 
 @Injectable()
 export class TransporterService {
@@ -30,6 +30,26 @@ export class TransporterService {
                     address: item.direccion,
                     state: item.estado,
                     payDeadline : item.plazoPago
+                }
+            })
+        }));
+    }
+
+    getShippingRatesByTransporter(TransporterId: number) {
+        let newInfo: transporterShipping; 
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiShippingRateByTransporter}?TransportadorId=${TransporterId}`)
+        .pipe(map(data => {
+            return data?.tarifaFletes?.map((item: any) =>{
+                 return newInfo =  {
+                    id: item.id,
+                    origin: item.origen,
+                    destination: item.destino,
+                    material: item.material,
+                    measureUnit: item.unidadMedida,
+                    shippingValue: item.valorFlete,
+                    m3Value: item.valorMetroCubico,
+                    tonValue: item.valorTonelada,
+                    state: item.estado
                 }
             })
         }));
@@ -286,7 +306,7 @@ postLinkTransporterDriver(requestTransporterDriver: TransporterDriver){
     {
         conductorRelacionTransportador: {
             transportadorId: requestTransporterDriver.transporterId,
-            vehiculoId: requestTransporterDriver.driverId,
+            conductorId: requestTransporterDriver.driverId,
         }
       })
         .pipe(map(client => {

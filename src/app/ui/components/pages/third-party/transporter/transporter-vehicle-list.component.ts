@@ -40,7 +40,7 @@ export class TransporterVehicleListComponent implements OnInit {
         { field: 'type', header: 'Tipo' },
         { field: 'capacityTon', header: 'Capacidad ton' },
         { field: 'capacityM3', header: 'Capacidad m3' },
-        { field: 'status', header: 'Estado' }
+        { field: 'state', header: 'Estado' }
     ];
   
     this.formTransporterVehicle = this.formBuilder.group({
@@ -56,6 +56,8 @@ export class TransporterVehicleListComponent implements OnInit {
    this.transporterVehicleDialog = true;
    this.showVarCode = false;
    this.action = "Relacionar";
+   this.submittedTransporterVehicle = false;
+   this.formTransporterVehicle.reset();
  }
 
  getGridData(){
@@ -86,6 +88,7 @@ getAllVehicles(){
  {
   this.submittedTransporterVehicle = true;
   if (this.formTransporterVehicle.invalid) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
     return;
   }
     let formValues  = this.f;
@@ -98,14 +101,14 @@ getAllVehicles(){
                   next: (data) => {
                     if(data !== null)
                     {
+                      this.getGridData();
                       this.showVarCode = true;
                       this.action = "Autorizar";
                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Vehículo del Transportador Creado', life: 3000 });
                     }
                   },
                   error: error => {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
-                    console.log(error);
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
                   }
               });
  }

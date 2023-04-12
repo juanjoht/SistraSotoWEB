@@ -48,8 +48,8 @@ export class TransporterComponent implements OnInit {
         next: (data:any) => {
           this.transporters = data;
         },
-        error: (error: { message: any; }) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
           console.log(error);
         }
     });

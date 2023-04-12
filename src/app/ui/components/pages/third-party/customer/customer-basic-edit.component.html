@@ -3,7 +3,7 @@
     <div class="field col-12 sm:col-4">
         <label for="docTypeSelect" class="font-bold">Tipo Documento*</label>
         <p-dropdown id="docTypeSelect"  placeholder="Seleccione un Tipo Documento" 
-        formControlName="documentTypeSelected" dataKey="id" [options]="documentTypes" optionValue="name"  optionLabel="name" 
+        formControlName="documentTypeSelected" [options]="documentTypes" optionValue="name"  optionLabel="name" 
         [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.documentTypeSelected.errors }"  >
         </p-dropdown>
         <small class="ng-dirty ng-invalid" 
@@ -31,9 +31,10 @@
         <p-inputMask mask="(999) 999-9999" formControlName="cellphone" placeholder="(999) 999-9999"></p-inputMask>
     </div>
     <div class="field col-12 sm:col-4">
-        <label for="emailInput" class="font-bold">Correo Electrónico</label>
+        <label for="emailInput" class="font-bold">Correo Electrónico*</label>
         <input id="emailInput" type="email" pInputText formControlName="email" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.email.errors}" >
         <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.email?.errors?.email">Correo Electrónico Invalido.</small>
+        <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.email?.errors?.required">Correo Electrónico Requerido.</small>
     </div>
     <div class="field col-12 sm:col-4">
         <label for="DeptSelect" class="font-bold">Departamento*</label>

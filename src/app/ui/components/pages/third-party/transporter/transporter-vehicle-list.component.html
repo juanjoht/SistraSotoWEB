@@ -20,35 +20,35 @@
                         <th style="width:12%" pSortableColumn="type">Tipo <p-sortIcon field="type"></p-sortIcon></th>
                         <th style="width:12%" pSortableColumn="capacityTon">Capacidad ton <p-sortIcon field="capacityTon"></p-sortIcon></th>
                         <th style="width:12%" pSortableColumn="capacityM3">Capacidad m3 <p-sortIcon field="capacityM3"></p-sortIcon></th>
-                        <th style="width:12%" pSortableColumn="status">Estado <p-sortIcon field="status"></p-sortIcon></th>
+                        <th style="width:12%" pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
                         <th  *ngIf="!viewMode" style="width:12%"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-transporterVehicle>
                     <tr>
-                        <td style="width:20%; min-width:15rem;">
+                        <td>
                             <span class="p-column-title">licensePlate</span>
                             {{transporterVehicle.licensePlate}}
                         </td>
-                        <td style="width:20%; min-width:15rem;">
+                        <td>
                             <span class="p-column-title">type</span>
                             {{transporterVehicle.type}}
                         </td>
-                        <td style="width:20%; min-width:15rem;">
+                        <td>
                             <span class="p-column-title">capacityTon</span>
                             {{transporterVehicle.capacityTon}}
                         </td>
-                        <td style="width:20%; min-width:15rem;">
+                        <td>
                             <span class="p-column-title">capacityM3</span>
                             {{transporterVehicle.capacityM3}}
                         </td>
-                        <td style="width:20%; min-width:10rem;">
+                        <td>
                             <span class="p-column-title">status</span>
-                            {{transporterVehicle.status}}
+                            {{transporterVehicle.state}}
                         </td>
-                        <td style="width:10%; min-width:10rem;" *ngIf="!viewMode">
-                            <button title="Eliminar" *ngIf="transporterVehicle.status === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterVehicle()"></button>
-                            <button title="Editar" *ngIf="transporterVehicle.status === 'Pendiente Autorización'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
+                        <td *ngIf="!viewMode">
+                            <button title="Eliminar" *ngIf="transporterVehicle.state === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterVehicle()"></button>
+                            <button title="Editar" *ngIf="transporterVehicle.state === 'Pendiente Autorización'" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
                         </td>
                     </tr>
                 </ng-template>

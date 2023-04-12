@@ -2,7 +2,6 @@ import { environment } from '../../environments/environment';
 
 export class Common {
     private static token: string | null;
-    private static locationId: number;
     private static userId: number;
 
     public static get Token(): any {

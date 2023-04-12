@@ -2,8 +2,8 @@
     <div class="field col-12 sm:col-12">
         <label class="font-bold text-center">{{transporterName}}</label>
     </div>
-    <div class="field col-12 sm:col-2"></div>
-    <div class="field col-12 sm:col-8">
+    <div class="field col-12 sm:col-1"></div>
+    <div class="field col-12 sm:col-10">
 
 
         <p-table #dtTransporterRoutes [value]="transporterRoutes" styleClass="p-datatable-gridlines"
@@ -22,18 +22,18 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:12%" pSortableColumn="transportName">Ruta <p-sortIcon
+                    <th pSortableColumn="routeName">Ruta <p-sortIcon
                             field="routeName"></p-sortIcon></th>
-                    <th *ngIf="!viewMode" style="width:12%"></th>
+                    <th *ngIf="!viewMode" ></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-transporterRoute>
                 <tr>
-                    <td style="width:20%; min-width:15rem;">
-                        <span class="p-column-title">transportName</span>
-                        {{transporterRoute.transportName}}
+                    <td>
+                        <span class="p-column-title">routeName</span>
+                        {{transporterRoute.routeName}}
                     </td>
-                    <td style="width:10%; min-width:10rem;" *ngIf="!viewMode">
+                    <td  style="width: 10%;" *ngIf="!viewMode">
                         <button title="Eliminar" pButton pRipple icon="pi pi-trash"
                             class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterRoute()"></button>
                     </td>
@@ -41,7 +41,7 @@
             </ng-template>
         </p-table>
     </div>
-    <div class="field col-12 sm:col-2"></div>
+    <div class="field col-12 sm:col-1"></div>
     <p-dialog [(visible)]="transporterRouteDialog" [style]="{width: '800px',height: '250px'}"
         [breakpoints]="{ '960px': '75vw' }" [draggable]="false" [maximizable]="true" [modal]="true" class="p-fluid">
         <ng-template pTemplate="header">
@@ -52,12 +52,12 @@
                 <div class="formgrid grid mb-10">
                     <div class="field col-12 sm:col-5">
                         <label for="originSelect" class="font-bold">Origen*</label>
-                        <p-dropdown id="originSelect"  placeholder="Seleccione un Origen" formControlName="originSelected" [options]="origins" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterRoute && f.originSelected.errors }"></p-dropdown>
+                        <p-dropdown id="originSelect"  scrollHeight="100px" placeholder="Seleccione un Origen" formControlName="originSelected" [options]="origins" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterRoute && f.originSelected.errors }"></p-dropdown>
                         <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterRoute && f?.originSelected?.errors?.required">Origen es requerido</small>
                     </div>
                     <div class="field col-12 sm:col-5">
                         <label for="DestinationSelect" class="font-bold">Destino*</label>
-                        <p-dropdown id="DestinationSelect" [options]="destinations" placeholder="Seleccione un Destino" formControlName="destinationSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterRoute && f.destinationSelected.errors }" ></p-dropdown>
+                        <p-dropdown id="DestinationSelect" scrollHeight="100px" [options]="destinations" placeholder="Seleccione un Destino" formControlName="destinationSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterRoute && f.destinationSelected.errors }" ></p-dropdown>
                         <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterRoute && f?.destinationSelected?.errors?.required">Destino es requerido</small>
                     </div>
                     <div class="field col-12 sm:col-2 align-self-end">

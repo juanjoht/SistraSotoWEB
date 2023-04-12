@@ -12,7 +12,6 @@ export class AuthGuardService {
   constructor(public router: Router) { }
 
   canActivate() {
-    console.log('entro');
     return this.Validate;
   }
 

@@ -73,6 +73,7 @@ export class CustomerBuildingsListComponent implements OnInit {
   {
     this.editBuilding.submittedCustomerBuilding = true;
     if (this.editBuilding.formGroupCustomerBuildings.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editBuilding.f;

@@ -75,3 +75,17 @@ export interface TransporterDriver{
     comments?: string;
     state?: string;
 }
+
+export interface transporterShipping{
+    transporterId?: number;
+    id?: number;
+    origin?: string;
+    destination?: string;
+    material?: string;
+    measureUnit?: string;
+    shippingValue?: number;
+    tonValue?: number;
+    m3Value?: number;
+    state?:string;
+
+}

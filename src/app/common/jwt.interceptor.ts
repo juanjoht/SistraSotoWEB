@@ -13,7 +13,6 @@ export class JwtInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // add authorization header with jwt token if available
-        console.log(request);
         const token = Common.Token;
         if (token) {
             request = request.clone({

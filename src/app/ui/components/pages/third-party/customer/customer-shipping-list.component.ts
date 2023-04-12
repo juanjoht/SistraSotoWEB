@@ -15,6 +15,7 @@ export class CustomerShippingListComponent implements OnInit {
   @Input() clientName: string = '';
   @Input() clientId: number = 0;
   @Input() viewMode: boolean = false;
+  @Input() unit:string = '';
   @ViewChild(CustomerShippingEditComponent)editShipping!: CustomerShippingEditComponent;
 
   customersShippingRate: CustomerShipping[] = [];
@@ -29,7 +30,14 @@ export class CustomerShippingListComponent implements OnInit {
     private messageService: MessageService) { }
 
   ngOnInit() {
-    this.getGridData();
+    if(this.feature.toLowerCase() === 'cliente'){
+      this.getGridDataCustomer();
+    }
+    else if (this.feature.toLowerCase() === 'transportador')
+    {
+       this.getGridDataTransporter(); 
+    }
+   
 
     this.cols = [
         { field: 'origin', header: 'Origen' },
@@ -57,10 +65,24 @@ export class CustomerShippingListComponent implements OnInit {
   hideDialog()
   {
     this.customerShippingRateDialog = false;
+    this.editShipping.submittedShippingRate = false;
   }
 
-  getGridData(){
+  getGridDataCustomer(){
     this.customerService.getShippingRatesByThirdParty(this.clientId)
+    .subscribe({
+        next: (data:any) => {
+          this.customersShippingRate = data;
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+          console.log(error);
+        }
+    });
+  }
+
+  getGridDataTransporter(){
+    this.transporterService.getShippingRatesByTransporter(this.clientId)
     .subscribe({
         next: (data:any) => {
           this.customersShippingRate = data;
@@ -87,6 +109,7 @@ export class CustomerShippingListComponent implements OnInit {
   {
     this.editShipping.submittedShippingRate = true;
     if (this.editShipping.formGroupShippingRate.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editShipping.f;
@@ -106,7 +129,7 @@ export class CustomerShippingListComponent implements OnInit {
             if(data !== null)
             {
               this.customerShippingRateDialog = false;
-              this.getGridData();
+              this.getGridDataCustomer();
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tarifa Flete del Cliente Actualizada', life: 3000 });
             }
           },
@@ -121,7 +144,7 @@ export class CustomerShippingListComponent implements OnInit {
                     if(data !== null)
                     {
                       this.customerShippingRateDialog = false;
-                      this.getGridData();
+                      this.getGridDataCustomer();
                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tarifa Flete del Cliente Creada', life: 3000 });
                     }
                   },
@@ -137,6 +160,7 @@ export class CustomerShippingListComponent implements OnInit {
   {
     this.editShipping.submittedShippingRate = true;
     if (this.editShipping.formGroupShippingRate.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editShipping.f;
@@ -159,7 +183,7 @@ export class CustomerShippingListComponent implements OnInit {
             if(data !== null)
             {
               this.customerShippingRateDialog = false;
-              this.getGridData();
+              this.getGridDataTransporter();
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tarifa Flete del Transportador Actualizada', life: 3000 });
             }
           },
@@ -174,7 +198,7 @@ export class CustomerShippingListComponent implements OnInit {
                     if(data !== null)
                     {
                       this.customerShippingRateDialog = false;
-                      this.getGridData();
+                      this.getGridDataTransporter();
                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tarifa Flete del Transportador Creada', life: 3000 });
                     }
                   },

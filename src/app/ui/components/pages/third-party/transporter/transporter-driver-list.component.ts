@@ -22,6 +22,7 @@ export class TransporterDriverListComponent implements OnInit {
   validateTransporterDriver: boolean = false;
   transporterDriverDialog: boolean = false;
   deleteTransporterDriverDialog: boolean = false;
+  isRelatedTransporterDriverDialog: boolean = false;
   cols: any[] = [];
   constructor(
     private DriverService: DriverService,
@@ -42,15 +43,27 @@ export class TransporterDriverListComponent implements OnInit {
   
     this.formTransporterDriver = this.formBuilder.group({
       DriverSelected: ['',[Validators.required]],
+      DriverNameSelected: ['',[Validators.required]],
       verificationCode: ['']
      });
 
  }
 
+ docNumberSelect(event: any)
+  {
+    this.formTransporterDriver.get('DriverNameSelected')?.setValue(event.value)
+  }
+
+  docNameSelect(event: any)
+  {
+    this.formTransporterDriver.get('DriverSelected')?.setValue(event.value)
+  }
+
  openNewDriver()
  {
   this.getAllDrivers();
-   this.transporterDriverDialog = true;
+  this.transporterDriverDialog = true;
+  this.formTransporterDriver.reset();
  }
 
  getGridData(){
@@ -77,10 +90,47 @@ getAllDrivers(){
   });
 }
 
+checkIfisRelatedToAnother(objTransDriver: TransporterDriver)
+{
+  let existRelationship: Boolean = false;
+  this.DriverService.getDriverIsRelated(objTransDriver.driverId as number,objTransDriver.transporterId as number)
+  .subscribe({
+      next: (data) => {
+        if(data !== null)
+        {
+          if(data.isRelated)
+          {
+            this.isRelatedTransporterDriverDialog = true;
+            existRelationship = true;
+          }else
+          {
+            this.linkTransporterDriver(objTransDriver);
+          }
+        }
+      },
+      error: error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        console.log(error);
+      }
+  });
+ return existRelationship;
+}
+
+confirmBreakRelationship()
+{
+  let formValues  = this.f;
+  let objTransporterDriver: TransporterDriver = {
+    transporterId: this.transporterId,
+    driverId: formValues.DriverSelected.value
+  }
+  this.linkTransporterDriver(objTransporterDriver);
+}
+
  saveTransporterDriver()
  {
   this.submittedTransporterDriver = true;
   if (this.formTransporterDriver.invalid) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
     return;
   }
     let formValues  = this.f;
@@ -88,12 +138,19 @@ getAllDrivers(){
       transporterId: this.transporterId,
       driverId: formValues.DriverSelected.value
     }
-    this.transporterService.postLinkTransporterDriver(objTransporterDriver)
+    this.checkIfisRelatedToAnother(objTransporterDriver);
+ }
+
+ linkTransporterDriver(objTransDriver: TransporterDriver)
+ {
+  this.transporterService.postLinkTransporterDriver(objTransDriver)
               .subscribe({
                   next: (data) => {
                     if(data !== null)
                     {
-                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Vehículo del Transportador Creado', life: 3000 });
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Conductor Relacionado', life: 3000 });
+                      this.getGridData();
+                      this.isRelatedTransporterDriverDialog = false;
                     }
                   },
                   error: error => {

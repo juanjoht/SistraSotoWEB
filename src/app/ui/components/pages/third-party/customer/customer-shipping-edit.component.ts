@@ -13,6 +13,7 @@ import { ParamService } from 'src/app/ui/service/param.service';
 export class CustomerShippingEditComponent implements OnInit {
   @Input() isTransporter: boolean = false;
   @Input() customerShippingEdit!: CustomerShipping;
+  @Input() unitMeasure: string = '';
   formGroupShippingRate!: FormGroup;
   submittedShippingRate: boolean = false;
   origins: params[] = [];
@@ -33,7 +34,7 @@ export class CustomerShippingEditComponent implements OnInit {
       originSelected: ['',[Validators.required]],
       destinationSelected: ['', [Validators.required]],
       materialSelected: ['', [Validators.required]],
-      measureUnit: [{value:'', disabled: true}],
+      measureUnit: [{value:this.unitMeasure, disabled: true}],
       shippingValue: ['', [Validators.required]],
       m3Value: ['',],
       tonValue: ['', ]

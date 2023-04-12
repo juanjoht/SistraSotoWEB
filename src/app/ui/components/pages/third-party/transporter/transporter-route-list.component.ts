@@ -96,6 +96,7 @@ getDestinationsParams(){
   this.submittedTransporterRoute = true;
   if(this.formTransporterRoutes.invalid)
   {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
     return;
   }
 
@@ -140,7 +141,7 @@ getDestinationsParams(){
             }
           },
           error: error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.message, life: 5000 });
           }
       });
  }

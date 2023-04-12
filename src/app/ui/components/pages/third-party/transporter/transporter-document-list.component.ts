@@ -48,7 +48,7 @@ export class TransporterDocumentListComponent implements OnInit {
     this.cols = [
         { field: 'docName', header: 'Documento' },
         { field: 'maturityDate', header: 'Fecha' },
-        { field: 'status', header: 'Estado' }
+        { field: 'state', header: 'Estado' }
     ];
   
     this.formTransporterDoc = this.formBuilder.group({
@@ -64,6 +64,8 @@ export class TransporterDocumentListComponent implements OnInit {
    this.transporterDocDialog = true;
    this.showVarCode = false;
    this.action = "Cargar";
+   this.submittedTransporterDoc = false;
+   this.formTransporterDoc.reset();
  }
 
  getGridDataTransporters(){
@@ -86,7 +88,7 @@ getGridDataDrivers(){
         this.transporterDocs = data;
       },
       error: error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.details, life: 5000 });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
         console.log(error);
       }
   });
@@ -151,6 +153,7 @@ saveContentDialog()
  {
   this.submittedTransporterDoc = true;
   if (this.formTransporterDoc.invalid) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
     return;
   }
     let formValues  = this.f;

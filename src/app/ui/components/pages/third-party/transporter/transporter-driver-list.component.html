@@ -20,14 +20,14 @@
                         <th style="width:12%" pSortableColumn="type">Nombre <p-sortIcon field="name"></p-sortIcon></th>
                         <th style="width:12%" pSortableColumn="phone">Teléfono<p-sortIcon field="phone"></p-sortIcon></th>
                         <th style="width:12%" pSortableColumn="status">Estado <p-sortIcon field="state"></p-sortIcon></th>
-                        <th  *ngIf="!viewMode" style="width:12%"></th>
+                        <th style="width:10%; " *ngIf="!viewMode" style="width:12%"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-transporterDriver>
                     <tr>
                         <td style="width:20%; min-width:15rem;">
                             <span class="p-column-title">docNumber</span>
-                            {{transporterDriver.docNumber}}
+                            {{transporterDriver.docNum}}
                         </td>
                         <td style="width:20%; min-width:15rem;">
                             <span class="p-column-title">name</span>
@@ -41,7 +41,7 @@
                             <span class="p-column-title">state</span>
                             {{transporterDriver.state}}
                         </td>
-                        <td style="width:10%; min-width:10rem;" *ngIf="!viewMode">
+                        <td  *ngIf="!viewMode">
                             <button title="Eliminar"  pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterDriver()"></button>
                         </td>
                     </tr>
@@ -55,15 +55,15 @@
     <ng-template pTemplate="content">
         <form [formGroup]="formTransporterDriver" >
          <div class="formgrid grid mb-10">
-            <div  class="field col-12 sm:col-4">
+            <div  class="field col-12 sm:col-5">
                 <label for="docNumberSelect" class="font-bold">Número de documento*</label>
-                <p-dropdown id="docNumberSelect" scrollHeight="100px" [filter]="true" filterBy="docNumber" [showClear]="true" formControlName="DriverSelected"  [options]="Drivers" placeholder="Seleccione el número de documento del conductor" optionValue="id"  optionLabel="docNumber" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterDriver && f.DriverSelected.errors }" ></p-dropdown>
+                <p-dropdown id="docNumberSelect" (onChange)="docNumberSelect($event)" scrollHeight="100px" [filter]="true" filterBy="docNumber" [showClear]="true" formControlName="DriverSelected"  [options]="Drivers" placeholder="Seleccione el número de documento del conductor" optionValue="id"  optionLabel="docNumber" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterDriver && f.DriverSelected.errors }" ></p-dropdown>
                 <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterDriver && f?.DriverSelected?.errors?.required">Número de documento es requerido</small>
             </div>
-            <div  class="field col-12 sm:col-4">
+            <div  class="field col-12 sm:col-5">
                 <label for="nameSelect" class="font-bold">Nombre*</label>
-                <p-dropdown id="nameSelect" scrollHeight="100px" [filter]="true" filterBy="name" [showClear]="true" formControlName="DriverSelected"  [options]="Drivers" placeholder="Seleccione el número de documento del conductor" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterDriver && f.DriverSelected.errors }" ></p-dropdown>
-                <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterDriver && f?.DriverSelected?.errors?.required">Nombre es requerido</small>
+                <p-dropdown id="nameSelect" scrollHeight="100px" (onChange)="docNameSelect($event)" [filter]="true" filterBy="name" [showClear]="true" formControlName="DriverNameSelected"  [options]="Drivers" placeholder="Seleccione el nombre del conductor" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterDriver && f.DriverNameSelected.errors }" ></p-dropdown>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterDriver && f?.DriverNameSelected?.errors?.required">Nombre es requerido</small>
             </div>
             <div  class="field col-12 sm:col-2 align-self-end">
                 <button pButton pRipple label="Guardar" (click)="saveTransporterDriver()" icon="pi pi-check" class="p-button-text" ></button>    
@@ -81,6 +81,18 @@
     <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteTransporterDriverDialog = false"></button>
         <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+    </ng-template>
+</p-dialog>
+
+
+<p-dialog [(visible)]="isRelatedTransporterDriverDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>El conductor ya está asignado a otro transportador, desea asignar este conductor al transportador actual?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="isRelatedTransporterDriverDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmBreakRelationship()"></button>
     </ng-template>
 </p-dialog>
 </div>

@@ -49,6 +49,7 @@ export class GridThirdPartyComponent implements OnInit {
   transporterName: string  = '';
   editMode: boolean = false;
   isViewMode: boolean = false;
+  measureUnit: string=''
   constructor(
     private messageService: MessageService,
      private customerService: CustomerService,
@@ -119,11 +120,11 @@ export class GridThirdPartyComponent implements OnInit {
     .subscribe({
         next: (data:any) => {
           this.customerCommercialInfo = data;
+          this.measureUnit = this.customerCommercialInfo.measureUnit as string;
           this.editCommercial.setValuesEdit(data);
         },
         error: error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
-          console.log(error);
+          //this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
         }
     });
   }
@@ -166,6 +167,7 @@ export class GridThirdPartyComponent implements OnInit {
   {
     this.editBasic.submittedBasic = true;
     if (this.editBasic.formGrouBasic.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editBasic.f;
@@ -193,7 +195,7 @@ export class GridThirdPartyComponent implements OnInit {
             }
           },
           error: error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
           }
       });
     }else{
@@ -202,6 +204,7 @@ export class GridThirdPartyComponent implements OnInit {
           next: (data) => {
             if(data !== null)
             {
+              this.clientId = data.id;
               this.clientName = data.nombre;
               this.commercialInfoTab = false;
               this.buildingListTab = false;
@@ -211,7 +214,7 @@ export class GridThirdPartyComponent implements OnInit {
             }
           },
           error: error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
           }
       });
     }
@@ -221,13 +224,14 @@ export class GridThirdPartyComponent implements OnInit {
   {
     this.editCommercial.submittedCommercial = true;
     if (this.editCommercial.formGroupCommercial.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editCommercial.f;
     let objCommercial: CustomerCommercialInfo = {
     customerId : this.clientId,
-    priorityGroup: formValues.priorityGroupSelected?.value?.name,
-    customerType: formValues.clientTypeSelected?.value?.name,
+    priorityGroup: formValues.priorityGroupSelected?.value,
+    customerType: formValues.clientTypeSelected?.value,
     iva: formValues.iva.value === '' ? 0 : formValues.iva.value ,
     assignedQuota: formValues.assignedQuota.value === '' ? 0 : formValues.assignedQuota.value ,
     usedQuota: formValues.usedQuota.value === '' ? 0 : formValues.usedQuota.value ,
@@ -236,17 +240,18 @@ export class GridThirdPartyComponent implements OnInit {
     additionalDays: formValues.additionalDays.value === '' ? 0 : formValues.additionalDays.value ,
     delayDays: formValues.delayDays.value === '' ? 0 : formValues.delayDays.value ,
     intermediationPercentage: formValues.intermediationPercentage.value === '' ? 0 : formValues.intermediationPercentage.value,
-    measureUnit: formValues.measureUnitSelected?.value?.name
+    measureUnit: formValues.measureUnitSelected?.value
     }
 
-    if (this.editMode){
-      objCommercial.id = this.clientId;
+    if (Object.keys(this.customerCommercialInfo).length !== 0 && (this.customerCommercialInfo.id != 0 || this.customerCommercialInfo.id !== null)){
+        objCommercial.id = this.customerCommercialInfo.id;
       this.customerService.putCustomerCommercial(objCommercial)
             .subscribe({
                 next: (data) => {
                   if(data !== null)
                   {
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Cliente Actualizado', life: 3000 });
+                    this.measureUnit = objCommercial.measureUnit as string;
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Información Comercial Actualizada', life: 3000 });
                   }
                 },
                 error: error => {
@@ -260,12 +265,12 @@ export class GridThirdPartyComponent implements OnInit {
                 next: (data) => {
                   if(data !== null)
                   {
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Cliente Creado', life: 3000 });
+                    this.measureUnit = objCommercial.measureUnit as string;
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Información Comercial Creada', life: 3000 });
                   }
                 },
                 error: error => {
                   this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
-                  console.log(error);
                 }
             });
     }
@@ -275,6 +280,7 @@ export class GridThirdPartyComponent implements OnInit {
   {
     this.editBasic.submittedBasic = true;
     if (this.editBasic.formGrouBasic.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editBasic.f;
@@ -333,6 +339,7 @@ export class GridThirdPartyComponent implements OnInit {
   {
     this.editBasic.submittedBasic = true;
     if (this.editBasic.formGrouBasic.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editBasic.f;
@@ -371,6 +378,7 @@ export class GridThirdPartyComponent implements OnInit {
           next: (data) => {
             if(data !== null)
             {
+              this.clientId = data.id;
               this.clientName = data.nombre;
               this.driversGeneralInfoTab = false;
               this.documentsListTab = false;
@@ -388,9 +396,10 @@ export class GridThirdPartyComponent implements OnInit {
   {
     this.editDriverGeneral.submittedBasic = true;
     if (this.editDriverGeneral.formDriverGeneralBasic.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
-    let formValues  = this.editBasic.f;
+    let formValues  = this.editDriverGeneral.f;
     let objBasic: DriverGeneralInfo = {
       bloodType: formValues.bloodTypeSelected.value,
       restTime: formValues.restTime.value,
@@ -398,7 +407,6 @@ export class GridThirdPartyComponent implements OnInit {
       phoneContact: formValues.phone.value,
       comments: formValues.comments.value
     }
-    if (this.editMode){
       objBasic.driverId = this.clientId;
       this.driverService.putDriverGeneralInfo(objBasic)
       .subscribe({
@@ -412,21 +420,7 @@ export class GridThirdPartyComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
           }
       });
-    }else{
-      this.driverService.postDriverGeneralInfo(objBasic)
-      .subscribe({
-          next: (data) => {
-            if(data !== null)
-            {
-              this.clientName = data.nombre;
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Información General del Creada', life: 3000 });
-            }
-          },
-          error: error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
-          }
-      });
-    }
+    
   }
 
 

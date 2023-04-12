@@ -57,6 +57,15 @@ export class DriverService {
         }));
     }
 
+    getDriverIsRelated(driverId: number,transporterId: number) {
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiDriverIsRelated}?ConductorId=${driverId}&TransportorId=${transporterId}`)
+        .pipe(map(data => {
+                 return  {
+                    isRelated: data.conductorRelacionado,
+                }
+        }));
+    }
+
     postDriverBasic(requestDriverBasic: DriverInfo){
         return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiDriver}`,
         {

@@ -21,7 +21,7 @@
                         <th *ngIf="feature === 'Cliente'" pSortableColumn="shippingValue">Valor Flete<p-sortIcon field="shippingValue"></p-sortIcon></th>
                         <th *ngIf="feature === 'Transportador'" pSortableColumn="m3Value">Valor m3 <p-sortIcon field="m3Value"></p-sortIcon></th>
                         <th *ngIf="feature === 'Transportador'" pSortableColumn="tonValue">Valor Ton<p-sortIcon field="tonValue"></p-sortIcon></th>
-                        <th *ngIf="!viewMode"></th>
+                        <th style="width:7%" *ngIf="!viewMode"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-ShippingRate>
@@ -69,12 +69,12 @@
         <span class="text-xl font-bold text-center">Crear/Editar Flete</span>
     </ng-template>
     <ng-template pTemplate="content">
-        <app-customer-shipping-edit [customerShippingEdit]="customerShippingRate" [isTransporter]="feature === 'Transportador'"></app-customer-shipping-edit>
+        <app-customer-shipping-edit [unitMeasure]="unit"  [customerShippingEdit]="customerShippingRate" [isTransporter]="feature === 'Transportador'"></app-customer-shipping-edit>
     </ng-template>
     <ng-template  pTemplate="footer">
         <ng-container>
         <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveContentDialog()" ></button>
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" ></button>
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()" ></button>
         </ng-container>   
     </ng-template>
 </p-dialog>
