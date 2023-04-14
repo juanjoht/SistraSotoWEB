@@ -13,7 +13,7 @@
     </div>
     <div class="field col-12 sm:col-4">
         <label for="docNumberInput" class="font-bold">Número Documento*</label>
-        <input id="docNumberInput" type="text" pInputText formControlName="docNumber" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.docNumber.errors }" >
+        <input #docNum id="docNumberInput" type="text" pInputText  (blur)="getThirdParty()" formControlName="docNumber" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.docNumber.errors }" >
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.docNumber?.errors?.required">Número Documento es requerido.</small>
     </div>
     <div class="field col-12 sm:col-4">

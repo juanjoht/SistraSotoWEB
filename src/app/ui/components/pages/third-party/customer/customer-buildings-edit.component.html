@@ -58,17 +58,17 @@
         <div class="field col-12 sm:col-4">
             <label for="queueWaitingTimeInput" class="font-bold" cellphone >Tiempo de espera en cola*</label>
             <p-inputNumber id="queueWaitingTimeInput" formControlName="queueWaitingTime" inputId="integeronly" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.queueWaitingTime.errors}" > </p-inputNumber>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.queueWaitingTime?.errors?.required">Dias Vencimiento es requerido.</small>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.queueWaitingTime?.errors?.required">Tiempo de espera en cola es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="tolerancePercentageInput" class="font-bold" cellphone >Porcentaje de tolerancia*</label>
             <p-inputNumber id="tolerancePercentageInput" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.tolerancePercentage?.errors?.required">Dias Vencimiento es requerido.</small>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.tolerancePercentage?.errors?.required">Porcentaje de tolerancia es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="deliveryConfirmationSelect" class="font-bold">Confirmación de entrega*</label>
             <p-dropdown id="deliveryConfirmationSelect" optionValue="name" [options]="deliveryConfirmations" placeholder="Seleccione una confirmación de entrega" formControlName="deliveryConfirmationSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.deliveryConfirmationSelected.errors }"></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.deliveryConfirmationSelected?.errors?.required">Municipio es requerido</small>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.deliveryConfirmationSelected?.errors?.required">Confirmación de entrega es requerido</small>
         </div>
         <div class="field col-12 sm:col-6"   >
             <label for="deliveryConfirmationSelect" class="font-bold">Horarios de recepción*</label>

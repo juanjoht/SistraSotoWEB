@@ -81,7 +81,7 @@ export class TransporterService {
                     docName: item.nombreDocumento,
                     docUrl: item.urlDocumento,
                     state: item.estado,
-                    maturityDate : item.fechaVencimiento
+                    maturityDate : item.creado
                 }
             })
         }));
@@ -261,12 +261,13 @@ postTransporterDoc(requestTransporterRoute: TransporterDocuments){
         }));
 }
 
-putTransporterDoc(requestTransporterRoute: TransporterDocuments){
+putTransporterDoc(requestTransporterDoc: TransporterDocuments){
     return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiTransporterDocument}`,
     {
         documentoTransportador: {
-            transportadorId: requestTransporterRoute.transporterId,
-            documentoId: requestTransporterRoute.docId
+            transportadorId: requestTransporterDoc.transporterId,
+            documentoId: requestTransporterDoc.docId,
+            urlDocumento: requestTransporterDoc.docUrl
         }
       })
         .pipe(map(client => {
@@ -315,6 +316,16 @@ postLinkTransporterDriver(requestTransporterDriver: TransporterDriver){
             }
         }));
 }
+
+postUploadTransporterDoc(formData: any){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiUploadTransporterDoc}`,formData)
+        .pipe(map(client => {
+            if (client?.fileUrl !== '' && client?.fileUrl != null) {
+                return client.fileUrl; 
+            }
+        }));
+}
+
 
 
     

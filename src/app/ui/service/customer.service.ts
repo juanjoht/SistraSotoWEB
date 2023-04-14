@@ -120,6 +120,31 @@ export class CustomerService {
         }));
     }
 
+    getThirdParty(docNumber: number) {
+        let newBasic: CustomerBasicInfo = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiThirdParty}?NumeroDocumento=${docNumber}`)
+        .pipe(map(data => {
+                let thirdPartyData = data?.terceroInfoPersonal;
+                if(thirdPartyData !== null)
+                {
+                    newBasic.id= thirdPartyData.id;
+                    newBasic.docType= thirdPartyData.tipoDocumento;
+                    newBasic.docNumber= thirdPartyData.numeroDocumento;
+                    newBasic.name= thirdPartyData.nombre;
+                    newBasic.phone= thirdPartyData.telefono;
+                    newBasic.cellPhone=thirdPartyData.celular;
+                    newBasic.email= thirdPartyData.correoElectronico;
+                    newBasic.dept= thirdPartyData.departamento;
+                    newBasic.city= thirdPartyData.municipio;
+                    newBasic.address= thirdPartyData.direccion;
+                    newBasic.state= thirdPartyData.estado;
+                    newBasic.payDeadline= thirdPartyData.plazoPago;
+                    newBasic.thirdParty = thirdPartyData.tercero;
+                }
+                return newBasic;
+        }));
+    }
+
 
     postCustomerBasic(requestCustmerBasic: CustomerBasicInfo){
             return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiCustomer}`,
@@ -166,6 +191,30 @@ export class CustomerService {
                     return user.cliente; 
                 }
             }));
+}
+
+putThirdParty(requestCustmerBasic: any){
+    return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiThirdPartyPersonalInfo}`,
+    {
+        terceroInfoPersonal: {
+          id: requestCustmerBasic.id,
+          tipoDocumento: requestCustmerBasic.docType,
+          numeroDocumento: requestCustmerBasic.docNumber,
+          nombre: requestCustmerBasic.name,
+          telefono: requestCustmerBasic.phone,
+          celular: requestCustmerBasic.cellPhone,
+          CorreoElectronico: requestCustmerBasic.email,
+          departamento: requestCustmerBasic.dept,
+          municipio: requestCustmerBasic.city,
+          direccion: requestCustmerBasic.address,
+          plazoPago: requestCustmerBasic.payDeadline
+        }
+      })
+        .pipe(map(user => {
+            if (user.terceroInfoPersonal?.id !== 0 && user.terceroInfoPersonal?.id != null) {
+                return user.terceroInfoPersonal; 
+            }
+        }));
 }
 
     postCustomerCommercial(requestCustmerCommercial: CustomerCommercialInfo){

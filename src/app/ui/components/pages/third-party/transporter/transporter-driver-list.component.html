@@ -42,7 +42,7 @@
                             {{transporterDriver.state}}
                         </td>
                         <td  *ngIf="!viewMode">
-                            <button title="Eliminar"  pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterDriver()"></button>
+                            <button title="Eliminar"  pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterDriver(transporterDriver.id)"></button>
                         </td>
                     </tr>
                 </ng-template>

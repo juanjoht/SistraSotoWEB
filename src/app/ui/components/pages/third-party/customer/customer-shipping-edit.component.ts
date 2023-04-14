@@ -53,6 +53,10 @@ export class CustomerShippingEditComponent implements OnInit {
     }
      if(this.isTransporter)
      {
+      if (Object.keys(this.customerShippingEdit).length !== 0){
+        this.f["m3Value"].setValue(this.customerShippingEdit.m3Value);
+        this.f["tonValue"].setValue(this.customerShippingEdit.tonValue);
+      }
       this.f["m3Value"].setValidators(Validators.required);
       this.formGroupShippingRate.get("m3Value")?.updateValueAndValidity();
       this.f["tonValue"].setValidators(Validators.required);

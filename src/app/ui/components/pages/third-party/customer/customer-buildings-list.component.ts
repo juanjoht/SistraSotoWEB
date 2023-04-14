@@ -59,7 +59,6 @@ export class CustomerBuildingsListComponent implements OnInit {
         },
         error: error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
-          console.log(error);
         }
     });
   }

@@ -11,6 +11,7 @@ export interface CustomerBasicInfo {
     address?: string;
     state?: string;
     payDeadline? :string;
+    thirdParty?:string;
 }
 
 export interface CustomerCommercialInfo {

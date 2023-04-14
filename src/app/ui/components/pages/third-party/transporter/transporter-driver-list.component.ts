@@ -23,6 +23,7 @@ export class TransporterDriverListComponent implements OnInit {
   transporterDriverDialog: boolean = false;
   deleteTransporterDriverDialog: boolean = false;
   isRelatedTransporterDriverDialog: boolean = false;
+  driverIdDelete: number = 0;
   cols: any[] = [];
   constructor(
     private DriverService: DriverService,
@@ -162,14 +163,32 @@ confirmBreakRelationship()
 
 
 
- deleteTransporterDriver ()
+ deleteTransporterDriver(driverId: number)
  {
   this.deleteTransporterDriverDialog = true;
+  this.driverIdDelete = driverId;
  }
 
  confirmDeleteSelected()
  {
-  
+  this.DriverService.deleteTransporterDriver(this.driverIdDelete,this.transporterId)
+  .subscribe({
+      next: (data) => {
+        if(data !== null)
+        {
+          if(data)
+          {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Conductor del Transportador eliminado ', life: 3000 });
+            this.getGridData();
+            this.deleteTransporterDriverDialog = false;
+          }
+        }
+      },
+      error: error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        console.log(error);
+      }
+  });
  }
 
  get f() { return this.formTransporterDriver?.controls; }

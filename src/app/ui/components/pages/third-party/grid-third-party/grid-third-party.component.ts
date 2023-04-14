@@ -46,10 +46,12 @@ export class GridThirdPartyComponent implements OnInit {
   clientId: number= 0;
   transporterId: number= 0;
   clientName: string  = '';
+  clientdoc: string = '';
   transporterName: string  = '';
   editMode: boolean = false;
   isViewMode: boolean = false;
   measureUnit: string=''
+  disabledDocInfoEdit: boolean = false;
   constructor(
     private messageService: MessageService,
      private customerService: CustomerService,
@@ -76,6 +78,8 @@ export class GridThirdPartyComponent implements OnInit {
     this.driversGeneralInfoTab = true;
     this.isViewMode = false;
     this.showOptions = true;
+    this.disabledDocInfoEdit = false;
+
   }
 
   hideDialog() {
@@ -109,7 +113,9 @@ export class GridThirdPartyComponent implements OnInit {
     this.driversGeneralInfoTab = false;
     this.clientName = customerBasic.name as string;
     this.clientId = customerBasic.id as number;
+    this.clientdoc = customerBasic.docNumber as string;
     this.editMode= true;
+    this.disabledDocInfoEdit = true;
     this.isViewMode = isviewMode;
     this.showOptions = !isviewMode;
    
@@ -191,6 +197,7 @@ export class GridThirdPartyComponent implements OnInit {
             {
               this.clientId = data.id;
               this.clientName = data.nombre;
+              this.clientdoc = data.docNumber;
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Cliente Actualizado', life: 3000 });
             }
           },
@@ -211,6 +218,12 @@ export class GridThirdPartyComponent implements OnInit {
               this.transporterListTab = false;
               this.shippingListTab = false;
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Cliente Creado', life: 3000 });
+              if(this.editBasic.thirdPartyType !== '')
+              {
+                objBasic.id = this.clientId;
+                objBasic.payDeadline = formValues.payDeadline.value
+                this.saveThirdParty(objBasic);
+              }
             }
           },
           error: error => {
@@ -423,6 +436,21 @@ export class GridThirdPartyComponent implements OnInit {
     
   }
 
+  saveThirdParty(objBasic:any)
+  {
+    this.customerService.putThirdParty(objBasic)
+      .subscribe({
+          next: (data) => {
+            if(data !== null)
+            {
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tercero Actualizado', life: 3000 });
+            }
+          },
+          error: error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+          }
+      });
+  }
 
   onChangeTab(event: any){
     this.tabIndex = event.index;
@@ -446,7 +474,7 @@ export class GridThirdPartyComponent implements OnInit {
     }
     if(this.feature === 'Transportador')
     {
-      this.showOptions = event.index === 1 || event.index === 2 ? false: true;
+      this.showOptions = event.index === 1 || event.index === 2 || event.index === 3 || event.index === 4 || event.index === 5 ? false: true;
     }
   }
 }

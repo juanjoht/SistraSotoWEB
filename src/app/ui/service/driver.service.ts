@@ -153,6 +153,24 @@ putDriverGeneralInfo(requestDriverGeneral: DriverGeneralInfo){
         }));
 }
 
+putDriverDoc(requestDriverDoc: DriverDocument){
+    return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiDriverDocument}`,
+    {
+        documentoConductor: {
+            conductorId: requestDriverDoc.driverId,
+            documentoId: requestDriverDoc.docId,
+            urlDocumento: requestDriverDoc.docUrl,
+            estado: requestDriverDoc.state,
+            fechaVencimiento: requestDriverDoc.maturityDate
+        }
+      })
+        .pipe(map(client => {
+            if (client.documento?.id !== 0 && client.documento?.id != null) {
+                return client.documento; 
+            }
+        }));
+}
+
 postDriverDoc(requestDriverDoc: DriverDocument){
     return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiDriverDocument}`,
     {
@@ -164,6 +182,24 @@ postDriverDoc(requestDriverDoc: DriverDocument){
         .pipe(map(client => {
             if (client.documento?.id !== 0 && client.documento?.id != null) {
                 return client.documento; 
+            }
+        }));
+}
+
+deleteTransporterDriver(conductorId: number, transporterId: number){
+    return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiDeleteTransporterDriver}?ConductorId=${conductorId}&TransportadorId=${transporterId}`)
+        .pipe(map(client => {
+            if (client.relacionEliminada) {
+                return client.relacionEliminada; 
+            }
+        }));
+}
+
+postUploadDriverDoc(formData: any){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiUploadDriverDoc}`,formData)
+        .pipe(map(client => {
+            if (client?.fileUrl !== '' && client?.fileUrl != null) {
+                return client.fileUrl; 
             }
         }));
 }

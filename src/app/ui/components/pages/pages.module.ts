@@ -18,6 +18,9 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
+import { FileUploadModule } from 'primeng/fileupload';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CalendarModule } from 'primeng/calendar';
 import { CustomerBasicEditComponent } from './third-party/customer/customer-basic-edit.component';
 import { CustomerCommercialEditComponent } from './third-party/customer/customer-commercial-edit.component';
 import { CustomerBuildingsListComponent } from './third-party/customer/customer-buildings-list.component';
@@ -75,7 +78,10 @@ import { DriverGeneralInfoComponent } from './third-party/driver/driver-general-
         InputMaskModule,
         InputNumberModule,
         CheckboxModule,
-        FieldsetModule
+        FieldsetModule,
+        FileUploadModule,
+        InputTextareaModule,
+        CalendarModule
     ]
 })
 export class PagesModule { }
