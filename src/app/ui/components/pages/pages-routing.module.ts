@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
         { path: 'transporter', loadChildren: () => import('./third-party/transporter/transporter.module').then(m => m.TransporterModule) },
         { path: 'provider', loadChildren: () => import('./third-party/provider/provider.module').then(m => m.ProviderModule) },
         { path: 'driver', loadChildren: () => import('./third-party/driver/driver.module').then(m => m.DriverModule) },
+        { path: 'user', loadChildren: () => import('./security/user/user.module').then(m => m.UserModule) },
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]

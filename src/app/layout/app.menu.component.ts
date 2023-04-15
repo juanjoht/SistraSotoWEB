@@ -73,7 +73,23 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Seguridad',
                         icon: 'pi pi-fw pi-shield',
-                        routerLink: ['/pages/empty']
+                        items: [
+                            {
+                                label: 'Usuarios',
+                                icon: 'pi pi-fw pi-users',
+                                routerLink: ['/pages/user']
+                            },
+                            {
+                                label: 'Perfiles',
+                                icon: 'pi pi-fw pi-check',
+                                routerLink: ['/pages/transporter']
+                            },
+                            {
+                                label: 'Parametros',
+                                icon: 'pi pi-fw pi-table',
+                                routerLink: ['/pages/provider']
+                            }
+                        ]
                     }
                 ]
             }

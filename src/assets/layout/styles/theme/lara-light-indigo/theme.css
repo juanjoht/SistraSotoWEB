@@ -404,14 +404,14 @@ p-calendar.ng-dirty.ng-invalid > .p-calendar > .p-inputtext {
   margin: 0.5rem 0;
 }
 .p-datepicker table th {
-  padding: 0.5rem;
+  padding: 0;
 }
 .p-datepicker table th > span {
   width: 2.5rem;
   height: 2.5rem;
 }
 .p-datepicker table td {
-  padding: 0.5rem;
+  padding: 0;
 }
 .p-datepicker table td > span {
   width: 2.5rem;

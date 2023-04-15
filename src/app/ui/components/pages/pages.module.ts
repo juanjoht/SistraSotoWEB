@@ -34,6 +34,7 @@ import { TransporterVehicleListComponent } from './third-party/transporter/trans
 import { TransporterDriverListComponent } from './third-party/transporter/transporter-driver-list.component';
 import { DriverComponent } from './third-party/driver/driver.component';
 import { DriverGeneralInfoComponent } from './third-party/driver/driver-general-info.component';
+import { UserListComponent } from './security/user/user-list.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import { DriverGeneralInfoComponent } from './third-party/driver/driver-general-
         TransporterVehicleListComponent,
         TransporterDriverListComponent,
         DriverComponent,
-        DriverGeneralInfoComponent
+        DriverGeneralInfoComponent,
+        UserListComponent
     ],
     imports: [
         CommonModule,

@@ -53,7 +53,7 @@
             </ng-template>
         </p-table>
     </div>
-    <p-dialog [(visible)]="transporterDocDialog" [style]="{width: '500px',height: '400px'}"
+    <p-dialog [(visible)]="transporterDocDialog" [style]="{width: '600px',height: '400px'}"
         [breakpoints]="{ '960px': '75vw' }" [draggable]="false" [maximizable]="true" [modal]="true" class="p-fluid">
         <ng-template pTemplate="header">
             <span class="text-xl font-bold text-center">{{action}} Documento</span>
@@ -75,9 +75,9 @@
                         <button pButton pRipple label="Guardar" (click)="saveContentDialog()" icon="pi pi-check"
                             class="p-button-text"></button>
                     </div>
-                    <div *ngIf="showVarCode && feature === 'Conductor'" class="field col-12 sm:col-6">
+                    <div  class="calendar-div"  *ngIf="showVarCode && feature === 'Conductor'" class="field col-12 sm:col-6">
                         <label for="docNumberInput" class="font-bold">Fecha Vencimiento</label>
-                        <p-calendar [showIcon]="true" [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999'}" formControlName="maturityDateSelected" ></p-calendar>
+                        <p-calendar [showIcon]="true" class="calendar" [style]="{width:'300px'}" [readonlyInput]="true" [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="maturityDateSelected" ></p-calendar>
                     </div>
                      <div *ngIf="showVarCode" class="field col-12 sm:col-6">
                         <label class="font-bold">Cargar {{docName}}</label>
