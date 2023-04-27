@@ -1,0 +1,51 @@
+<form [formGroup]="formGroupBasic" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-4">
+            <label for="thirdPartySelect" class="font-bold">Tercero*</label>
+            <p-dropdown id="thirdPartySelect"  placeholder="Seleccione un Tercero" 
+            formControlName="thirdPartySelected" [options]="thirdParties" optionValue="name"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.thirdPartySelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" 
+            *ngIf="submittedBasic && f?.thirdPartySelected?.errors?.required">
+            Tercero es requerido
+            </small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="userNameInput" class="font-bold">Usuario*</label>
+            <input #docNum id="userNameInput" type="text" pInputText  formControlName="userName" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.userName.errors }" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.userName?.errors?.required">Usuario es requerido.</small>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.userName?.errors?.pattern">Usuario no puede contener espacios en blanco.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="nameInput" class="font-bold">Nombre*</label>
+            <input id="nameInput" type="text" pInputText formControlName="name"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.name.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.name?.errors?.required">Nombre es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="phoneInput" class="font-bold">Teléfono*</label>
+            <p-inputMask mask="(999) 999-9999" formControlName="phone" placeholder="(999) 999-9999" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.phone.errors}"></p-inputMask>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.phone?.errors?.required">Teléfono es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="emailInput" class="font-bold">Correo Electrónico*</label>
+            <input id="emailInput" type="email" pInputText formControlName="email" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.email.errors}" >
+            <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.email?.errors?.email">Correo Electrónico Invalido.</small>
+            <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.email?.errors?.required">Correo Electrónico Requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="stateYesorNot" class="font-bold">Estado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="profileSelect" class="font-bold">Perfil de Usuario*</label>
+            <p-dropdown id="profileSelect" scrollHeight="200px" [options]="profiles" placeholder="Seleccione un Perfil de Usuario"  optionValue="name" 
+            formControlName="profileSelected" optionLabel="name"  
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.profileSelected.errors }" >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.profileSelected?.errors?.required">Perfil de Usuario es requerido</small>
+        </div>
+    </div>
+    </form>

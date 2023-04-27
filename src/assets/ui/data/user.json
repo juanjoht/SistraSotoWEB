@@ -1,0 +1,36 @@
+{
+	"data": [
+		{
+			"userId": "1",
+			"userName": "SysAdmin",
+			"thirdParty": "Soto 13",
+			"name": "Administrador",
+			"profile": "Super Administrador",
+			"state": "Activo"
+		},
+        {
+			"userId": "2",
+			"userName": "Epuerta",
+			"thirdParty": "Soto 13",
+			"name": "Elsa Puerta",
+			"profile": "Operador",
+			"state": "Inactivo"
+		},
+        {
+			"userId": "3",
+			"userName": "MGiraldo",
+			"thirdParty": "Constructora ABC",
+			"name": "Marta Giraldo",
+			"profile": "Administrador",
+			"state": "Inactivo"
+		},
+        {
+			"userId": "4",
+			"userName": "BFernandez",
+			"thirdParty": "Constructora ABC",
+			"name": "Bernanrdo Fernandez",
+			"profile": "Cliente",
+			"state": "Activo"
+		}
+		]
+}

@@ -1,0 +1,20 @@
+<form [formGroup]="formGroupBasic" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-4">
+            <label for="nameInput" class="font-bold">Nombre*</label>
+            <input id="nameInput" type="text" pInputText formControlName="name"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.name.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.name?.errors?.required">Nombre es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="descInput" class="font-bold">Descripción*</label>
+            <input id="descInput" type="text" pInputText formControlName="desc"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.desc.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.desc?.errors?.required">Descripción es requerida.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="stateYesorNot" class="font-bold">Estado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+            </div>
+        </div>
+    </div>
+    </form>

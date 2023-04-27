@@ -21,6 +21,9 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PasswordModule } from 'primeng/password';
+import { ImageModule } from 'primeng/image';
 import { CustomerBasicEditComponent } from './third-party/customer/customer-basic-edit.component';
 import { CustomerCommercialEditComponent } from './third-party/customer/customer-commercial-edit.component';
 import { CustomerBuildingsListComponent } from './third-party/customer/customer-buildings-list.component';
@@ -35,6 +38,12 @@ import { TransporterDriverListComponent } from './third-party/transporter/transp
 import { DriverComponent } from './third-party/driver/driver.component';
 import { DriverGeneralInfoComponent } from './third-party/driver/driver-general-info.component';
 import { UserListComponent } from './security/user/user-list.component';
+import { UserEditComponent } from './security/user/user-edit.component';
+import { UserProfileComponent } from './security/user/user-profile.component';
+import { UserProfileEditComponent } from './security/user/user-profile-edit.component';
+import { ProfileModuleComponent } from './security/user/profile-module.component';
+import { ParametersComponent } from './security/parameters/parameters.component';
+
 
 @NgModule({
     declarations: [
@@ -54,7 +63,12 @@ import { UserListComponent } from './security/user/user-list.component';
         TransporterDriverListComponent,
         DriverComponent,
         DriverGeneralInfoComponent,
-        UserListComponent
+        UserListComponent,
+        UserEditComponent,
+        UserProfileComponent,
+        UserProfileEditComponent,
+        ProfileModuleComponent,
+        ParametersComponent
     ],
     imports: [
         CommonModule,
@@ -83,7 +97,10 @@ import { UserListComponent } from './security/user/user-list.component';
         FieldsetModule,
         FileUploadModule,
         InputTextareaModule,
-        CalendarModule
+        CalendarModule,
+        OverlayPanelModule,
+        PasswordModule,
+        ImageModule
     ]
 })
 export class PagesModule { }

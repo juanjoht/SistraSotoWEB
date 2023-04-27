@@ -1,6 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { Common } from '../common/common';
 
 @Component({
     selector: 'app-menu',
@@ -11,6 +12,12 @@ export class AppMenuComponent implements OnInit {
     model: any[] = [];
 
     constructor(public layoutService: LayoutService) { }
+
+    checkPermissions(itemMenu: string) {
+        let modules = Common.Modules;
+        let module = modules.find(x => x.modulo === itemMenu);
+        return module.permiso ? 'show-item' : 'hide-item';
+    }
 
     ngOnInit() {
         this.model = [
@@ -26,25 +33,30 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     {
                         label: 'Terceros',
+                        class: this.checkPermissions('Terceros'),
                         icon: 'pi pi-fw pi-ticket',
                         items: [
                             {
                                 label: 'Clientes',
+                                class: this.checkPermissions('Terceros-Clientes'),
                                 icon: 'pi pi-fw pi-user',
                                 routerLink: ['/pages/customer']
                             },
                             {
                                 label: 'Transportadores',
+                                class: this.checkPermissions('Terceros-Transportadores'),
                                 icon: 'pi pi-fw pi-truck',
                                 routerLink: ['/pages/transporter']
                             },
                             {
                                 label: 'Proveedores',
+                                class: this.checkPermissions('Terceros-Proveedores'),
                                 icon: 'pi pi-fw pi-sync',
                                 routerLink: ['/pages/provider']
                             },
                             {
                                 label: 'Conductores',
+                                class: this.checkPermissions('Terceros-Conductores'),
                                 icon: 'pi pi-fw pi-car',
                                 routerLink: ['/pages/driver']
                             }
@@ -72,22 +84,26 @@ export class AppMenuComponent implements OnInit {
                     },
                     {
                         label: 'Seguridad',
+                        class: this.checkPermissions('Seguridad'),
                         icon: 'pi pi-fw pi-shield',
                         items: [
                             {
                                 label: 'Usuarios',
+                                class: this.checkPermissions('Seguridad-Usuarios'),
                                 icon: 'pi pi-fw pi-users',
                                 routerLink: ['/pages/user']
                             },
                             {
                                 label: 'Perfiles',
+                                class: this.checkPermissions('Seguridad-Perfiles'),
                                 icon: 'pi pi-fw pi-check',
-                                routerLink: ['/pages/transporter']
+                                routerLink: ['/pages/userprofile']
                             },
                             {
                                 label: 'Parametros',
+                                class: this.checkPermissions('Seguridad-Parametros'),
                                 icon: 'pi pi-fw pi-table',
-                                routerLink: ['/pages/provider']
+                                routerLink: ['/pages/parameter']
                             }
                         ]
                     }

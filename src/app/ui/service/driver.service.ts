@@ -1,11 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Customer } from '../api/customer';
-import { CustomerBasicInfo, CustomerBuildings, CustomerCommercialInfo, CustomerShipping, CustomerTransport } from '../models/customer.model';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
-import { BehaviorSubject, Observable, map } from 'rxjs';
-import { TransporterBasicInfo, TransporterDocuments, TransporterDriver, TransporterRoutes, TransporterVehicles } from '../models/transporter.model';
+import { map } from 'rxjs';
 import { DriverDocument, DriverGeneralInfo, DriverInfo } from '../models/driver.model';
 
 @Injectable()
@@ -55,6 +52,18 @@ export class DriverService {
                 }
             })
         }));
+    }
+    httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    getDownloadDoc(urlDoc: string) {
+        let urlDocument = `${environment.urlBaseApi.replace('/api','')}/${urlDoc}`
+        return this.http.get(`${environment.urlBaseApi}${Constants.apiDownloadDoc}?UrlDocumento=${urlDocument}`,
+        {headers: this.httpOptions.headers,responseType: 'blob'}).toPromise().then(pdf => {
+            return pdf
+        });
     }
 
     getDriverIsRelated(driverId: number,transporterId: number) {
@@ -197,6 +206,15 @@ deleteTransporterDriver(conductorId: number, transporterId: number){
 
 postUploadDriverDoc(formData: any){
     return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiUploadDriverDoc}`,formData)
+        .pipe(map(client => {
+            if (client?.fileUrl !== '' && client?.fileUrl != null) {
+                return client.fileUrl; 
+            }
+        }));
+}
+
+postUploadImageDriverDoc(formData: any){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiUploadDriverImage}`,formData)
         .pipe(map(client => {
             if (client?.fileUrl !== '' && client?.fileUrl != null) {
                 return client.fileUrl; 

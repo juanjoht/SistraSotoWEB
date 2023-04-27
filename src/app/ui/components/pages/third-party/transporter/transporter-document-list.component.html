@@ -46,7 +46,7 @@
                     <td  *ngIf="!viewMode">
                         <button title="Cargar" pButton pRipple icon="pi pi-upload"
                             class="p-button-rounded p-button-danger mr-2" (click)="loadDoc(transporterDoc.docName,transporterDoc.id)" ></button>
-                        <button title="Descargar" pButton pRipple icon="pi pi-download"
+                        <button title="Descargar" pButton pRipple icon="pi pi-download" (click)="downloadDoc(transporterDoc.docUrl,transporterDoc.docName)"
                             class="p-button-rounded p-button-success mr-2"></button>
                     </td>
                 </tr>
@@ -77,7 +77,7 @@
                     </div>
                     <div  class="calendar-div"  *ngIf="showVarCode && feature === 'Conductor'" class="field col-12 sm:col-6">
                         <label for="docNumberInput" class="font-bold">Fecha Vencimiento</label>
-                        <p-calendar [showIcon]="true" class="calendar" [style]="{width:'300px'}" [readonlyInput]="true" [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="maturityDateSelected" ></p-calendar>
+                        <p-calendar [showClear]="true"  [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="maturityDateSelected" ></p-calendar>
                     </div>
                      <div *ngIf="showVarCode" class="field col-12 sm:col-6">
                         <label class="font-bold">Cargar {{docName}}</label>

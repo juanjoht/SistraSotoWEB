@@ -1,13 +1,15 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
+import { Common } from '../common/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
 })
 export class AppTopBarComponent {
-
+    msgWellcome: any = '';
     items!: MenuItem[];
 
     @ViewChild('menubutton') menuButton!: ElementRef;
@@ -16,5 +18,16 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(private router: Router,public layoutService: LayoutService) { 
+        this.msgWellcome = `Bienvenido, ${Common.UserName}`;
+    }
+
+    logOut()
+    {
+        Common.Token = '';
+        Common.UserName = '';
+        localStorage.removeItem("userName");
+        localStorage.removeItem("token");
+        this.router.navigate(["/login"]);
+    }
 }

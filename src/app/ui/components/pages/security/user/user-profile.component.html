@@ -1,0 +1,111 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+<p-table #dt [value]="profiles"  *ngIf="canRead" [globalFilterFields]="['name', 'state']" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Perfiles</h5>
+            <span class="block mt-2 md:mt-0">
+                <button pButton pRipple *ngIf="canCreate" title="Adicionar Nuevo Perfil" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>                            
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:20%" pSortableColumn="name">Perfil <p-sortIcon field="name"></p-sortIcon></th>
+            <th style="width:40%" pSortableColumn="desc">Descripción <p-sortIcon field="desc"></p-sortIcon></th>
+            <th style="width:20%" pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
+            <th style="width:10%" ></th>
+        </tr>
+        <tr>
+            <th>
+                <p-columnFilter type="text" field="name" 
+                    [showMenu]="false" 
+                    [matchMode]="'contains'">
+                </p-columnFilter>
+            </th>
+            <th>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="state" 
+                    [showMenu]="false" 
+                    [matchMode]="'equals'">
+                </p-columnFilter>
+            </th>
+            <th>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-profile>
+        <tr>
+            <td >
+                <span class="p-column-title">Name</span>
+                {{profile.name}}
+            </td>
+            <td>
+                <span  class="p-column-title">desc</span>
+                {{profile.desc}}
+            </td>
+            <td >
+                <span class="p-column-title">state</span>
+                {{profile.state}}
+            </td>
+            <td>
+                <div class="flex">
+                    <button title="Editar"*ngIf="canEdit"  pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editProfile(profile)"></button>
+                    <button title="Ver" *ngIf="canRead" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning  mr-2" (click)="editProfile(profile,true)"></button>
+                    <button title="Consultar/Asignar Permisos" *ngIf="canAsingPermissions" pButton pRipple icon="pi pi-key" class="p-button-rounded p-button-secondary mr-2" (click)="setPermissions(profile.name, profile.id)"></button>
+                    <button title="Eliminar" *ngIf="canDelete" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProfile(profile.id)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog [(visible)]="profileDialog"  [draggable]="false" [style]="{width: '900px',height: '250px'}" [maximizable]="true" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-profile">
+    <ng-template pTemplate="header">
+        <span class="text-xl font-bold text-center">Crear/Editar Perfil de Usuario</span>
+    </ng-template>
+    <ng-template pTemplate="content">
+            <app-user-profile-edit  [profileEdit]="profileBasic" [viewMode]="isViewMode" ></app-user-profile-edit>
+    </ng-template>
+    
+    <ng-template  pTemplate="footer">
+        <ng-container *ngIf="showOptions">
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveContent()"></button>
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        </ng-container>   
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="moduleDialog"  [draggable]="false" [style]="{width: '900px',height: '1000px'}" [maximizable]="true" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-profile">
+    <ng-template pTemplate="header">
+    <div class="formgrid grid">
+        <div class="font-bold field col-12 sm:col-12">Perfiles de Usuario</div>
+        <div class="field col-12 sm:col-12">{{profileName}}</div>
+    </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+            <app-profile-module [profileId]="profileId"  ></app-profile-module>
+    </ng-template>
+    
+</p-dialog>
+
+</div>
+        
+</div>
+
+<p-dialog [(visible)]="deleteProfileDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Esta seguro que desea eliminar el perfil seleccionado?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="deleteProfileDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="confirmDeleteSelected()"></button>
+    </ng-template>
+</p-dialog>
+</div>
+

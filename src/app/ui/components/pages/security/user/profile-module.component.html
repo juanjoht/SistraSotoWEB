@@ -1,0 +1,18 @@
+<p-table #dt [value]="profileModules"  styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="moduleId">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:80%" pSortableColumn="module">Módulo/Menú <p-sortIcon field="module"></p-sortIcon></th>
+            <th style="width:20%" pSortableColumn="permission">Permiso <p-sortIcon field="permission"></p-sortIcon></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-profileModule>
+        <tr>
+            <td><span class="p-column-title">module</span>
+                {{profileModule.module}}
+            </td>
+            <td>
+                <p-checkbox [(ngModel)]="profileModule.permission" (onChange)="setPermission(profileModule)" [binary]="true" inputId="binary"></p-checkbox>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

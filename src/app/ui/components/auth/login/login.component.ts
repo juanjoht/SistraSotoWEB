@@ -44,7 +44,8 @@ export class LoginComponent {
     this.authService.login(this.f.username.value, this.f.password.value)
         .pipe(first())
         .subscribe({
-            next: () => {
+            next: (data) => {
+              console.log(data);
                 // get return url from route parameters or default to '/'
                 this.router.navigate(["/dashboard"]);
             },

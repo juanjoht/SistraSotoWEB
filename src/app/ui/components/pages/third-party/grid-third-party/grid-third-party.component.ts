@@ -10,6 +10,8 @@ import { TransporterService } from 'src/app/ui/service/transporter.service';
 import { DriverGeneralInfo, DriverInfo } from 'src/app/ui/models/driver.model';
 import { DriverService } from 'src/app/ui/service/driver.service';
 import { DriverGeneralInfoComponent } from '../driver/driver-general-info.component';
+import { Common } from 'src/app/common/common';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-grid-third-party',
@@ -52,6 +54,9 @@ export class GridThirdPartyComponent implements OnInit {
   isViewMode: boolean = false;
   measureUnit: string=''
   disabledDocInfoEdit: boolean = false;
+  canRead: boolean = true;
+  canCreate: boolean = true;
+  canEdit: boolean = true;
   constructor(
     private messageService: MessageService,
      private customerService: CustomerService,
@@ -59,7 +64,45 @@ export class GridThirdPartyComponent implements OnInit {
      private driverService: DriverService,      
      ) { }
 
+     checkPermissions(itemMenu: string, action: string) {
+        let modules = Common.Modules;
+        let moduleSearch = `${itemMenu}-${action}`;
+        let module = modules.find(x => x.modulo === moduleSearch);
+      
+        switch (action.toLocaleLowerCase()) {
+          case 'consultar':
+              this.canRead = module.permiso;
+            break;
+           case 'crear':
+              this.canCreate = module.permiso;
+           break; 
+           case 'editar':
+              this.canEdit = module.permiso;
+           break; 
+          default:
+            break;
+        }
+      }
+
   ngOnInit() {
+    if(this.feature === 'Cliente')
+    {
+      this.checkPermissions('Terceros-Clientes', 'Consultar');
+      this.checkPermissions('Terceros-Clientes', 'Crear');
+      this.checkPermissions('Terceros-Clientes', 'Editar');
+    }
+    if(this.feature === 'Transportador')
+    {
+      this.checkPermissions('Terceros-Transportadores', 'Consultar');
+      this.checkPermissions('Terceros-Transportadores', 'Crear');
+      this.checkPermissions('Terceros-Transportadores', 'Editar');
+    }
+    if(this.feature === 'Conductor')
+    {
+      this.checkPermissions('Terceros-Conductores', 'Consultar');
+      this.checkPermissions('Terceros-Conductores', 'Crear');
+      this.checkPermissions('Terceros-Conductores', 'Editar');
+    }
   }
 
   openNew() {
@@ -366,7 +409,7 @@ export class GridThirdPartyComponent implements OnInit {
       dept: formValues.deptSelected.value,
       city: formValues.citySelected.value,
       address: formValues.address.value,
-      urlUserImg: '',
+      urlUserImg: this.editBasic.urlImg,
       state: 'Pendiente Documentación'
     }
     if (this.editMode){
@@ -475,6 +518,11 @@ export class GridThirdPartyComponent implements OnInit {
     if(this.feature === 'Transportador')
     {
       this.showOptions = event.index === 1 || event.index === 2 || event.index === 3 || event.index === 4 || event.index === 5 ? false: true;
+    }
+
+    if(this.feature === 'Conductor')
+    {
+      this.showOptions = event.index === 2 ? false: true;
     }
   }
 }

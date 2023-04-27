@@ -1,5 +1,5 @@
 <div class="layout-topbar">
-    <a class="layout-topbar-logo" routerLink="">
+    <a class="layout-topbar-logo" routerLink="/dashboard">
         <span>Sistra Soto 13</span>
     </a>
 
@@ -12,10 +12,14 @@
     </button>
 
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </button>
+        <p-overlayPanel #op>
+            <ng-template pTemplate="content">
+                <p-button label="Cerrar Sesión" icon="pi pi-sign-out" styleClass="p-button-secondary p-button-text" (click)="logOut()"></p-button>
+            </ng-template>
+        </p-overlayPanel>
+        <div>
+            <p-button label="{{msgWellcome}}" icon="pi pi-user" styleClass="p-button-outlined p-button-secondary" (click)="op.toggle($event)"></p-button>
+        </div>
         <button class="p-link layout-topbar-button">
             <i class="pi pi-cog"></i>
             <span>Settings</span>

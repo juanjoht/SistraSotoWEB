@@ -1,5 +1,8 @@
 <form [formGroup]="formGrouBasic" >
 <div class="formgrid grid">
+    <div *ngIf="isDriver && driverEdit" class="field col-12 sm:col-4">
+        <p-image [src]="srcImg" alt="Image" ></p-image>
+    </div>
     <div class="field col-12 sm:col-4">
         <label for="docTypeSelect" class="font-bold">Tipo Documento*</label>
         <p-dropdown id="docTypeSelect"  placeholder="Seleccione un Tipo Documento" 
@@ -56,7 +59,21 @@
         <input id="payDeadline" type="text" pInputText formControlName="payDeadline"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.payDeadline.errors}" >        
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.payDeadline?.errors?.required">Plazo para pago es requerido</small>
     </div>
-    <div class="field col-12 sm:col-8">
+    <div *ngIf="isTransporter" class="field col-12 sm:col-8">
+    </div>
+    <div *ngIf="isDriver" class="field col-12 sm:col-12">
+        <label class="font-bold">Cargar Foto Conductor</label>
+        <p-fileUpload mode="advanced" 
+            chooseLabel="Elegir Foto" 
+            [multiple]="false" 
+            accept=".png, .jpg, .jpeg, .bmp" 
+            [maxFileSize]="10000000" 
+            [customUpload]="true" 
+            [showCancelButton]="false"
+            uploadLabel="Cargar Foto"
+            (uploadHandler)="uploadPictureDriver($event)"
+            >
+        </p-fileUpload>
     </div>
 </div>
 </form>

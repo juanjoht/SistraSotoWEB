@@ -9,7 +9,7 @@ import { DriverService } from 'src/app/ui/service/driver.service';
 import { ParamService } from 'src/app/ui/service/param.service';
 import { TransporterService } from 'src/app/ui/service/transporter.service';
 import { environment } from 'src/environments/environment';
-
+import * as FileSaver from 'file-saver';
 @Component({
   selector: 'app-transporter-document-list',
   templateUrl: './transporter-document-list.component.html',
@@ -106,6 +106,16 @@ getAllDocs(){
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error?.detail, life: 5000 });
       }
   });
+}
+
+downloadDoc(urlDoc:string, docName: string)
+{
+  this.driverService.getDownloadDoc(urlDoc)
+    .then((data) =>{
+    FileSaver.saveAs(data as Blob,docName);
+  }).catch((error) => {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error?.detail, life: 5000 });
+  }); 
 }
 
 saveContentDialog()

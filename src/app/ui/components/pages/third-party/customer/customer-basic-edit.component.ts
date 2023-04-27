@@ -5,8 +5,10 @@ import { CustomerBasicInfo } from 'src/app/ui/models/customer.model';
 import { Cities, Depts } from 'src/app/ui/models/param-static.model';
 import { params } from 'src/app/ui/models/param.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
+import { DriverService } from 'src/app/ui/service/driver.service';
 import { ParamStaticService } from 'src/app/ui/service/param-static.service';
 import { ParamService } from 'src/app/ui/service/param.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -16,6 +18,7 @@ import { ParamService } from 'src/app/ui/service/param.service';
 })
 export class CustomerBasicEditComponent implements OnInit  {
   @Input() isTransporter: boolean = false;
+  @Input() isDriver: boolean = false;
   @Input() customerBasicEdit!: CustomerBasicInfo;
   @Input() viewMode: boolean = false;
   @Input() disabledDocInfo: boolean = false;
@@ -26,14 +29,22 @@ export class CustomerBasicEditComponent implements OnInit  {
   depts: Depts[] = [];
   cities: Cities[] = [];
   thirdPartyType: string = "";
+  urlImg: string = "";
+  srcImg: string = "";
+  seePhoto: boolean = false;
+  driverEdit: boolean = false;
   constructor(
     private formBuilder: FormBuilder, 
     private paramStaticService: ParamStaticService,
     private paramService: ParamService,
     private customerService: CustomerService,
+    private driverService: DriverService,
     private messageService: MessageService) { }
 
-    
+    checkPhoto(value:boolean)
+    {
+      this.seePhoto = value;
+    }
 
   ngOnInit() {
     this.submittedBasic = false;
@@ -54,6 +65,7 @@ export class CustomerBasicEditComponent implements OnInit  {
        });
     }else
     {
+      this.driverEdit = true;
       this.setObjCustomerEdit();
     }
      
@@ -80,6 +92,11 @@ export class CustomerBasicEditComponent implements OnInit  {
       address:[{value: this.customerBasicEdit.address, disabled: this.viewMode}, [Validators.required]],
       payDeadline:[{value: this.customerBasicEdit.payDeadline, disabled: this.viewMode}]
      });
+
+     if(this.isDriver)
+     {
+      this.srcImg = `${environment.urlBaseApi.replace('api','')}${this.customerBasicEdit.urlUserImg}`
+     }
   }
 
 
@@ -139,6 +156,7 @@ export class CustomerBasicEditComponent implements OnInit  {
       this.customerService.getThirdParty(docNum as number)
       .subscribe({
           next: (data:any) => {
+          if (Object.keys(data).length !== 0) {
             this.customerBasicEdit.id = data.id;
             this.customerBasicEdit.docType = data.docType;
             this.customerBasicEdit.docNumber = data.docNumber;
@@ -154,12 +172,40 @@ export class CustomerBasicEditComponent implements OnInit  {
             this.thirdPartyType = data.thirdParty;
             this.setObjCustomerEdit();
             this.getDepts();
+          }
           },
           error: error => {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message.detail, life: 5000 });
           }
       });
     }
+  }
+
+  uploadPictureDriver(event: any)
+  {
+   const formData: FormData = new FormData();
+   event.files.forEach((element: any) => {
+           formData.append('', element);
+   });
+   formData.append('NumeroDocumento', this.formGrouBasic.get('docNumber')?.value);
+   this.UploadPictureDriver(formData); 
+  }
+
+  UploadPictureDriver(formData: FormData)
+  {
+   this.driverService.postUploadImageDriverDoc(formData)
+               .subscribe({
+                   next: (data) => {
+                     if(data !== null)
+                     {
+                      this.urlImg = data;
+                     }
+                   },
+                   error: error => {
+                     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+                   }
+               });
+ 
   }
 
 }

@@ -1,9 +1,9 @@
-<p-table #dt [value]="listGrid" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+<p-table #dt [value]="listGrid" *ngIf="canRead" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
     <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h5 class="m-0">{{title}}</h5>
             <span class="block mt-2 md:mt-0">
-                <button pButton pRipple title="Adicionar Nuevo {{feature}}" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>                            
+                <button pButton *ngIf="canCreate" pRipple title="Adicionar Nuevo {{feature}}" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>                            
             </span>
         </div>
     </ng-template>
@@ -12,7 +12,7 @@
             <th pSortableColumn="docNumber">Número documento <p-sortIcon field="docNumber"></p-sortIcon></th>
             <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
             <th style="width:15%" pSortableColumn="phone">Teléfono <p-sortIcon field="phone"></p-sortIcon></th>
-            <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+            <th pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
             <th style="width:10%" ></th>
         </tr>
     </ng-template>
@@ -35,8 +35,8 @@
             </td>
             <td>
                 <div class="flex">
-                    <button title="Editar" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editCustomer(customer)"></button>
-                    <button title="Ver" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning" (click)="editCustomer(customer,true)"></button>
+                    <button title="Editar" *ngIf="canEdit" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editCustomer(customer)"></button>
+                    <button title="Ver" *ngIf="canRead" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning" (click)="editCustomer(customer,true)"></button>
                 </div>
             </td>
         </tr>
@@ -49,7 +49,7 @@
     <ng-template pTemplate="content">
             <p-tabView (onChange)="onChangeTab($event)" >
                 <p-tabPanel header="Información Basica">
-                    <app-customer-basic-edit #edit [disabledDocInfo]="disabledDocInfoEdit" [customerBasicEdit]="customerBasic" [viewMode]="isViewMode"  [isTransporter]="feature === 'Transportador'" ></app-customer-basic-edit>
+                    <app-customer-basic-edit #edit [disabledDocInfo]="disabledDocInfoEdit" [customerBasicEdit]="customerBasic" [viewMode]="isViewMode"  [isTransporter]="feature === 'Transportador'" [isDriver]="feature === 'Conductor'" ></app-customer-basic-edit>
                 </p-tabPanel>
                 <p-tabPanel *ngIf="feature === 'Cliente'"  header="Información Comercial" [disabled]="commercialInfoTab">
                     <app-customer-commercial-edit [clientName]="clientName" [viewMode]="isViewMode" [customerCommercialEdit]="customerCommercialInfo" ></app-customer-commercial-edit>

@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
         { path: 'provider', loadChildren: () => import('./third-party/provider/provider.module').then(m => m.ProviderModule) },
         { path: 'driver', loadChildren: () => import('./third-party/driver/driver.module').then(m => m.DriverModule) },
         { path: 'user', loadChildren: () => import('./security/user/user.module').then(m => m.UserModule) },
+        { path: 'userprofile', loadChildren: () => import('./security/user/user-profile.module').then(m => m.UserProfileModule) },
+        { path: 'parameter', loadChildren: () => import('./security/parameters/parameters.module').then(m => m.ParametersModule) },
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]
