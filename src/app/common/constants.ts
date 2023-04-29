@@ -44,6 +44,8 @@ export const Constants = {
     apiAuthProfileModule: '/modulo/perfil',
     apiAuthProfileModulePut: '/modulo/perfilModulo',
     apiDownloadDoc: '/download/documento',
+    apiParams: '/parametro',
+    apiParamType: '/tipoParametro',
     pathHome: 'home',
     undefinedCallBack: 'Metodo no definido.',
     undefinedErrorCallBack: 'Metodo error no definido.',

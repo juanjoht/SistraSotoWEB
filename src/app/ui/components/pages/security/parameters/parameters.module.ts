@@ -5,7 +5,8 @@ import { ParametersRoutingModule } from './parameters-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     ParametersRoutingModule

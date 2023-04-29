@@ -26,7 +26,7 @@ export class DriverService {
                     dept: item.departamento,
                     city: item.municipio,
                     address: item.direccion,
-                    urlUserImg: item.urlImagenUsuario,
+                    urlImg: item.urlImagen,
                     bloodType: item.tipoSangre,
                     restTime: item.tiempoDescanso,
                     contact: item.personaContacto,
@@ -88,7 +88,7 @@ export class DriverService {
               departamento: requestDriverBasic.dept,
               municipio: requestDriverBasic.city,
               direccion: requestDriverBasic.address,
-              urlImagen: requestDriverBasic.urlUserImg,
+              urlImagen: requestDriverBasic.urlImg,
               estado: requestDriverBasic.state
             }
           })
@@ -102,7 +102,7 @@ export class DriverService {
 putDriverBasic(requestDriverBasic: DriverInfo){
     return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiDriver}`,
     {
-        transportador: {
+        conductor: {
             id: requestDriverBasic.id,
             tipoDocumento: requestDriverBasic.docType,
             numeroDocumento: requestDriverBasic.docNumber,
@@ -113,7 +113,7 @@ putDriverBasic(requestDriverBasic: DriverInfo){
             departamento: requestDriverBasic.dept,
             municipio: requestDriverBasic.city,
             direccion: requestDriverBasic.address,
-            urlImagen: requestDriverBasic.urlUserImg,
+            urlImagen: requestDriverBasic.urlImg,
             estado: requestDriverBasic.state
         }
       })

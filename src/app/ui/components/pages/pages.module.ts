@@ -43,6 +43,7 @@ import { UserProfileComponent } from './security/user/user-profile.component';
 import { UserProfileEditComponent } from './security/user/user-profile-edit.component';
 import { ProfileModuleComponent } from './security/user/profile-module.component';
 import { ParametersComponent } from './security/parameters/parameters.component';
+import { ParametersEditComponent } from './security/parameters/parameters-edit.component';
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import { ParametersComponent } from './security/parameters/parameters.component'
         UserProfileComponent,
         UserProfileEditComponent,
         ProfileModuleComponent,
-        ParametersComponent
+        ParametersComponent,
+        ParametersEditComponent
     ],
     imports: [
         CommonModule,

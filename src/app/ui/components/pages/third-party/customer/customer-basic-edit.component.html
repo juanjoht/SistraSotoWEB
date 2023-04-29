@@ -1,8 +1,5 @@
 <form [formGroup]="formGrouBasic" >
 <div class="formgrid grid">
-    <div *ngIf="isDriver && driverEdit" class="field col-12 sm:col-4">
-        <p-image [src]="srcImg" alt="Image" ></p-image>
-    </div>
     <div class="field col-12 sm:col-4">
         <label for="docTypeSelect" class="font-bold">Tipo Documento*</label>
         <p-dropdown id="docTypeSelect"  placeholder="Seleccione un Tipo Documento" 
@@ -61,17 +58,24 @@
     </div>
     <div *ngIf="isTransporter" class="field col-12 sm:col-8">
     </div>
-    <div *ngIf="isDriver" class="field col-12 sm:col-12">
+    <div *ngIf="isDriver && driverEdit" class="field col-12 sm:col-4">
+        <label class="font-bold">Foto Conductor</label>
+        <div class="flex justify-content-center">
+            <p-image [src]="srcImg" alt="Image" width="200" height="200"></p-image>
+        </div>
+    </div>
+    <div *ngIf="isDriver" class="field col-12 sm:col-8">
         <label class="font-bold">Cargar Foto Conductor</label>
         <p-fileUpload mode="advanced" 
             chooseLabel="Elegir Foto" 
             [multiple]="false" 
             accept=".png, .jpg, .jpeg, .bmp" 
-            [maxFileSize]="10000000" 
+            [maxFileSize]="50000000" 
             [customUpload]="true" 
             [showCancelButton]="false"
             uploadLabel="Cargar Foto"
             (uploadHandler)="uploadPictureDriver($event)"
+            (onSelect)="onSelect($event)"
             >
         </p-fileUpload>
     </div>

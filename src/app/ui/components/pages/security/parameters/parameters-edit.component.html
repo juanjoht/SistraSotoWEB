@@ -1,0 +1,40 @@
+<form [formGroup]="formGroupBasic" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-5">
+            <label for="typeSelect" class="font-bold">Tipo*</label>
+            <p-dropdown id="typeSelect"  placeholder="Seleccione un Tipo de Parametro" 
+            formControlName="typeSelected" [options]="paramTypes" optionValue="name"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.typeSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" 
+            *ngIf="submittedBasic && f?.typeSelected?.errors?.required">
+            Tipo es requerido
+            </small>
+        </div>
+        <div class="field col-12 sm:col-5">
+            <label for="descInput" class="font-bold">Descripción*</label>
+            <input id="descInput" type="text" pInputText formControlName="desc"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.desc.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.desc?.errors?.required">Descripción es requerida.</small>
+        </div>
+        <div class="field col-12 sm:col-2">
+            <label for="expireYesorNot" class="font-bold">Expira</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="expireSelected" [binary]="true" inputId="expireYesorNot"></p-checkbox>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-5">
+            <label for="value1Input" class="font-bold">Valor 1</label>
+            <input id="value1Input" type="text" pInputText formControlName="value1" >
+        </div>
+        <div class="field col-12 sm:col-5">
+            <label for="value2Input" class="font-bold">Valor 2</label>
+            <input id="value2Input" type="text" pInputText formControlName="value2" >
+        </div>
+        <div class="field col-12 sm:col-2">
+            <label for="stateYesorNot" class="font-bold">Estado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+            </div>
+        </div>
+    </div>
+    </form>

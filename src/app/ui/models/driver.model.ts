@@ -9,7 +9,7 @@ export interface DriverInfo {
     dept?: string;
     city?: string;
     address?: string;
-    urlUserImg?: string;
+    urlImg?: string;
     bloodType?: string;
     restTime?: number;
     contact?: string;

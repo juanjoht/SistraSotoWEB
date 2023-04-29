@@ -26,8 +26,10 @@ export class AppTopBarComponent {
     {
         Common.Token = '';
         Common.UserName = '';
+        Common.Modules = [];
         localStorage.removeItem("userName");
         localStorage.removeItem("token");
+        localStorage.removeItem("modules");
         this.router.navigate(["/login"]);
     }
 }

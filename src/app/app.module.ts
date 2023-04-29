@@ -21,7 +21,7 @@ import { ProfileService } from './ui/service/profile.service';
 @NgModule({
   declarations: [
     AppComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

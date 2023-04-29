@@ -398,6 +398,11 @@ export class GridThirdPartyComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
+    if(this.editBasic.selectedPicture)
+    {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Si se seleccionó una foto del conductor, debe seleccionar la opcion Cargar Foto antes de guardar', life: 5000 });
+      return;
+    }
     let formValues  = this.editBasic.f;
     let objBasic: DriverInfo = {
       docType: formValues.documentTypeSelected.value,
@@ -409,7 +414,7 @@ export class GridThirdPartyComponent implements OnInit {
       dept: formValues.deptSelected.value,
       city: formValues.citySelected.value,
       address: formValues.address.value,
-      urlUserImg: this.editBasic.urlImg,
+      urlImg: this.editBasic.urlImg,
       state: 'Pendiente Documentación'
     }
     if (this.editMode){
@@ -425,7 +430,7 @@ export class GridThirdPartyComponent implements OnInit {
             }
           },
           error: error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
           }
       });
     }else{

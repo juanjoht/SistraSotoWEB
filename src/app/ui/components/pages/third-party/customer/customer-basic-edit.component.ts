@@ -33,6 +33,7 @@ export class CustomerBasicEditComponent implements OnInit  {
   srcImg: string = "";
   seePhoto: boolean = false;
   driverEdit: boolean = false;
+  selectedPicture: boolean = false;
   constructor(
     private formBuilder: FormBuilder, 
     private paramStaticService: ParamStaticService,
@@ -95,7 +96,7 @@ export class CustomerBasicEditComponent implements OnInit  {
 
      if(this.isDriver)
      {
-      this.srcImg = `${environment.urlBaseApi.replace('api','')}${this.customerBasicEdit.urlUserImg}`
+      this.srcImg = `${environment.urlBaseApi.replace('api','')}${this.customerBasicEdit.urlImg}`
      }
   }
 
@@ -181,6 +182,11 @@ export class CustomerBasicEditComponent implements OnInit  {
     }
   }
 
+  onSelect(event: any)
+  {
+    this.selectedPicture = true;
+  }
+
   uploadPictureDriver(event: any)
   {
    const formData: FormData = new FormData();
@@ -199,6 +205,8 @@ export class CustomerBasicEditComponent implements OnInit  {
                      if(data !== null)
                      {
                       this.urlImg = data;
+                      this.selectedPicture = false;
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Foto del conductor Cargada', life: 3000 });
                      }
                    },
                    error: error => {
