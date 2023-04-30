@@ -150,7 +150,7 @@ export class TransporterService {
                   municipio: requestTransporterBasic.city,
                   direccion: requestTransporterBasic.address,
                   plazoPago: requestTransporterBasic.payDeadline,
-                  estado: 'Activo'
+                  estado: requestTransporterBasic.state
                 }
               })
                 .pipe(map(user => {
@@ -175,7 +175,7 @@ export class TransporterService {
               municipio: requestTransporterBasic.city,
               direccion: requestTransporterBasic.address,
               plazoPago: requestTransporterBasic.payDeadline,
-              estado: 'Activo'
+              estado: requestTransporterBasic.state
             }
           })
             .pipe(map(user => {
@@ -195,7 +195,7 @@ postTransporterShipping(requestCustmerShipping: CustomerShipping){
             material: requestCustmerShipping.material,
             valorMetroCubico: requestCustmerShipping.m3Value,
             valorTonelada: requestCustmerShipping.tonValue,
-            estado: "Activo" 
+            estado: requestCustmerShipping.state
         }
       })
         .pipe(map(client => {
@@ -217,7 +217,7 @@ putTransporterShipping(requestCustmerShipping: CustomerShipping){
             valorTonelada: requestCustmerShipping.tonValue,
             unidadMedida: requestCustmerShipping.measureUnit,
             valorFlete: requestCustmerShipping.shippingValue,
-            estado: "Activo" 
+            estado: requestCustmerShipping.state
         }
       })
         .pipe(map(client => {
@@ -251,7 +251,8 @@ postTransporterDoc(requestTransporterRoute: TransporterDocuments){
     {
         documentoTransportador: {
             transportadorId: requestTransporterRoute.transporterId,
-            documentoId: requestTransporterRoute.docId
+            documentoId: requestTransporterRoute.docId,
+            estado: requestTransporterRoute.state
         }
       })
         .pipe(map(client => {
@@ -267,7 +268,8 @@ putTransporterDoc(requestTransporterDoc: TransporterDocuments){
         documentoTransportador: {
             transportadorId: requestTransporterDoc.transporterId,
             documentoId: requestTransporterDoc.docId,
-            urlDocumento: requestTransporterDoc.docUrl
+            urlDocumento: requestTransporterDoc.docUrl,
+            estado: requestTransporterDoc.state
         }
       })
         .pipe(map(client => {

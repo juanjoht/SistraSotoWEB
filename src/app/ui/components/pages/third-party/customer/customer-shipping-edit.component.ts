@@ -29,6 +29,7 @@ export class CustomerShippingEditComponent implements OnInit {
      this.getOriginsParams();
      this.getDestinationsParams();
      this.getMaterialsParams();
+     
      if (Object.keys(this.customerShippingEdit).length === 0){
      this.formGroupShippingRate = this.formBuilder.group({
       originSelected: ['',[Validators.required]],
@@ -37,7 +38,8 @@ export class CustomerShippingEditComponent implements OnInit {
       measureUnit: [{value:this.unitMeasure, disabled: true}],
       shippingValue: ['', [Validators.required]],
       m3Value: ['',],
-      tonValue: ['', ]
+      tonValue: ['', ],
+      stateSelected:[true]
      });
     }else
     {
@@ -45,10 +47,11 @@ export class CustomerShippingEditComponent implements OnInit {
         originSelected: [this.customerShippingEdit.origin,[Validators.required]],
         destinationSelected: [this.customerShippingEdit.destination, [Validators.required]],
         materialSelected: [this.customerShippingEdit.material, [Validators.required]],
-        measureUnit: [{value:'', disabled: true}],
+        measureUnit: [{value:this.customerShippingEdit.measureUnit, disabled: true}],
         shippingValue: [this.customerShippingEdit.shippingValue, [Validators.required]],
         m3Value: ['',],
-        tonValue: ['', ]
+        tonValue: ['', ],
+        stateSelected:[this.customerShippingEdit.state === 'Activo' ? true: false]
        });
     }
      if(this.isTransporter)

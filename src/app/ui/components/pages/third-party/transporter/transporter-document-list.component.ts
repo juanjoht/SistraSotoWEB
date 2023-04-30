@@ -174,7 +174,8 @@ saveContentDialog()
     let formValues  = this.f;
     let objDriverDoc: DriverDocument = {
       driverId: this.transporterId,
-      docId: formValues.docSelected.value
+      docId: formValues.docSelected.value,
+      state: 'Pendiente'
     }
     this.driverService.postDriverDoc(objDriverDoc)
               .subscribe({

@@ -32,8 +32,8 @@ export class CustomerBasicEditComponent implements OnInit  {
   urlImg: string = "";
   srcImg: string = "";
   seePhoto: boolean = false;
-  driverEdit: boolean = false;
   selectedPicture: boolean = false;
+  isEdit: boolean = false;
   constructor(
     private formBuilder: FormBuilder, 
     private paramStaticService: ParamStaticService,
@@ -62,11 +62,12 @@ export class CustomerBasicEditComponent implements OnInit  {
         deptSelected:['',[Validators.required]],
         citySelected:['',[Validators.required]],
         address:['', [Validators.required]],
+        stateSelected:[true],
         payDeadline:['']
        });
     }else
     {
-      this.driverEdit = true;
+      this.isEdit = true;
       this.setObjCustomerEdit();
     }
      
@@ -91,12 +92,14 @@ export class CustomerBasicEditComponent implements OnInit  {
       deptSelected:[{value: this.customerBasicEdit.dept, disabled: this.viewMode},[Validators.required]],
       citySelected:[{value: this.customerBasicEdit.city, disabled: this.viewMode},[Validators.required]],
       address:[{value: this.customerBasicEdit.address, disabled: this.viewMode}, [Validators.required]],
+      stateSelected:[{value: this.customerBasicEdit.state === 'Activo' ? true: false, disabled: this.viewMode}],
       payDeadline:[{value: this.customerBasicEdit.payDeadline, disabled: this.viewMode}]
      });
 
      if(this.isDriver)
      {
       this.srcImg = `${environment.urlBaseApi.replace('api','')}${this.customerBasicEdit.urlImg}`
+      this.urlImg = this.customerBasicEdit.urlImg as string;
      }
   }
 

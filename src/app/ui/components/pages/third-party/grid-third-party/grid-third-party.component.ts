@@ -12,6 +12,7 @@ import { DriverService } from 'src/app/ui/service/driver.service';
 import { DriverGeneralInfoComponent } from '../driver/driver-general-info.component';
 import { Common } from 'src/app/common/common';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { CustomerShippingListComponent } from '../customer/customer-shipping-list.component';
 
 @Component({
   selector: 'app-grid-third-party',
@@ -27,6 +28,7 @@ export class GridThirdPartyComponent implements OnInit {
   @ViewChild(CustomerCommercialEditComponent)editCommercial!: CustomerCommercialEditComponent;
   @ViewChild(CustomerBuildingsListComponent)buildingList!: CustomerBuildingsListComponent;
   @ViewChild(DriverGeneralInfoComponent)editDriverGeneral!: DriverGeneralInfoComponent;
+  @ViewChild(CustomerShippingListComponent)shippingList!: CustomerShippingListComponent;
 
   tabIndex: number = 0;
   customers: CustomerBasicInfo[] = [];
@@ -122,7 +124,7 @@ export class GridThirdPartyComponent implements OnInit {
     this.isViewMode = false;
     this.showOptions = true;
     this.disabledDocInfoEdit = false;
-
+    this.tabIndex = 0;
   }
 
   hideDialog() {
@@ -136,6 +138,7 @@ export class GridThirdPartyComponent implements OnInit {
   }
 
   editCustomer(customerBasic: any, isviewMode: boolean = false) {
+    this.tabIndex = 0;
     if(this.feature.toLowerCase() === 'conductor'){
       this.driverGeneralInfo.bloodType = customerBasic.bloodType;
       this.driverGeneralInfo.restTime = customerBasic.restTime;
@@ -161,7 +164,7 @@ export class GridThirdPartyComponent implements OnInit {
     this.disabledDocInfoEdit = true;
     this.isViewMode = isviewMode;
     this.showOptions = !isviewMode;
-   
+    this.getCommercialInfoByClient(this.clientId);
   }
 
   getCommercialInfoByClient(clientId : number){
@@ -170,6 +173,7 @@ export class GridThirdPartyComponent implements OnInit {
         next: (data:any) => {
           this.customerCommercialInfo = data;
           this.measureUnit = this.customerCommercialInfo.measureUnit as string;
+          this.shippingList.unit = this.measureUnit;
           this.editCommercial.setValuesEdit(data);
         },
         error: error => {
@@ -229,7 +233,8 @@ export class GridThirdPartyComponent implements OnInit {
       email: formValues.email.value,
       dept: formValues.deptSelected.value,
       city: formValues.citySelected.value,
-      address: formValues.address.value
+      address: formValues.address.value,
+      state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if (this.editMode){
       objBasic.id = this.clientId;
@@ -350,8 +355,8 @@ export class GridThirdPartyComponent implements OnInit {
       dept: formValues.deptSelected.value,
       city: formValues.citySelected.value,
       address: formValues.address.value,
-      payDeadline: formValues.payDeadline.value
-      
+      payDeadline: formValues.payDeadline.value,
+      state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if (this.editMode){
       objBasic.id = this.clientId;
@@ -414,11 +419,11 @@ export class GridThirdPartyComponent implements OnInit {
       dept: formValues.deptSelected.value,
       city: formValues.citySelected.value,
       address: formValues.address.value,
-      urlImg: this.editBasic.urlImg,
-      state: 'Pendiente Documentación'
+      urlImg: this.editBasic.urlImg
     }
     if (this.editMode){
       objBasic.id = this.clientId;
+      objBasic.state = (formValues.stateSelected.value) ? 'Activo' : 'Inactivo';
       this.driverService.putDriverBasic(objBasic)
       .subscribe({
           next: (data) => {
@@ -507,12 +512,6 @@ export class GridThirdPartyComponent implements OnInit {
       this.showOptions = event.index === 2 || event.index === 3 || event.index === 4 ? false: true;
       if(this.editMode)
       {
-        if(this.tabIndex === 1)
-        {
-          this.editCommercial.clientName = this.clientName;
-            this.getCommercialInfoByClient(this.clientId);
-            this.showOptions = !this.isViewMode;
-        }
         if (this.tabIndex === 2)
         {
           this.buildingList.getGridData();

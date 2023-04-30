@@ -23,7 +23,8 @@ export class CustomerBuildingsEditComponent implements OnInit {
   deliveryConfirmations: params[] = [];
   allowedVehicleTypes: params[] = [];
   submittedCustomerBuilding: boolean = false;
-  
+  isEdit: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private paramStaticService: ParamStaticService,
@@ -41,8 +42,8 @@ export class CustomerBuildingsEditComponent implements OnInit {
   newDay(d: string,r:boolean,t:string): FormGroup {
     return this.formBuilder.group({
       day: [{value:d, disabled: true}],
-      receive: r,
-      times: [t,Validators.required]
+      receive: [{value:r,disabled: this.viewMode}],
+      times: [{value:t,disabled: this.viewMode},[Validators.required]]
     })
   }
   ngOnInit() {
@@ -70,7 +71,8 @@ export class CustomerBuildingsEditComponent implements OnInit {
         simpleLoadingTime : ['', [Validators.required]],
         doubleLoadingTime : ['', [Validators.required]],
         truckLoadingTime: ['', [Validators.required]],
-        days: this.formBuilder.array([])
+        days: this.formBuilder.array([]),
+        stateSelected:[true]
       });
       this.days.push(this.newDay("Lunes",false,""));
       this.days.push(this.newDay("Martes",false,""));
@@ -82,6 +84,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
     }
     else
     {
+      this.isEdit = true;
       this.formGroupCustomerBuildings = this.formBuilder.group({
         name: [{value:this.customerBuildingEdit.name, disabled: this.viewMode}, [Validators.required]],
         phone: [{value:this.customerBuildingEdit.phone, disabled: this.viewMode}, [Validators.required]],
@@ -101,7 +104,8 @@ export class CustomerBuildingsEditComponent implements OnInit {
         simpleLoadingTime : [{value:this.customerBuildingEdit.simpleLoadingTime, disabled: this.viewMode}, [Validators.required]],
         doubleLoadingTime : [{value:this.customerBuildingEdit.doubleLoadingTime, disabled: this.viewMode}, [Validators.required]],
         truckLoadingTime: [{value:this.customerBuildingEdit.truckLoadingTime, disabled: this.viewMode}, [Validators.required]],
-        days: this.formBuilder.array([])
+        days: this.formBuilder.array([]),
+        stateSelected:[{value: this.customerBuildingEdit.state === 'Activo' ? true: false, disabled: this.viewMode}],
       });
 
       let recTimes = this.customerBuildingEdit.receptionTimes?.split(';');

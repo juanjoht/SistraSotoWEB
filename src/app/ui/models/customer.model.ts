@@ -81,5 +81,5 @@ export interface CustomerShipping{
     shippingValue?: number;
     tonValue?: number;
     m3Value?: number;
-
+    state?: string;
 }

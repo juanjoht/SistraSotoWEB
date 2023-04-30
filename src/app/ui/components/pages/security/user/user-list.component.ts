@@ -191,7 +191,6 @@ export class UserListComponent implements OnInit {
             }
         });
       }else{
-        objBasic.password = this.generatePassword();
         this.userService.postBasic(objBasic)
         .subscribe({
             next: (data) => {

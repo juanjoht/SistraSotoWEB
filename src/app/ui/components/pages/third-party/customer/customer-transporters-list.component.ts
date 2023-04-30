@@ -139,6 +139,14 @@ getAllTransportersData(){
   
  }
 
+ sendCodeAgain()
+ {
+   //generar codigo
+   this.customerTransporterDialog = true;
+   this.showVarCode = true;
+   this.action = "Autorizar";
+ }
+
  get f() { return this.formCustomerTransporter?.controls; }
 
 }

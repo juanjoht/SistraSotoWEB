@@ -3,7 +3,7 @@
         <label class="font-bold text-center">{{clientName}}</label>
     </div>
     <div class="col-12">
-           <p-table #dtShippingRates [value]="customersShippingRate"  styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '70rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="rateId">
+           <p-table #dtShippingRates [value]="customersShippingRate"  styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '60rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="rateId">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Tarifas de fletes del {{feature}}</h5>
@@ -14,14 +14,14 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="origin">Origen <p-sortIcon field="origin"></p-sortIcon></th>
-                        <th pSortableColumn="destination">Destino <p-sortIcon field="destination"></p-sortIcon></th>
-                        <th pSortableColumn="material">Material <p-sortIcon field="material"></p-sortIcon></th>
-                        <th *ngIf="feature === 'Cliente'" pSortableColumn="measureUnit">m3/ton <p-sortIcon field="measureUnit"></p-sortIcon></th>
-                        <th *ngIf="feature === 'Cliente'" pSortableColumn="shippingValue">Valor Flete<p-sortIcon field="shippingValue"></p-sortIcon></th>
-                        <th *ngIf="feature === 'Transportador'" pSortableColumn="m3Value">Valor m3 <p-sortIcon field="m3Value"></p-sortIcon></th>
-                        <th *ngIf="feature === 'Transportador'" pSortableColumn="tonValue">Valor Ton<p-sortIcon field="tonValue"></p-sortIcon></th>
-                        <th style="width:7%" *ngIf="!viewMode"></th>
+                        <th style="width:20%" pSortableColumn="origin">Origen <p-sortIcon field="origin"></p-sortIcon></th>
+                        <th style="width:20%" pSortableColumn="destination">Destino <p-sortIcon field="destination"></p-sortIcon></th>
+                        <th style="width:20%" pSortableColumn="material">Material <p-sortIcon field="material"></p-sortIcon></th>
+                        <th style="width:15%" *ngIf="feature === 'Cliente'" pSortableColumn="measureUnit">m3/ton <p-sortIcon field="measureUnit"></p-sortIcon></th>
+                        <th style="width:15%" *ngIf="feature === 'Cliente'" pSortableColumn="shippingValue">Valor Flete<p-sortIcon field="shippingValue"></p-sortIcon></th>
+                        <th style="width:15%" *ngIf="feature === 'Transportador'" pSortableColumn="m3Value">Valor m3 <p-sortIcon field="m3Value"></p-sortIcon></th>
+                        <th style="width:15%" *ngIf="feature === 'Transportador'" pSortableColumn="tonValue">Valor Ton<p-sortIcon field="tonValue"></p-sortIcon></th>
+                        <th style="width:0%" *ngIf="!viewMode"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-ShippingRate>

@@ -119,7 +119,8 @@ export class CustomerShippingListComponent implements OnInit {
       destination: formValues.destinationSelected.value,
       material: formValues.materialSelected.value,
       measureUnit: formValues.measureUnit.value,
-      shippingValue: formValues.shippingValue.value
+      shippingValue: formValues.shippingValue.value,
+      state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if (this.editMode){
       objShipping.id = this.shippingId;

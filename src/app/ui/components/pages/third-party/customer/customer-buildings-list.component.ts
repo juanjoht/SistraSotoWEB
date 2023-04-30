@@ -21,6 +21,7 @@ export class CustomerBuildingsListComponent implements OnInit {
   viewModeDialog: boolean = false;
   buildingId: number = 0;
   cols: any[] = [];
+  showOptions: boolean = true;
   constructor(
     private customerService: CustomerService,
     private messageService: MessageService) { }
@@ -49,6 +50,7 @@ export class CustomerBuildingsListComponent implements OnInit {
     this.customerBuilding  = customerBuilding;
     this.viewModeDialog= isviewMode;
     this.buildingId = customerBuilding.id as number;
+    this.showOptions = !isviewMode;
   }
 
   getGridData(){
@@ -126,7 +128,7 @@ export class CustomerBuildingsListComponent implements OnInit {
       receptionTimes: recTimes.slice(0, -1),
       allowedVehicleTypes: formValues.allowedVehicleTypesSelected.value,
       loadingTime:`simple:${formValues.simpleLoadingTime.value};doble:${formValues.doubleLoadingTime.value};tractomula:${formValues.truckLoadingTime.value}`,
-      state: "Activo"      
+      state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if (this.editMode){
       objbuilding.id = this.buildingId;

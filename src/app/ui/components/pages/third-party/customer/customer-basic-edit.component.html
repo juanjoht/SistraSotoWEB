@@ -51,20 +51,26 @@
         <input id="addressInput" type="text" pInputText formControlName="address" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.address.errors}">
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.address?.errors?.required">Dirección es requerido.</small>
     </div>
+    <div class="field col-12 sm:col-4">
+        <label for="stateYesorNot" class="font-bold">Estado</label>
+        <div class="flex align-items-center h-3rem">
+            <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+        </div>
+    </div>
     <div *ngIf="isTransporter" class="field col-12 sm:col-4">
         <label for="payDeadline" class="font-bold">Plazo para pago*</label>
         <input id="payDeadline" type="text" pInputText formControlName="payDeadline"  [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.payDeadline.errors}" >        
         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.payDeadline?.errors?.required">Plazo para pago es requerido</small>
     </div>
-    <div *ngIf="isTransporter" class="field col-12 sm:col-8">
+    <div *ngIf="isTransporter" class="field col-12 sm:col-4">
     </div>
-    <div *ngIf="isDriver && driverEdit" class="field col-12 sm:col-4">
+    <div *ngIf="isDriver && isEdit" class="field col-12 sm:col-4">
         <label class="font-bold">Foto Conductor</label>
         <div class="flex justify-content-center">
             <p-image [src]="srcImg" alt="Image" width="200" height="200"></p-image>
         </div>
     </div>
-    <div *ngIf="isDriver" class="field col-12 sm:col-8">
+    <div *ngIf="isDriver && !viewMode" class="field col-12 sm:col-12">
         <label class="font-bold">Cargar Foto Conductor</label>
         <p-fileUpload mode="advanced" 
             chooseLabel="Elegir Foto" 

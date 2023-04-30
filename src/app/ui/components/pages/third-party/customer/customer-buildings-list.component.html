@@ -60,7 +60,7 @@
         <app-customer-buildings-edit [customerBuildingEdit]="customerBuilding" [viewMode]="viewModeDialog" ></app-customer-buildings-edit>
     </ng-template>
     <ng-template  pTemplate="footer">
-        <ng-container>
+        <ng-container *ngIf="showOptions">
         <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveCustomerBuilding()" ></button>
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()" ></button>
         </ng-container>   

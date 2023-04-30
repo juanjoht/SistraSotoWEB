@@ -88,8 +88,7 @@ export class DriverService {
               departamento: requestDriverBasic.dept,
               municipio: requestDriverBasic.city,
               direccion: requestDriverBasic.address,
-              urlImagen: requestDriverBasic.urlImg,
-              estado: requestDriverBasic.state
+              urlImagen: requestDriverBasic.urlImg
             }
           })
             .pipe(map(user => {

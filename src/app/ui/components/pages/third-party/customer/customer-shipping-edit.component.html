@@ -24,8 +24,6 @@
             <p-inputNumber id="ShippingValuerInput" inputId="integeronly"  formControlName="shippingValue"  [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.shippingValue.errors }"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.shippingValue?.errors?.required">Valor Flete es requerido.</small>
         </div>
-        <div *ngIf="!isTransporter" class="field col-12 sm:col-4">
-        </div>
         <div *ngIf="isTransporter" class="field col-12 sm:col-4">
             <label for="m3Value" class="font-bold">Valor m3*</label>
             <p-inputNumber id="tonValue" inputId="integeronly"  formControlName="m3Value"  [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.m3Value.errors }"> </p-inputNumber>
@@ -36,7 +34,11 @@
             <p-inputNumber id="tonValue" inputId="integeronly"  formControlName="tonValue"  [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.tonValue.errors }"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.tonValue?.errors?.required">Valor ton es requerido.</small>
         </div>
-        <div *ngIf="isTransporter" class="field col-12 sm:col-4">
+        <div class="field col-12 sm:col-4">
+            <label for="stateYesorNot" class="font-bold">Estado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+            </div>
         </div>
     </div>
     </form>

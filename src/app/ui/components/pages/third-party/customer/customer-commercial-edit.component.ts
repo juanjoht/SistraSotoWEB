@@ -30,6 +30,7 @@ export class CustomerCommercialEditComponent implements OnInit {
     private paramService: ParamService,
     private messageService: MessageService) { }
 
+
   ngOnInit() {
     this.priorityGroups = [
       { name: '1' },
@@ -72,7 +73,7 @@ export class CustomerCommercialEditComponent implements OnInit {
        });
     }
      this.formGroupCommercial.controls.clientTypeSelected.valueChanges.subscribe((data) => {
-      if( data.name === "Crédito")
+      if( data.toLocaleLowerCase() === "crédito")
       {
         this.formGroupCommercial?.get('assignedQuota')?.enable();
       }

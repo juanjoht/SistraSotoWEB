@@ -114,7 +114,8 @@ export class CustomerService {
                     measureUnit: item.unidadMedida,
                     shippingValue: item.valorFlete,
                     m3Value: item.valorMetroCubico,
-                    tonValue: item.valorTonelada
+                    tonValue: item.valorTonelada,
+                    state: item.estado
                 }
             })
         }));
@@ -159,7 +160,7 @@ export class CustomerService {
                   departamento: requestCustmerBasic.dept,
                   municipio: requestCustmerBasic.city,
                   direccion: requestCustmerBasic.address,
-                  estado: 'Activo'
+                  estado: requestCustmerBasic.state
                 }
               })
                 .pipe(map(user => {
@@ -183,7 +184,7 @@ export class CustomerService {
               departamento: requestCustmerBasic.dept,
               municipio: requestCustmerBasic.city,
               direccion: requestCustmerBasic.address,
-              estado: 'Activo'
+              estado: requestCustmerBasic.state
             }
           })
             .pipe(map(user => {
@@ -341,7 +342,7 @@ postCustomerShipping(requestCustmerShipping: CustomerShipping){
             material: requestCustmerShipping.material,
             unidadMedida: requestCustmerShipping.measureUnit,
             valorFlete: requestCustmerShipping.shippingValue,
-            estado: "Activo" 
+            estado : requestCustmerShipping.state
         }
       })
         .pipe(map(client => {
@@ -363,7 +364,7 @@ putCustomerShipping(requestCustmerShipping: CustomerShipping){
             valorTonelada: requestCustmerShipping.tonValue,
             unidadMedida: requestCustmerShipping.measureUnit,
             valorFlete: requestCustmerShipping.shippingValue,
-            estado: "Activo" 
+            estado : requestCustmerShipping.state
         }
       })
         .pipe(map(client => {
@@ -382,9 +383,16 @@ postLinkCustomerTransporter(requestCustmerTransporter: CustomerTransport){
         }
       })
         .pipe(map(client => {
-            if (client.cliente?.id !== 0 && client.cliente?.id != null) {
-                return client.cliente; 
+            if (client.clienteTransportadorRelacionado) {
+                return client.clienteTransportadorRelacionado; 
             }
+        }));
+}
+
+getAuthorizeTransporter(clientId: number, transporterId: number, authCode: number ){
+    return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiAuthorizeTransporter}?AutorizarTransporte.ClienteId=${clientId}&AutorizarTransporte.TransportadorId=${transporterId}&AutorizarTransporte.CodigoAutorizacion=${authCode}`)
+        .pipe(map(client => {
+                return client.autorizarTransportador;
         }));
 }
 
