@@ -21,39 +21,39 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:12%" pSortableColumn="transportName">Documento <p-sortIcon
+                    <th style="width:20%" pSortableColumn="transportName">Documento <p-sortIcon
                             field="docName"></p-sortIcon></th>
-                    <th style="width:12%" pSortableColumn="transportName">Fecha <p-sortIcon
+                    <th style="width:20%" pSortableColumn="transportName">Fecha <p-sortIcon
                             field="maturityDate"></p-sortIcon></th>
-                    <th style="width:12%" pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
-                    <th *ngIf="!viewMode" style="width:11%"></th>
+                    <th style="width:20%" pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
+                    <th *ngIf="!viewMode" style="width:10%"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-transporterDoc>
                 <tr>
-                    <td style="width:20%; min-width:15rem;">
+                    <td>
                         <span class="p-column-title">docName</span>
                         {{transporterDoc.docName}}
                     </td>
-                    <td style="width:20%; min-width:15rem;">
+                    <td>
                         <span class="p-column-title">maturityDate</span>
                         {{transporterDoc.maturityDate | date: 'dd/MM/yyyy'}}
                     </td>
-                    <td style="width:20%; min-width:10rem;">
+                    <td>
                         <span class="p-column-title">state</span>
                         {{transporterDoc.state}}
                     </td>
                     <td  *ngIf="!viewMode">
                         <button title="Cargar" pButton pRipple icon="pi pi-upload"
-                            class="p-button-rounded p-button-danger mr-2" (click)="loadDoc(transporterDoc.docName,transporterDoc.id)" ></button>
-                        <button title="Descargar" pButton pRipple icon="pi pi-download" (click)="downloadDoc(transporterDoc.docUrl,transporterDoc.docName)"
+                            class="p-button-rounded p-button-danger mr-2" (click)="loadDoc(transporterDoc.docName,transporterDoc.id,transporterDoc.maturityDate)" ></button>
+                        <button title="Descargar" *ngIf="transporterDoc.state === 'Cargado' || transporterDoc.state === 'Vencido'" pButton pRipple icon="pi pi-download" (click)="downloadDoc(transporterDoc.docUrl,transporterDoc.docName)"
                             class="p-button-rounded p-button-success mr-2"></button>
                     </td>
                 </tr>
             </ng-template>
         </p-table>
     </div>
-    <p-dialog [(visible)]="transporterDocDialog" [style]="{width: '600px',height: '400px'}"
+    <p-dialog [(visible)]="transporterDocDialog" [style]="{width: '800px',height: '400px'}"
         [breakpoints]="{ '960px': '75vw' }" [draggable]="false" [maximizable]="true" [modal]="true" class="p-fluid">
         <ng-template pTemplate="header">
             <span class="text-xl font-bold text-center">{{action}} Documento</span>
@@ -61,9 +61,9 @@
         <ng-template pTemplate="content">
             <form [formGroup]="formTransporterDoc">
                 <div class="formgrid grid mb-10">
-                    <div *ngIf="!showVarCode" class="field col-12 sm:col-8">
+                    <div *ngIf="!showVarCode" class="field col-12 sm:col-5">
                         <label for="transporterSelect" class="font-bold">Seleccione el documento*</label>
-                        <p-dropdown id="transporterSelect" scrollHeight="100px" formControlName="docSelected"
+                        <p-dropdown id="transporterSelect" scrollHeight="300px" formControlName="docSelected"
                             [options]="Docs" placeholder="Seleccione un documento" optionValue="id"
                             optionLabel="name" (onChange)="changeDoc($event)"
                             [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterDoc && f.docSelected.errors }"></p-dropdown>
@@ -71,22 +71,30 @@
                             *ngIf="submittedTransporterDoc && f?.docSelected?.errors?.required">Documento es
                             requerido</small>
                     </div>
-                    <div *ngIf="!showVarCode" class="field col-12 sm:col-4 align-self-end">
+                    <div  class="calendar-div"  *ngIf="showMatutityDate && feature === 'Conductor'" class="field col-12 sm:col-5">
+                        <label for="docNumberInput" class="font-bold">Fecha Vencimiento*</label>
+                        <p-calendar [showClear]="true"  [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="maturityDateSelected" 
+                        [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterDoc && f.maturityDateSelected.errors }">></p-calendar>
+                        <small class="ng-dirty ng-invalid"
+                            *ngIf="submittedTransporterDoc && f?.maturityDateSelected?.errors?.required">Fecha Vencimiento es
+                            requerido</small>
+                    </div>
+                    <div *ngIf="!showVarCode" class="field col-12 sm:col-2 align-self-end">
                         <button pButton pRipple label="Guardar" (click)="saveContentDialog()" icon="pi pi-check"
                             class="p-button-text"></button>
                     </div>
-                    <div  class="calendar-div"  *ngIf="showVarCode && feature === 'Conductor'" class="field col-12 sm:col-6">
-                        <label for="docNumberInput" class="font-bold">Fecha Vencimiento</label>
-                        <p-calendar [showClear]="true"  [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="maturityDateSelected" ></p-calendar>
-                    </div>
-                     <div *ngIf="showVarCode" class="field col-12 sm:col-6">
+                     <div *ngIf="showVarCode" class="field col-12 sm:col-12">
                         <label class="font-bold">Cargar {{docName}}</label>
                         <p-fileUpload mode="basic" 
                             chooseLabel="Elegir Documento" 
                             [multiple]="false" 
-                            accept=".doc, .docx, .pdf, .xls, .xlsx" 
-                            [maxFileSize]="1000000" 
+                            accept=".doc, .docx, .pdf, .xls, .xlsx, .png, .jpg, .jpeg, .bmp" 
+                            [maxFileSize]="50000000" 
                             [customUpload]="true" 
+                            invalidFileTypeMessageDetail="Tipos de archivos permitidos: {0}"
+                            invalidFileTypeMessageSummary="{0}: Tipo de archivo no válido,"
+                            invalidFileSizeMessageSummary="{0}: Tamaño de archivo no válido,"
+                            invalidFileSizeMessageDetail="El tamaño máximo de carga es {0}"
                             (uploadHandler)="uploadFiles($event)">
                         </p-fileUpload>
                     </div>

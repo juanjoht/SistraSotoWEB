@@ -68,6 +68,7 @@ export interface CustomerTransport{
     customerId?: number;
     transportId?: number;
     transportName?: string;
+    codeAuth?:string;
     status?: string;
 }
 

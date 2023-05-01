@@ -50,6 +50,8 @@ export class TransporterRouteListComponent {
    this.transporterRouteDialog = true;
    this.getOriginsParams();
    this.getDestinationsParams();
+   this.formTransporterRoutes.reset();
+   this.submittedTransporterRoute= false;
  }
 
  getGridData(){

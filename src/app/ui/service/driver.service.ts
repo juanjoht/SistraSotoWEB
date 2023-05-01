@@ -88,7 +88,8 @@ export class DriverService {
               departamento: requestDriverBasic.dept,
               municipio: requestDriverBasic.city,
               direccion: requestDriverBasic.address,
-              urlImagen: requestDriverBasic.urlImg
+              urlImagen: requestDriverBasic.urlImg,
+              estado: requestDriverBasic.state
             }
           })
             .pipe(map(user => {
@@ -184,7 +185,9 @@ postDriverDoc(requestDriverDoc: DriverDocument){
     {
         documentoConductor: {
             conductorId: requestDriverDoc.driverId,
-            documentoId: requestDriverDoc.docId
+            documentoId: requestDriverDoc.docId,
+            estado: requestDriverDoc.state,
+            fechaVencimiento: requestDriverDoc.maturityDate
         }
       })
         .pipe(map(client => {
@@ -213,7 +216,7 @@ postUploadDriverDoc(formData: any){
 }
 
 postUploadImageDriverDoc(formData: any){
-    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiUploadDriverImage}`,formData)
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiUploadDriverDoc}`,formData)
         .pipe(map(client => {
             if (client?.fileUrl !== '' && client?.fileUrl != null) {
                 return client.fileUrl; 

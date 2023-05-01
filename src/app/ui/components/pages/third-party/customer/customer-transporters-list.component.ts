@@ -58,6 +58,9 @@ export class CustomerTransportersListComponent implements OnInit {
    this.customerTransporterDialog = true;
    this.showVarCode = false;
    this.action = "Relacionar";
+   this.formCustomerTransporter.reset();
+   this.formCustomerTransporter.get("verificationCode")?.removeValidators(Validators.required);
+   this.formCustomerTransporter.updateValueAndValidity();
  }
 
  getGridData(){
@@ -68,7 +71,6 @@ export class CustomerTransportersListComponent implements OnInit {
       },
       error: error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.details, life: 5000 });
-        console.log(error);
       }
   });
 }
@@ -81,7 +83,6 @@ getAllTransportersData(){
       },
       error: (error: { message: any; }) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
-        console.log(error);
       }
   });
 }
@@ -104,7 +105,8 @@ getAllTransportersData(){
                     {
                       this.showVarCode = true;
                       this.action = "Autorizar";
-                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tarifa Flete del Cliente Creada', life: 3000 });
+                      this.getGridData();
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Relación Transportador Cliente Creada', life: 3000 });
                     }
                   },
                   error: error => {
@@ -114,19 +116,46 @@ getAllTransportersData(){
               });
  }
 
+ authorizeTransporter()
+ {
+    let formValues  = this.f;
+    let objCustomerTransporter: CustomerTransport = {
+      customerId: this.clientId,
+      transportId: formValues.transporterSelected.value,
+      codeAuth : formValues.verificationCode.value
+    }
+    
+    this.customerService.postAuthorizeTransporter(objCustomerTransporter)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      if(data)
+                      {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Transportador Autorizado', life: 3000 });
+                        this.customerTransporterDialog = false; 
+                        this.getGridData();
+                      }else
+                      {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo autorizar el transportador, verifique que el código sea el correcto', life: 3000 });
+                      }
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                    console.log(error);
+                  }
+              });
+ }
+
  validateTransporterByClient()
  {
-  this.validateCustomerTransporter = true;
-  if (this.validateCustomerTransporter)
+  this.f["verificationCode"].setValidators(Validators.required);
+  this.formCustomerTransporter.get("verificationCode")?.updateValueAndValidity();
+  if(!this.formCustomerTransporter.invalid)
   {
-    this.f["verificationCode"].setValidators(Validators.required);
-    this.formCustomerTransporter.get("verificationCode")?.updateValueAndValidity();
+    this.authorizeTransporter();
   }
-  /*if(!this.formCustomerTransporter.invalid)
-  {
-    this.showVarCode = true;
-    this.action = "Autorizar";
-  }*/
  }
 
  deleteCustomerTransporter ()
@@ -139,12 +168,37 @@ getAllTransportersData(){
   
  }
 
- sendCodeAgain()
+ sendCodeAgain(idTransporter: number)
  {
-   //generar codigo
-   this.customerTransporterDialog = true;
-   this.showVarCode = true;
-   this.action = "Autorizar";
+  this.formCustomerTransporter.reset();
+  this.submittedCustomerTransporter = false;
+  this.formCustomerTransporter.get("transporterSelected")?.setValue(idTransporter);
+    let objCustomerTransporter: CustomerTransport = {
+      customerId: this.clientId,
+      transportId: idTransporter
+    }
+    this.customerService.sendTransporterCode(objCustomerTransporter)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      if(data)
+                      {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Código de Validación Enviado', life: 3000 });
+                        this.customerTransporterDialog = true;
+                        this.showVarCode = true;
+                        this.action = "Autorizar";
+                      }else
+                      {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo enviar código de validación al cliente', life: 3000 });
+                      }
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                    console.log(error);
+                  }
+              });
  }
 
  get f() { return this.formCustomerTransporter?.controls; }

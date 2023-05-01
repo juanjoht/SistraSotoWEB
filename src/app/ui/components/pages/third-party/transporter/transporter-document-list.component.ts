@@ -31,6 +31,7 @@ export class TransporterDocumentListComponent implements OnInit {
   cols: any[] = [];
   action: string = "Adicionar";
   docName: string = '';
+  showMatutityDate: boolean= false;
   constructor(
     private parameterService: ParamService,
     private transporterService: TransporterService,
@@ -70,6 +71,7 @@ export class TransporterDocumentListComponent implements OnInit {
    this.action = "Cargar";
    this.submittedTransporterDoc = false;
    this.formTransporterDoc.reset();
+   this.showMatutityDate = false; 
  }
 
  getGridDataTransporters(){
@@ -133,18 +135,21 @@ saveContentDialog()
  {
   this.submittedTransporterDoc = true;
   if (this.formTransporterDoc.invalid) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
     return;
   }
     let formValues  = this.f;
     let objTransporterDoc: TransporterDocuments = {
       transporterId: this.transporterId,
-      docId: formValues.docSelected.value
+      docId: formValues.docSelected.value,
+      state: 'Pendiente'
     }
     this.transporterService.postTransporterDoc(objTransporterDoc)
               .subscribe({
                   next: (data) => {
                     if(data !== null)
                     {
+                      this.showMatutityDate = false;
                       this.showVarCode = true;
                       this.action = "Cargar";
                       this.getGridDataTransporters();
@@ -162,6 +167,17 @@ saveContentDialog()
  changeDoc(event: any)
  {
   this.docName = this.Docs.find(x=> x.id === event.value)?.name as string;
+  if(this.feature.toLowerCase() === 'conductor'){
+    this.showMatutityDate = this.Docs.find(x=> x.id === event.value)?.expire as boolean;
+    if(this.showMatutityDate)
+    {
+      this.formTransporterDoc.get("maturityDateSelected")?.setValidators(Validators.required);
+    }else
+    {
+      this.formTransporterDoc.get("maturityDateSelected")?.removeValidators(Validators.required);
+    }
+    this.formTransporterDoc.get("maturityDateSelected")?.updateValueAndValidity();
+  }
  }
 
  saveDriverDocs()
@@ -175,7 +191,8 @@ saveContentDialog()
     let objDriverDoc: DriverDocument = {
       driverId: this.transporterId,
       docId: formValues.docSelected.value,
-      state: 'Pendiente'
+      state: 'Pendiente',
+      maturityDate: this.showMatutityDate ? formValues.maturityDateSelected.value : new Date()
     }
     this.driverService.postDriverDoc(objDriverDoc)
               .subscribe({
@@ -282,6 +299,7 @@ saveContentDialog()
       driverId: this.transporterId,
       docId: formValues.docSelected.value,
       docUrl:urlDoc,
+      state: 'Cargado',
       maturityDate: formValues.maturityDateSelected.value
     }
   this.driverService.putDriverDoc(objTransporterDoc)
@@ -302,13 +320,17 @@ saveContentDialog()
 
 
 
- loadDoc(docName: string, docId: number){
+ loadDoc(docName: string, docId: number, matuDate: string){
   this.transporterDocDialog = true;
   this.showVarCode = true;
   this.action = "Cargar";
   this.docName = docName;
   this.formTransporterDoc.reset();
   this.formTransporterDoc.get('docSelected')?.setValue(docId);
+  if(this.feature.toLowerCase() === 'conductor'){
+    this.showMatutityDate = false;
+    this.formTransporterDoc.get('maturityDateSelected')?.setValue(matuDate);
+  }
  }
 
  get f() { return this.formTransporterDoc?.controls; }

@@ -58,6 +58,8 @@ export class TransporterVehicleListComponent implements OnInit {
    this.action = "Relacionar";
    this.submittedTransporterVehicle = false;
    this.formTransporterVehicle.reset();
+   this.formTransporterVehicle.get("verificationCode")?.removeValidators(Validators.required);
+   this.formTransporterVehicle.updateValueAndValidity();
  }
 
  getGridData(){
@@ -115,12 +117,44 @@ getAllVehicles(){
 
  validateVehicle()
  {
-  this.validateTransporterVehicle = true;
-  if (this.validateTransporterVehicle)
-  {
     this.f["verificationCode"].setValidators(Validators.required);
     this.formTransporterVehicle.get("verificationCode")?.updateValueAndValidity();
-  }
+    if(!this.formTransporterVehicle.invalid)
+    {
+      this.authorizeVehicle();
+    }
+ }
+
+ authorizeVehicle()
+ {
+    let formValues  = this.f;
+    let objTransporterVehicle: TransporterVehicles = {
+      transporterId: this.transporterId,
+      vehicleId: formValues.vehicleSelected.value,
+      AuthCode : formValues.verificationCode.value
+    }
+    
+    this.transporterService.postAuthorizeVehile(objTransporterVehicle)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      if(data)
+                      {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Vehículo Autorizado', life: 3000 });
+                        this.transporterVehicleDialog = false; 
+                        this.getGridData();
+                      }else
+                      {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo autorizar el Vehículo, verifique que el código sea el correcto', life: 3000 });
+                      }
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                    console.log(error);
+                  }
+              });
  }
 
  deleteTransporterVehicle ()
@@ -131,6 +165,38 @@ getAllVehicles(){
  confirmDeleteSelected()
  {
   
+ }
+
+ sendCodeAgain(idVehicle: number)
+ {
+  this.formTransporterVehicle.reset();
+  this.submittedTransporterVehicle = false;
+  this.formTransporterVehicle.get("vehicleSelected")?.setValue(idVehicle);
+    let objTransporterVehicles: TransporterVehicles = {
+      transporterId: this.transporterId,
+      vehicleId: idVehicle
+    }
+    this.transporterService.sendVehicleCode(objTransporterVehicles)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      if(data)
+                      {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Código de Validación Enviado', life: 3000 });
+                        this.transporterVehicleDialog = true;
+                        this.showVarCode = true;
+                        this.action = "Autorizar";
+                      }else
+                      {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo enviar código de validación al transportador', life: 3000 });
+                      }
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                  }
+              });
  }
 
  get f() { return this.formTransporterVehicle?.controls; }

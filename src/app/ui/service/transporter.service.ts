@@ -292,15 +292,13 @@ deleteTransporterRoute(transporterId: number){
 postLinkTransporterVehicle(requestTransporterVehicle: TransporterVehicles){
     return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiLinkTransporterVehicle}`,
     {
-        vehiculoRelacionTransportador: {
+        transportadorRelacionVehiculo: {
             transportadorId: requestTransporterVehicle.transporterId,
             vehiculoId: requestTransporterVehicle.vehicleId,
         }
       })
         .pipe(map(client => {
-            if (client.vehiculo?.id !== 0 && client.vehiculo?.id != null) {
-                return client.vehiculo; 
-            }
+                return (client?.vehiculoTransportador !== undefined && client?.vehiculoTransportador !== null) ? client.vehiculoTransportador: false; 
         }));
 }
 
@@ -325,6 +323,31 @@ postUploadTransporterDoc(formData: any){
             if (client?.fileUrl !== '' && client?.fileUrl != null) {
                 return client.fileUrl; 
             }
+        }));
+}
+
+sendVehicleCode(requestTransporterVehicle: TransporterVehicles){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiSendVehicleCode}`, {
+        generarCodigoVerificacion: {
+            transportadorId: requestTransporterVehicle.transporterId,
+            vehiculoId: requestTransporterVehicle.vehicleId
+        }
+      })
+        .pipe(map(client => {
+                return (client?.codigoVerificacionGenerado !== null || client?.codigoVerificacionGenerado !== undefined) ? client?.codigoVerificacionGenerado: false;
+        }));
+}
+
+postAuthorizeVehile(requestTransporterVehicle: TransporterVehicles){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiAuthorizeVehicle}`, {
+        autorizarVehiculo: {
+            transportadorId: requestTransporterVehicle.transporterId,
+            vehiculoId: requestTransporterVehicle.vehicleId,
+            codigoAutorizacion: requestTransporterVehicle.AuthCode
+        }
+      })
+        .pipe(map(client => {
+                return (client?.vehiculoAutorizado !== null || client?.vehiculoAutorizado !== undefined) ? client?.vehiculoAutorizado: false;
         }));
 }
 

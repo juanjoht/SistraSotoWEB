@@ -152,6 +152,7 @@ confirmBreakRelationship()
                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Conductor Relacionado', life: 3000 });
                       this.getGridData();
                       this.isRelatedTransporterDriverDialog = false;
+                      this.transporterDriverDialog = false;
                     }
                   },
                   error: error => {

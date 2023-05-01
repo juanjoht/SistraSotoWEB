@@ -34,7 +34,7 @@
                         </td>
                         <td *ngIf="!viewMode">
                             <button title="Eliminar" *ngIf="customerTransporters.status === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteCustomerTransporter()"></button>
-                            <button title="Generar Código de verificación" *ngIf="customerTransporters.status === 'Activo'" pButton pRipple icon="pi pi-replay" (click)="sendCodeAgain()" class="p-button-rounded p-button-success mr-2"></button>
+                            <button title="Generar Código de verificación" *ngIf="customerTransporters.status === 'Pendiente Autorización'" pButton pRipple icon="pi pi-replay" (click)="sendCodeAgain(customerTransporters.transportId)" class="p-button-rounded p-button-success mr-2"></button>
                         </td>
                     </tr>
                 </ng-template>
@@ -57,7 +57,7 @@
                 <button pButton pRipple label="Guardar" (click)="saveTransporterByClient()" icon="pi pi-check" class="p-button-text" ></button>    
             </div>
                 <div *ngIf="showVarCode" class="field col-12 sm:col-8">
-                    <label class="font-bold">Ingrese el código de verificación</label>
+                    <label class="font-bold">Ingrese el código de verificación*</label>
                     <input type="text" pInputText formControlName="verificationCode" [ngClass]="{ 'is-invalid ng-dirty': validateCustomerTransporter && f.verificationCode.errors }"  />
                     <small class="ng-dirty ng-invalid" *ngIf="validateCustomerTransporter && f?.verificationCode?.errors?.required">código de verificación es requerido</small>
                 </div>

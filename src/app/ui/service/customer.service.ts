@@ -389,10 +389,37 @@ postLinkCustomerTransporter(requestCustmerTransporter: CustomerTransport){
         }));
 }
 
-getAuthorizeTransporter(clientId: number, transporterId: number, authCode: number ){
-    return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiAuthorizeTransporter}?AutorizarTransporte.ClienteId=${clientId}&AutorizarTransporte.TransportadorId=${transporterId}&AutorizarTransporte.CodigoAutorizacion=${authCode}`)
+postAuthorizeTransporter(requestCustmerTransporter: CustomerTransport){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiAuthorizeTransporter}`, {
+        autorizarTransportador: {
+            clienteId: requestCustmerTransporter.customerId,
+            transportadorId: requestCustmerTransporter.transportId,
+            codigoAutorizacion: requestCustmerTransporter.codeAuth
+        }
+      })
         .pipe(map(client => {
-                return client.autorizarTransportador;
+                return (client?.transportadorAutorizado !== null || client?.transportadorAutorizado !== undefined) ? client?.transportadorAutorizado: false;
+        }));
+}
+
+sendTransporterCode(requestCustmerTransporter: CustomerTransport){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiSendTransporterCode}`, {
+        generarCodigoVerificacion: {
+            clienteId: requestCustmerTransporter.customerId,
+            transportadorId: requestCustmerTransporter.transportId,
+        }
+      })
+        .pipe(map(client => {
+                return (client?.codigoVerificacionGenerado !== null || client?.codigoVerificacionGenerado !== undefined) ? client?.codigoVerificacionGenerado: false;
+        }));
+}
+
+deleteTransporterClient(transporterId: number){
+    return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiTransporterRoute}?id=${transporterId}`)
+        .pipe(map(client => {
+            if (client.rutaEliminado) {
+                return client.rutaEliminado; 
+            }
         }));
 }
 

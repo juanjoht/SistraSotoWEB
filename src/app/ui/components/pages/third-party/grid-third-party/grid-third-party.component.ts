@@ -164,7 +164,9 @@ export class GridThirdPartyComponent implements OnInit {
     this.disabledDocInfoEdit = true;
     this.isViewMode = isviewMode;
     this.showOptions = !isviewMode;
-    this.getCommercialInfoByClient(this.clientId);
+    if(this.feature.toLowerCase() === 'cliente'){
+      this.getCommercialInfoByClient(this.clientId);
+    }
   }
 
   getCommercialInfoByClient(clientId : number){
@@ -419,7 +421,8 @@ export class GridThirdPartyComponent implements OnInit {
       dept: formValues.deptSelected.value,
       city: formValues.citySelected.value,
       address: formValues.address.value,
-      urlImg: this.editBasic.urlImg
+      urlImg: this.editBasic.urlImg,
+      state: (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if (this.editMode){
       objBasic.id = this.clientId;

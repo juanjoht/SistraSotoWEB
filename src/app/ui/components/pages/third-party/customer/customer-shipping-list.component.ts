@@ -169,7 +169,8 @@ export class CustomerShippingListComponent implements OnInit {
       customerId: this.clientId,
       origin: formValues.originSelected.value,
       destination: formValues.destinationSelected.value,
-      material: formValues.materialSelected.value
+      material: formValues.materialSelected.value,
+      state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if(this.feature.toLowerCase() === 'transportador'){
       objShipping.m3Value = formValues.m3Value.value;
