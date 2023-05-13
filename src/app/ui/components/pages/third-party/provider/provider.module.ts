@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ProviderRoutingModule } from './provider-routing.module';
 
 
-
 @NgModule({
   declarations: [],
   imports: [

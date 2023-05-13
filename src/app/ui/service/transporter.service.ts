@@ -205,19 +205,23 @@ postTransporterShipping(requestCustmerShipping: CustomerShipping){
         }));
 }
 
-putTransporterShipping(requestCustmerShipping: CustomerShipping){
+putTransporterShipping(requestCustmerShipping: CustomerShipping, transporterId: number){
     return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiTransporterRateShipping}`,
     {
-        tarifaFlete: {
-            id: requestCustmerShipping.id,
-            origen: requestCustmerShipping.origin,
-            destino: requestCustmerShipping.destination,
-            material: requestCustmerShipping.material,
-            valorMetroCubico: requestCustmerShipping.m3Value,
-            valorTonelada: requestCustmerShipping.tonValue,
-            unidadMedida: requestCustmerShipping.measureUnit,
-            valorFlete: requestCustmerShipping.shippingValue,
-            estado: requestCustmerShipping.state
+        tarifaFleteTransportador: {
+            transportadorId:transporterId,
+            estado: requestCustmerShipping.state,
+            tarifaFlete:{
+                id: requestCustmerShipping.id,
+                origen: requestCustmerShipping.origin,
+                destino: requestCustmerShipping.destination,
+                material: requestCustmerShipping.material,
+                valorMetroCubico: requestCustmerShipping.m3Value,
+                valorTonelada: requestCustmerShipping.tonValue,
+                unidadMedida: requestCustmerShipping.measureUnit,
+                valorFlete: requestCustmerShipping.shippingValue,
+                estado: requestCustmerShipping.state
+            }
         }
       })
         .pipe(map(client => {
@@ -232,6 +236,7 @@ postTransporterRoute(requestTransporterRoute: TransporterRoutes){
     {
         rutaTransportador: {
             transportadorId: requestTransporterRoute.transporterId,
+            estado: "Activo",
             ruta: {
                 origen: requestTransporterRoute.origin,
                 destino: requestTransporterRoute.destination,
@@ -350,6 +355,14 @@ postAuthorizeVehile(requestTransporterVehicle: TransporterVehicles){
                 return (client?.vehiculoAutorizado !== null || client?.vehiculoAutorizado !== undefined) ? client?.vehiculoAutorizado: false;
         }));
 }
+
+deleteTransporterVehicle(transporterId: number, vehicleId: number){
+    return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiDeleteTransporterVehicle}?TransportadorId=${transporterId}&VehiculoId=${vehicleId}`)
+        .pipe(map(client => {
+                return (client?.transportadorVehiculoEliminado !== null || client?.transportadorVehiculoEliminado !== undefined) ? client?.transportadorVehiculoEliminado: false;
+        }));
+}
+
 
 
 

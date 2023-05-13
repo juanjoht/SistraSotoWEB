@@ -44,6 +44,8 @@ import { UserProfileEditComponent } from './security/user/user-profile-edit.comp
 import { ProfileModuleComponent } from './security/user/profile-module.component';
 import { ParametersComponent } from './security/parameters/parameters.component';
 import { ParametersEditComponent } from './security/parameters/parameters-edit.component';
+import { ProviderComponent } from './third-party/provider/provider.component';
+import { ProviderPricesComponent } from './third-party/provider/provider-prices.component';
 
 
 @NgModule({
@@ -70,7 +72,10 @@ import { ParametersEditComponent } from './security/parameters/parameters-edit.c
         UserProfileEditComponent,
         ProfileModuleComponent,
         ParametersComponent,
-        ParametersEditComponent
+        ParametersEditComponent,
+        ProviderComponent,
+        ProviderPricesComponent
+
     ],
     imports: [
         CommonModule,

@@ -1,8 +1,9 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card">
-            <h4>Página en construcción</h4>
-            <p>Esta pagina esta vacía por el momento.</p>
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <app-grid-third-party [listGrid]="providers" (reloadGridParent)="reloadGrid($event)" [title]="'Proveedores'" [feature]="'Proveedor'"></app-grid-third-party>
         </div>
     </div>
 </div>

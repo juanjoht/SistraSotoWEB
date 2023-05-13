@@ -64,6 +64,13 @@
     </div>
     <div *ngIf="isTransporter" class="field col-12 sm:col-4">
     </div>
+    <div *ngIf="isProvider" class="field col-12 sm:col-4">
+        <label for="waitingTime" class="font-bold">Tiempo de espera para cargue*</label>
+        <p-inputNumber id="waitingTime" inputId="minmax" inputId="minmax" [min]="0" formControlName="waitingTime" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.waitingTime.errors}"> </p-inputNumber>
+        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.waitingTime?.errors?.required">Tiempo de espera para cargue es requerido</small>
+    </div>
+    <div *ngIf="isProvider" class="field col-12 sm:col-4">
+    </div>
     <div *ngIf="isDriver && isEdit" class="field col-12 sm:col-4">
         <label class="font-bold">Foto Conductor</label>
         <div class="flex justify-content-center">

@@ -30,6 +30,7 @@ export class CustomerTransportersListComponent implements OnInit {
   showVarCode = false;
   cols: any[] = [];
   action: string = "Relacionar";
+  transporterId: number = 0;
   constructor(
     private customerService: CustomerService,
     private transporterService: TransporterService,
@@ -158,13 +159,36 @@ getAllTransportersData(){
   }
  }
 
- deleteCustomerTransporter ()
+ deleteCustomerTransporter (transporterid: number)
  {
   this.deleteCustomerTransporterDialog = true;
+  this.transporterId = transporterid;
  }
 
  confirmDeleteSelected()
  {
+
+  this.customerService.deleteTransporterClient(this.clientId,this.transporterId)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      if(data)
+                      {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Transportador Eliminado', life: 3000 });
+                        this.deleteCustomerTransporterDialog = false; 
+                        this.getGridData();
+                      }else
+                      {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el transportador', life: 3000 });
+                      }
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                    console.log(error);
+                  }
+              });
   
  }
 

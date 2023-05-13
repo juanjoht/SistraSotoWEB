@@ -49,7 +49,7 @@
     <ng-template pTemplate="content">
             <p-tabView (onChange)="onChangeTab($event)" >
                 <p-tabPanel header="Información Basica">
-                    <app-customer-basic-edit #edit [disabledDocInfo]="disabledDocInfoEdit" [customerBasicEdit]="customerBasic" [viewMode]="isViewMode"  [isTransporter]="feature === 'Transportador'" [isDriver]="feature === 'Conductor'" ></app-customer-basic-edit>
+                    <app-customer-basic-edit #edit [disabledDocInfo]="disabledDocInfoEdit" [customerBasicEdit]="customerBasic" [viewMode]="isViewMode"  [isTransporter]="feature === 'Transportador'" [isDriver]="feature === 'Conductor'" [isDriver]="feature === 'Conductor'" [isProvider]="feature === 'Proveedor'" ></app-customer-basic-edit>
                 </p-tabPanel>
                 <p-tabPanel *ngIf="feature === 'Cliente'"  header="Información Comercial" [disabled]="commercialInfoTab">
                     <app-customer-commercial-edit [clientName]="clientName" [viewMode]="isViewMode" [customerCommercialEdit]="customerCommercialInfo" ></app-customer-commercial-edit>

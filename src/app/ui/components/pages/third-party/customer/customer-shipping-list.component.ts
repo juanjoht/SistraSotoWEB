@@ -124,7 +124,7 @@ export class CustomerShippingListComponent implements OnInit {
     }
     if (this.editMode){
       objShipping.id = this.shippingId;
-      this.customerService.putCustomerShipping(objShipping)
+      this.customerService.putCustomerShipping(objShipping, this.clientId)
       .subscribe({
           next: (data) => {
             if(data !== null)
@@ -179,7 +179,7 @@ export class CustomerShippingListComponent implements OnInit {
 
     if (this.editMode){
       objShipping.id = this.shippingId;
-      this.transporterService.putTransporterShipping(objShipping)
+      this.transporterService.putTransporterShipping(objShipping,this.clientId)
       .subscribe({
           next: (data) => {
             if(data !== null)

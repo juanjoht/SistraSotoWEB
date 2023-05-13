@@ -13,6 +13,8 @@ import { DriverGeneralInfoComponent } from '../driver/driver-general-info.compon
 import { Common } from 'src/app/common/common';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { CustomerShippingListComponent } from '../customer/customer-shipping-list.component';
+import { ProviderBasicInfo } from 'src/app/ui/models/provider.model';
+import { ProviderService } from 'src/app/ui/service/provider.service';
 
 @Component({
   selector: 'app-grid-third-party',
@@ -63,7 +65,8 @@ export class GridThirdPartyComponent implements OnInit {
     private messageService: MessageService,
      private customerService: CustomerService,
      private transporterService: TransporterService,
-     private driverService: DriverService,      
+     private driverService: DriverService, 
+     private providerService: ProviderService     
      ) { }
 
      checkPermissions(itemMenu: string, action: string) {
@@ -104,6 +107,12 @@ export class GridThirdPartyComponent implements OnInit {
       this.checkPermissions('Terceros-Conductores', 'Consultar');
       this.checkPermissions('Terceros-Conductores', 'Crear');
       this.checkPermissions('Terceros-Conductores', 'Editar');
+    }
+    if(this.feature === 'Proveedor')
+    {
+      this.checkPermissions('Terceros-Proveedores', 'Consultar');
+      this.checkPermissions('Terceros-Proveedores', 'Crear');
+      this.checkPermissions('Terceros-Proveedores', 'Editar');
     }
   }
 
@@ -211,6 +220,18 @@ export class GridThirdPartyComponent implements OnInit {
             break;
           case 1:
             this.saveDriverGeneral();
+            break;
+          default:
+            break;
+        }
+      }
+      if(this.feature.toLocaleLowerCase() === 'proveedor'){
+        switch (this.tabIndex) {
+          case 0:
+            this.saveProviderBasic();
+            break;
+          case 1:
+           // this.saveDriverGeneral();
             break;
           default:
             break;
@@ -507,6 +528,65 @@ export class GridThirdPartyComponent implements OnInit {
           }
       });
   }
+
+  saveProviderBasic()
+  {
+    this.editBasic.submittedBasic = true;
+    if (this.editBasic.formGrouBasic.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
+      return;
+    }
+    let formValues  = this.editBasic.f;
+    let objBasic: ProviderBasicInfo = {
+      docType: formValues.documentTypeSelected.value,
+      docNumber: formValues.docNumber.value,
+      name: formValues.name.value,
+      phone: formValues.phone.value,
+      cellPhone: formValues.cellphone.value,
+      email: formValues.email.value,
+      dept: formValues.deptSelected.value,
+      city: formValues.citySelected.value,
+      address: formValues.address.value,
+      waitingTime: formValues.waitingTime.value,
+      state: (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
+    }
+    if (this.editMode){
+      objBasic.id = this.clientId;
+      objBasic.state = (formValues.stateSelected.value) ? 'Activo' : 'Inactivo';
+      this.providerService.putProviderBasic(objBasic)
+      .subscribe({
+          next: (data) => {
+            if(data !== null)
+            {
+              this.clientId = data.id;
+              this.clientName = data.nombre;
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Proveedor Actualizado', life: 3000 });
+            }
+          },
+          error: error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+          }
+      });
+    }else{
+      this.providerService.postProviderBasic(objBasic)
+      .subscribe({
+          next: (data) => {
+            if(data !== null)
+            {
+              this.clientId = data.id;
+              this.clientName = data.nombre;
+              //this.driversGeneralInfoTab = false;
+             // this.documentsListTab = false;
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Proveedor Creado', life: 3000 });
+            }
+          },
+          error: error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          }
+      });
+    }
+  }
+
 
   onChangeTab(event: any){
     this.tabIndex = event.index;

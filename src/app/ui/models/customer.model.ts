@@ -13,6 +13,7 @@ export interface CustomerBasicInfo {
     payDeadline? :string;
     thirdParty?:string;
     urlImg?:string;
+    waitingTime?: string;
 }
 
 export interface CustomerCommercialInfo {

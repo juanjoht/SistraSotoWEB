@@ -14,7 +14,7 @@ export const Constants = {
     apiDocsByTransporter: '/documento/documentosTransportador',
     apiVehiclesByTransporter: '/vehiculo/transportador',
     apiDriversByTransporter: '/conductor/Transportador',
-    apiRateShipping: '/tarifaFlete',
+    apiRateShipping: '/tarifaFlete/cliente',
     apiCustomerRateShipping: '/tarifaFlete/cliente',
     apiTransporterRateShipping: '/tarifaFlete/transportador',
     apiTransporter: '/transportador',
@@ -50,6 +50,9 @@ export const Constants = {
     apiDownloadDoc: '/download/documento',
     apiParams: '/parametro',
     apiParamType: '/tipoParametro',
+    apiDeleteCustomerTransporter: '/cliente/transportador',
+    apiDeleteTransporterVehicle: '/transportador/vehiculo',
+    apiProvider: '/proveedor',
     pathHome: 'home',
     pathLogin: 'login',
     numRowMax: 2147483647

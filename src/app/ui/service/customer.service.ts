@@ -352,25 +352,27 @@ postCustomerShipping(requestCustmerShipping: CustomerShipping){
         }));
 }
 
-putCustomerShipping(requestCustmerShipping: CustomerShipping){
+putCustomerShipping(requestCustmerShipping: CustomerShipping, clientId: number){
     return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiRateShipping}`,
     {
-        tarifaFlete: {
-            id: requestCustmerShipping.id,
-            origen: requestCustmerShipping.origin,
-            destino: requestCustmerShipping.destination,
-            material: requestCustmerShipping.material,
-            valorMetroCubico: requestCustmerShipping.m3Value,
-            valorTonelada: requestCustmerShipping.tonValue,
-            unidadMedida: requestCustmerShipping.measureUnit,
-            valorFlete: requestCustmerShipping.shippingValue,
-            estado : requestCustmerShipping.state
+        tarifaFleteCliente:{
+            clienteId: clientId,
+            estado: requestCustmerShipping.state,
+            tarifaFlete: {
+                id: requestCustmerShipping.id,
+                origen: requestCustmerShipping.origin,
+                destino: requestCustmerShipping.destination,
+                material: requestCustmerShipping.material,
+                valorMetroCubico: requestCustmerShipping.m3Value,
+                valorTonelada: requestCustmerShipping.tonValue,
+                unidadMedida: requestCustmerShipping.measureUnit,
+                valorFlete: requestCustmerShipping.shippingValue,
+                estado : requestCustmerShipping.state
+            }
         }
       })
         .pipe(map(client => {
-            if (client.tarifaFlete?.id !== 0 && client.tarifaFlete?.id != null) {
-                return client.tarifaFlete; 
-            }
+                return (client.relacionTarifaFleteActualizado !== null && client.relacionTarifaFleteActualizado !== undefined) ? client.relacionTarifaFleteActualizado : false; 
         }));
 }
 
@@ -414,12 +416,10 @@ sendTransporterCode(requestCustmerTransporter: CustomerTransport){
         }));
 }
 
-deleteTransporterClient(transporterId: number){
-    return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiTransporterRoute}?id=${transporterId}`)
+deleteTransporterClient(clientId: number, transporterId: number){
+    return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiDeleteCustomerTransporter}?ClienteId=${clientId}&TransportadorId=${transporterId}`)
         .pipe(map(client => {
-            if (client.rutaEliminado) {
-                return client.rutaEliminado; 
-            }
+                return (client?.clienteTransportadorEliminado !== null || client?.clienteTransportadorEliminado !== undefined) ? client?.clienteTransportadorEliminado: false;
         }));
 }
 

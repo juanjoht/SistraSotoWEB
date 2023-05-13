@@ -119,7 +119,7 @@ getDestinationsParams(){
             }
           },
           error: error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
           }
       });
  }

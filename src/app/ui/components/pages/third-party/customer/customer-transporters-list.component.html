@@ -33,7 +33,7 @@
                             {{customerTransporters.status}}
                         </td>
                         <td *ngIf="!viewMode">
-                            <button title="Eliminar" *ngIf="customerTransporters.status === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteCustomerTransporter()"></button>
+                            <button title="Eliminar" *ngIf="customerTransporters.status === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteCustomerTransporter(customerTransporters.transportId)"></button>
                             <button title="Generar Código de verificación" *ngIf="customerTransporters.status === 'Pendiente Autorización'" pButton pRipple icon="pi pi-replay" (click)="sendCodeAgain(customerTransporters.transportId)" class="p-button-rounded p-button-success mr-2"></button>
                         </td>
                     </tr>

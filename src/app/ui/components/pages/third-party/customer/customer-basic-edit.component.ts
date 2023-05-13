@@ -19,6 +19,7 @@ import { environment } from 'src/environments/environment';
 export class CustomerBasicEditComponent implements OnInit  {
   @Input() isTransporter: boolean = false;
   @Input() isDriver: boolean = false;
+  @Input() isProvider: boolean = false;
   @Input() customerBasicEdit!: CustomerBasicInfo;
   @Input() viewMode: boolean = false;
   @Input() disabledDocInfo: boolean = false;
@@ -63,7 +64,8 @@ export class CustomerBasicEditComponent implements OnInit  {
         citySelected:['',[Validators.required]],
         address:['', [Validators.required]],
         stateSelected:[true],
-        payDeadline:['']
+        payDeadline:[''],
+        waitingTime:[0]
        });
     }else
     {
@@ -75,6 +77,12 @@ export class CustomerBasicEditComponent implements OnInit  {
      {
       this.f["payDeadline"].setValidators(Validators.required);
       this.formGrouBasic.get("payDeadline")?.updateValueAndValidity();
+     }
+
+     if(this.isProvider)
+     {
+      this.f["waitingTime"].setValidators(Validators.required);
+      this.formGrouBasic.get("waitingTime")?.updateValueAndValidity();
      }
 
   }
@@ -93,7 +101,8 @@ export class CustomerBasicEditComponent implements OnInit  {
       citySelected:[{value: this.customerBasicEdit.city, disabled: this.viewMode},[Validators.required]],
       address:[{value: this.customerBasicEdit.address, disabled: this.viewMode}, [Validators.required]],
       stateSelected:[{value: this.customerBasicEdit.state === 'Activo' ? true: false, disabled: this.viewMode}],
-      payDeadline:[{value: this.customerBasicEdit.payDeadline, disabled: this.viewMode}]
+      payDeadline:[{value: this.customerBasicEdit.payDeadline, disabled: this.viewMode}],
+      waitingTime:[{value: this.customerBasicEdit.waitingTime, disabled: this.viewMode}]
      });
 
      if(this.isDriver)

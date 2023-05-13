@@ -25,6 +25,7 @@ export class TransporterVehicleListComponent implements OnInit {
   showVarCode = false;
   cols: any[] = [];
   action: string = "Relacionar";
+  vehicleId: number = 0;
   constructor(
     private vehicleService: VehicleService,
     private transporterService: TransporterService,
@@ -110,7 +111,7 @@ getAllVehicles(){
                     }
                   },
                   error: error => {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
                   }
               });
  }
@@ -157,13 +158,36 @@ getAllVehicles(){
               });
  }
 
- deleteTransporterVehicle ()
+ deleteTransporterVehicle (vehicleid: number)
  {
   this.deleteTransporterVehicleDialog = true;
+  this.vehicleId = vehicleid;
  }
 
  confirmDeleteSelected()
  {
+
+  this.transporterService.deleteTransporterVehicle(this.transporterId,this.vehicleId)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      if(data)
+                      {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Vehículo Eliminado', life: 3000 });
+                        this.deleteTransporterVehicleDialog = false; 
+                        this.getGridData();
+                      }else
+                      {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el Vehículo', life: 3000 });
+                      }
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                    console.log(error);
+                  }
+              });
   
  }
 

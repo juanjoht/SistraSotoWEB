@@ -47,8 +47,8 @@
                             {{transporterVehicle.state}}
                         </td>
                         <td *ngIf="!viewMode">
-                            <button title="Eliminar" *ngIf="transporterVehicle.state === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterVehicle()"></button>
-                            <button title="Generar Código de verificación" *ngIf="transporterVehicle.state === 'Activo'" pButton pRipple icon="pi pi-replay" (click)="sendCodeAgain(transporterVehicle.id)" class="p-button-rounded p-button-success mr-2"></button>
+                            <button title="Eliminar" *ngIf="transporterVehicle.state === 'Autorizado'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterVehicle(transporterVehicle.id)"></button>
+                            <button title="Generar Código de verificación" *ngIf="transporterVehicle.state === 'Pendiente Autorización'" pButton pRipple icon="pi pi-replay" (click)="sendCodeAgain(transporterVehicle.id)" class="p-button-rounded p-button-success mr-2"></button>
                         </td>
                     </tr>
                 </ng-template>
