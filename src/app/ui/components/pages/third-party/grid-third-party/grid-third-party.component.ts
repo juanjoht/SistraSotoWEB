@@ -15,6 +15,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { CustomerShippingListComponent } from '../customer/customer-shipping-list.component';
 import { ProviderBasicInfo } from 'src/app/ui/models/provider.model';
 import { ProviderService } from 'src/app/ui/service/provider.service';
+import { ProviderPricesComponent } from '../provider/provider-prices.component';
 
 @Component({
   selector: 'app-grid-third-party',
@@ -31,6 +32,7 @@ export class GridThirdPartyComponent implements OnInit {
   @ViewChild(CustomerBuildingsListComponent)buildingList!: CustomerBuildingsListComponent;
   @ViewChild(DriverGeneralInfoComponent)editDriverGeneral!: DriverGeneralInfoComponent;
   @ViewChild(CustomerShippingListComponent)shippingList!: CustomerShippingListComponent;
+  @ViewChild(ProviderPricesComponent)providerPrice!: ProviderPricesComponent;
 
   tabIndex: number = 0;
   customers: CustomerBasicInfo[] = [];
@@ -49,6 +51,8 @@ export class GridThirdPartyComponent implements OnInit {
   vehiclesListTab: boolean = true;
   driversListTab: boolean = true;
   driversGeneralInfoTab: boolean = true;
+  pricesListTab: boolean = true;
+  loadingTimeListTab: boolean = true;
   clientId: number= 0;
   transporterId: number= 0;
   clientName: string  = '';
@@ -166,6 +170,8 @@ export class GridThirdPartyComponent implements OnInit {
     this.vehiclesListTab = false;
     this.driversListTab = false;
     this.driversGeneralInfoTab = false;
+    this.pricesListTab = false;
+    this.loadingTimeListTab = false;
     this.clientName = customerBasic.name as string;
     this.clientId = customerBasic.id as number;
     this.clientdoc = customerBasic.docNumber as string;
@@ -575,8 +581,8 @@ export class GridThirdPartyComponent implements OnInit {
             {
               this.clientId = data.id;
               this.clientName = data.nombre;
-              //this.driversGeneralInfoTab = false;
-             // this.documentsListTab = false;
+              this.pricesListTab = false;
+              this.loadingTimeListTab = false;
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Proveedor Creado', life: 3000 });
             }
           },
@@ -610,6 +616,15 @@ export class GridThirdPartyComponent implements OnInit {
     if(this.feature === 'Conductor')
     {
       this.showOptions = event.index === 2 ? false: true;
+    }
+
+    if(this.feature === 'Proveedor')
+    {
+      this.showOptions = event.index === 1 || event.index === 2? false: true;
+      if (this.tabIndex === 1)
+        {
+          this.providerPrice.getGridData();
+        }
     }
   }
 }

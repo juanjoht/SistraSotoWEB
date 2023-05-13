@@ -1,1 +1,87 @@
-<p>provider-prices works!</p>
+<div class="formgrid grid">
+    <div class="field col-12 sm:col-12">
+        <label class="font-bold text-center">{{providerName}}</label>
+    </div>
+    <div class="field col-12 sm:col-12">
+            <p-table #dtproviderPrices [value]="providerPrices" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Precios Material del Proveedor</h5>
+                        <span *ngIf="!viewMode" class="block mt-2 md:mt-0">
+                            <button pButton pRipple title="Adicionar Nuevo Precio Material" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewPrice()"></button>                            
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:20%" pSortableColumn="material">Material<p-sortIcon field="material"></p-sortIcon></th>
+                        <th style="width:20%" pSortableColumn="valueM3">Valor M3<p-sortIcon field="valueM3"></p-sortIcon></th>
+                        <th style="width:20%" pSortableColumn="valueTon">Valor ton <p-sortIcon field="valueTon"></p-sortIcon></th>
+                        <th style="width:20%" pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
+                        <th  *ngIf="!viewMode" style="width:0%"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-providerPrice>
+                    <tr>
+                        <td>
+                            <span class="p-column-title">material</span>
+                            {{providerPrice.material}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">valueM3</span>
+                            {{providerPrice.valueM3}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">valueTon</span>
+                            {{providerPrice.valueTon}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">state</span>
+                            {{providerPrice.state}}
+                        </td>
+                        <td *ngIf="!viewMode">
+                            <button title="Editar" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProviderPrice(providerPrice)" ></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+<p-dialog [(visible)]="providerPriceDialog" [style]="{width: '1000px',height: '300px'}" [breakpoints]="{ '960px': '75vw' }" [draggable]="false" [maximizable]="true"  [modal]="true" class="p-fluid">
+    <ng-template pTemplate="header">
+        <span class="text-xl font-bold text-center">Crear/Editar Precio Material</span>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <form [formGroup]="formProviderPrice" >
+         <div class="formgrid grid mb-10">
+            <div class="field col-12 sm:col-4">
+                <label for="materialSelect" class="font-bold">Material*</label>
+                <p-dropdown id="materialSelect" scrollHeight="200px" formControlName="materialSelected"  [options]="materials" placeholder="Seleccione un Material" optionValue="name"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedProviderPrices && f.materialSelected.errors }" ></p-dropdown>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedProviderPrices && f?.materialSelected?.errors?.required">Material es requerido</small>
+            </div>
+            <div class="field col-12 sm:col-2">
+                    <label class="font-bold">Valor M3*</label>
+                    <p-inputNumber id="valueM3" inputId="minmax" inputId="minmax" [min]="0" formControlName="valueM3"  [ngClass]="{ 'is-invalid ng-dirty': submittedProviderPrices && f.valueM3.errors }" > </p-inputNumber>
+
+                    <small class="ng-dirty ng-invalid" *ngIf="submittedProviderPrices && f?.valueM3?.errors?.required">Valor m3 es requerido</small>
+            </div>
+            <div class="field col-12 sm:col-2">
+                <label class="font-bold">Valor ton*</label>
+                <p-inputNumber id="valueTon" inputId="minmax" inputId="minmax" [min]="0" formControlName="valueTon"  [ngClass]="{ 'is-invalid ng-dirty': submittedProviderPrices && f.valueTon.errors }" > </p-inputNumber>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedProviderPrices && f?.valueTon?.errors?.required">Valor ton es requerido</small>
+            </div>
+            <div class="field col-12 sm:col-1">
+                <label for="stateYesorNot" class="font-bold">Estado</label>
+                <div class="flex align-items-center h-3rem">
+                    <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+                </div>
+            </div>
+            <div class="field col-12 sm:col-3 align-self-end">
+                    <button pButton pRipple label="Aceptar" icon="pi pi-check" class="p-button-text" (click)="savePrices()" ></button>    
+             </div>
+        </div>
+    </form>
+    </ng-template>
+</p-dialog>
+</div>
+
+

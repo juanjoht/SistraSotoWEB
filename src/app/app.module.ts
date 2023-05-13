@@ -18,6 +18,7 @@ import { DriverService } from './ui/service/driver.service';
 import { UserService } from './ui/service/user.service';
 import { ProfileService } from './ui/service/profile.service';
 import { ProviderService } from './ui/service/provider.service';
+import { MaterialService } from './ui/service/material.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { ProviderService } from './ui/service/provider.service';
       useClass: JwtInterceptor,
       multi: true
      },
-     CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService,UserService, ProfileService, ProviderService],
+     CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService,UserService, ProfileService, ProviderService, MaterialService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

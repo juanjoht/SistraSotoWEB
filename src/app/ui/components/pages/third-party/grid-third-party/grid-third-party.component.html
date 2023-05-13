@@ -78,6 +78,11 @@
                 <p-tabPanel  *ngIf="feature === 'Transportador'" header="Conductores" [disabled]="driversListTab">
                     <app-transporter-driver-list [transporterName]="clientName" [viewMode]="isViewMode" [transporterId]="clientId"></app-transporter-driver-list>
                 </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Proveedor'" header="Precios Material del Proveedor" [disabled]="pricesListTab">
+                    <app-provider-prices [providerName]="clientName" [viewMode]="isViewMode" [providerId]="clientId"></app-provider-prices>
+                </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Proveedor'" header="Tiempos de carga por Material y Tipo de Vehículo" [disabled]="loadingTimeListTab">
+                </p-tabPanel>
             </p-tabView>
     </ng-template>
     

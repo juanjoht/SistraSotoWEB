@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { ProviderBasicInfo } from '../models/provider.model';
+import { ProviderBasicInfo, ProviderPrices } from '../models/provider.model';
 
 @Injectable()
 export class ProviderService {
@@ -27,6 +27,23 @@ export class ProviderService {
                     address: item.direccion,
                     state: item.estado,
                     waitingTime : item.tiempoEsperaCargue
+                }
+            })
+        }));
+    }
+
+    getProviderPrices(providerId: number) {
+        let newData: ProviderPrices = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiProviderPrices}/proveedorId?ProveedorId=${providerId}`)
+        .pipe(map(data => {
+            return data?.preciosMaterialesProveedor?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    providerId: item.proveedorId,
+                    material: item.material,
+                    valueM3: item.valorMetroCubico,
+                    valueTon: item.valorTonelada,
+                    state:item.estado
                 }
             })
         }));
@@ -80,5 +97,42 @@ putProviderBasic(requestProveedorBasic: ProviderBasicInfo){
                 return user.proveedor; 
             }
         }));
+}
+
+postProviderPrice(requestProveedorPrice: ProviderPrices){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiProviderPrices}`,
+    {
+        precioMaterialProveedor: {
+            proveedorId: requestProveedorPrice.providerId,
+            material: requestProveedorPrice.material,
+            valorMetroCubico: requestProveedorPrice.valueM3,
+            valorTonelada: requestProveedorPrice.valueTon,
+            estado: requestProveedorPrice.state
+        }
+      })
+        .pipe(map(user => {
+            if (user.precioMaterialProveedor?.id !== 0 && user.precioMaterialProveedor?.id != null) {
+                return user.precioMaterialProveedor; 
+            }
+        }));
+}
+
+putProviderPrice(requestProveedorPrice: ProviderPrices){
+return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiProviderPrices}`,
+{
+    precioMaterialProveedor: {
+      id: requestProveedorPrice.id,
+      proveedorId: requestProveedorPrice.providerId,
+      material: requestProveedorPrice.material,
+      valorMetroCubico: requestProveedorPrice.valueM3,
+      valorTonelada: requestProveedorPrice.valueTon,
+      estado: requestProveedorPrice.state
+    }
+  })
+    .pipe(map(user => {
+        if (user.precioMaterialProveedor?.id !== 0 && user.precioMaterialProveedor?.id != null) {
+            return user.precioMaterialProveedor; 
+        }
+    }));
 }
 }

@@ -52,7 +52,9 @@ export const Constants = {
     apiParamType: '/tipoParametro',
     apiDeleteCustomerTransporter: '/cliente/transportador',
     apiDeleteTransporterVehicle: '/transportador/vehiculo',
+    apiMaterial: '/material',
     apiProvider: '/proveedor',
+    apiProviderPrices: '/precioMaterialProveedor',
     pathHome: 'home',
     pathLogin: 'login',
     numRowMax: 2147483647

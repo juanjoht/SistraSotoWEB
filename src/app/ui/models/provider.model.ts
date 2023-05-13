@@ -12,3 +12,12 @@ export interface ProviderBasicInfo {
     waitingTime?: string;
     state?: string;
 }
+
+export interface ProviderPrices{
+    id?: number;
+    providerId?: number;
+    material?: string;
+    valueM3?:number;
+    valueTon?:  number;
+    state?: string;
+}
