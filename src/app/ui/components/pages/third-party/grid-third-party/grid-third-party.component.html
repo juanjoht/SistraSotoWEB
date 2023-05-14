@@ -82,6 +82,7 @@
                     <app-provider-prices [providerName]="clientName" [viewMode]="isViewMode" [providerId]="clientId"></app-provider-prices>
                 </p-tabPanel>
                 <p-tabPanel  *ngIf="feature === 'Proveedor'" header="Tiempos de carga por Material y Tipo de Vehículo" [disabled]="loadingTimeListTab">
+                    <app-provider-times [providerName]="clientName" [viewMode]="isViewMode" [providerId]="clientId"></app-provider-times>
                 </p-tabPanel>
             </p-tabView>
     </ng-template>

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { ProviderBasicInfo, ProviderPrices } from '../models/provider.model';
+import { ProviderBasicInfo, ProviderPrices, ProviderTimes } from '../models/provider.model';
 
 @Injectable()
 export class ProviderService {
@@ -43,6 +43,24 @@ export class ProviderService {
                     material: item.material,
                     valueM3: item.valorMetroCubico,
                     valueTon: item.valorTonelada,
+                    state:item.estado
+                }
+            })
+        }));
+    }
+
+    getProviderTimes(providerId: number) {
+        let newData: ProviderTimes = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiProviderTimes}/proveedorId?ProveedorId=${providerId}`)
+        .pipe(map(data => {
+            return data?.tiemposCargueProveedor?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    providerId: item.proveedorId,
+                    material: item.material,
+                    simple: item.sencillo,
+                    double: item.doble,
+                    tractor: item.tractomula,
                     state:item.estado
                 }
             })
@@ -135,4 +153,44 @@ return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiProviderPrice
         }
     }));
 }
+
+postProviderTime(requestProveedorTime: ProviderTimes){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiProviderTimes}`,
+    {
+        tiempoCargueProveedor: {
+            proveedorId: requestProveedorTime.providerId,
+            material: requestProveedorTime.material,
+            sencillo: requestProveedorTime.simple,
+            doble: requestProveedorTime.double,
+            tractomula: requestProveedorTime.tractor,
+            estado: requestProveedorTime.state
+        }
+      })
+        .pipe(map(user => {
+            if (user.tiempoCargueProveedor?.id !== 0 && user.tiempoCargueProveedor?.id != null) {
+                return user.tiempoCargueProveedor; 
+            }
+        }));
+}
+
+putProviderTime(requestProveedorTime: ProviderTimes){
+return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiProviderTimes}`,
+{
+    tiempoCargueProveedor: {
+      id: requestProveedorTime.id,
+      proveedorId: requestProveedorTime.providerId,
+      material: requestProveedorTime.material,
+      sencillo: requestProveedorTime.simple,
+      doble: requestProveedorTime.double,
+      tractomula: requestProveedorTime.tractor,
+      estado: requestProveedorTime.state
+    }
+  })
+    .pipe(map(user => {
+        if (user.tiempoCargueProveedor?.id !== 0 && user.tiempoCargueProveedor?.id != null) {
+            return user.tiempoCargueProveedor; 
+        }
+    }));
+}
+
 }

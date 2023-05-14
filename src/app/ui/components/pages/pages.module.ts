@@ -46,6 +46,7 @@ import { ParametersComponent } from './security/parameters/parameters.component'
 import { ParametersEditComponent } from './security/parameters/parameters-edit.component';
 import { ProviderComponent } from './third-party/provider/provider.component';
 import { ProviderPricesComponent } from './third-party/provider/provider-prices.component';
+import { ProviderTimesComponent } from './third-party/provider/provider-times.component';
 
 
 @NgModule({
@@ -74,7 +75,8 @@ import { ProviderPricesComponent } from './third-party/provider/provider-prices.
         ParametersComponent,
         ParametersEditComponent,
         ProviderComponent,
-        ProviderPricesComponent
+        ProviderPricesComponent,
+        ProviderTimesComponent
 
     ],
     imports: [

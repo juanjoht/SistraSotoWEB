@@ -2,27 +2,27 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { material } from 'src/app/ui/models/material.model';
-import { ProviderPrices } from 'src/app/ui/models/provider.model';
+import { ProviderTimes } from 'src/app/ui/models/provider.model';
 import { MaterialService } from 'src/app/ui/service/material.service';
 import { ProviderService } from 'src/app/ui/service/provider.service';
 
 @Component({
-  selector: 'app-provider-prices',
-  templateUrl: './provider-prices.component.html',
-  styleUrls: ['./provider-prices.component.scss']
+  selector: 'app-provider-times',
+  templateUrl: './provider-times.component.html',
+  styleUrls: ['./provider-times.component.scss']
 })
-export class ProviderPricesComponent implements OnInit {
+export class ProviderTimesComponent implements OnInit {
   @Input() providerName: string = '';
   @Input() providerId: number = 0;
   @Input() viewMode: boolean = false;
-  formProviderPrice!: FormGroup;
-  providerPrices: ProviderPrices[] = [];
-  providerPrice: ProviderPrices = {};
+  formproviderTime!: FormGroup;
+  providerTimes: ProviderTimes[] = [];
+  providerTime: ProviderTimes = {};
   materials: material[] = [];
-  submittedProviderPrices: boolean = false;
-  providerPriceDialog: boolean = false;
+  submittedproviderTimes: boolean = false;
+  providerTimeDialog: boolean = false;
   editMode: boolean = false;
-  providerPriceId: number = 0;
+  providerTimeId: number = 0;
   cols: any[] = [];
   constructor(
     private materialService: MaterialService,
@@ -36,24 +36,26 @@ export class ProviderPricesComponent implements OnInit {
       this.getMaterials();
       this.cols = [
         { field: 'material', header: 'Material' },
-        { field: 'valueM3', header: 'Valor M3' },
-        { field: 'valueTon', header: 'Valor ton' },
+        { field: 'simple', header: 'Sencillo min' },
+        { field: 'double', header: 'Doble min' },
+        { field: 'tractor', header: 'Tractomula min' },
         { field: 'state', header: 'Estado' }
     ];
-      this.formProviderPrice = this.formBuilder.group({
+      this.formproviderTime = this.formBuilder.group({
         materialSelected: ['',[Validators.required]],
-        valueM3: [0,[Validators.required]],
-        valueTon: [0,[Validators.required]],
+        simple: [0,[Validators.required]],
+        double: [0,[Validators.required]],
+        tractor: [0,[Validators.required]],
         stateSelected: [false]
        });
   
    }
 
    getGridData(){
-    this.providerService.getProviderPrices(this.providerId)
+    this.providerService.getProviderTimes(this.providerId)
     .subscribe({
         next: (data:any) => {
-          this.providerPrices = data;
+          this.providerTimes = data;
         },
         error: error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
@@ -73,53 +75,55 @@ export class ProviderPricesComponent implements OnInit {
     });
   }
 
-  openNewPrice()
+  openNewTime()
   {
-    this.providerPriceDialog = true;
+    this.providerTimeDialog = true;
+    this.submittedproviderTimes = false;
     this.editMode= false;
-    this.submittedProviderPrices = false;
-    this.formProviderPrice.reset();
+    this.formproviderTime.reset();
   }
   
 
-  editProviderPrice(providerPrice: ProviderPrices) {
-    this.providerPriceDialog = true;
+  editproviderTime(providerTime: ProviderTimes) {
+    this.providerTimeDialog = true;
     this.editMode = true;
-    this.providerPrice  = providerPrice;
-    this.providerPriceId = providerPrice.id as number;
-    this.formProviderPrice = this.formBuilder.group({
-      materialSelected: [this.providerPrice.material,[Validators.required]],
-      valueM3: [this.providerPrice.valueM3, [Validators.required]],
-      valueTon: [this.providerPrice.valueTon, [Validators.required]],
-      stateSelected:[this.providerPrice.state === 'Activo' ? true: false]
+    this.providerTime  = providerTime;
+    this.providerTimeId = providerTime.id as number;
+    this.formproviderTime = this.formBuilder.group({
+      materialSelected: [this.providerTime.material,[Validators.required]],
+      simple: [this.providerTime.simple, [Validators.required]],
+      double: [this.providerTime.double, [Validators.required]],
+      tractor: [this.providerTime.tractor, [Validators.required]],
+      stateSelected:[this.providerTime.state === 'Activo' ? true: false]
      });
   }
 
-  savePrices()
+  saveTimes()
   {
-   this.submittedProviderPrices = true;
-   if (this.formProviderPrice.invalid) {
+   this.submittedproviderTimes = true;
+   if (this.formproviderTime.invalid) {
      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
      return;
    }
      let formValues  = this.f;
-     let objProviderPrice: ProviderPrices = {
+     let objproviderTime: ProviderTimes = {
        providerId: this.providerId,
        material: formValues.materialSelected.value,
-       valueM3: formValues.valueM3.value,
-       valueTon: formValues.valueTon.value,
+       simple: formValues.simple.value,
+       double: formValues.double.value,
+       tractor: formValues.tractor.value,
        state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
      }
      if (this.editMode){
-      objProviderPrice.id = this.providerPriceId;
-      this.providerService.putProviderPrice(objProviderPrice)
+      objproviderTime.id = this.providerTimeId;
+      this.providerService.putProviderTime(objproviderTime)
       .subscribe({
           next: (data) => {
             if(data !== null)
             {
               this.getGridData();
-              this.providerPriceDialog = false;
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Precios Material Actualizados', life: 3000 });
+              this.providerTimeDialog = false;
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tiempos de Cargue Actualizados', life: 3000 });
             }
           },
           error: error => {
@@ -127,14 +131,14 @@ export class ProviderPricesComponent implements OnInit {
           }
       });
     }else{
-     this.providerService.postProviderPrice(objProviderPrice)
+     this.providerService.postProviderTime(objproviderTime)
                .subscribe({
                    next: (data) => {
                      if(data !== null)
                      {
                        this.getGridData();
-                       this.providerPriceDialog = false;
-                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Precios Material Creados', life: 3000 });
+                       this.providerTimeDialog = false;
+                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tiempos de Cargue Creados', life: 3000 });
                      }
                    },
                    error: error => {
@@ -145,5 +149,5 @@ export class ProviderPricesComponent implements OnInit {
   }
 
 
-  get f() { return this.formProviderPrice?.controls; }
+  get f() { return this.formproviderTime?.controls; }
 }

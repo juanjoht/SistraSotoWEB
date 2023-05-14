@@ -21,3 +21,13 @@ export interface ProviderPrices{
     valueTon?:  number;
     state?: string;
 }
+
+export interface ProviderTimes{
+    id?: number;
+    providerId?: number;
+    material?: string;
+    simple?:number;
+    double?:  number;
+    tractor?:  number;
+    state?: string;
+}

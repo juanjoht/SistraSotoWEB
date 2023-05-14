@@ -53,7 +53,7 @@
     <ng-template pTemplate="content">
         <form [formGroup]="formProviderPrice" >
          <div class="formgrid grid mb-10">
-            <div class="field col-12 sm:col-4">
+            <div class="field col-12 sm:col-5">
                 <label for="materialSelect" class="font-bold">Material*</label>
                 <p-dropdown id="materialSelect" scrollHeight="200px" formControlName="materialSelected"  [options]="materials" placeholder="Seleccione un Material" optionValue="name"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedProviderPrices && f.materialSelected.errors }" ></p-dropdown>
                 <small class="ng-dirty ng-invalid" *ngIf="submittedProviderPrices && f?.materialSelected?.errors?.required">Material es requerido</small>
@@ -75,7 +75,7 @@
                     <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
                 </div>
             </div>
-            <div class="field col-12 sm:col-3 align-self-end">
+            <div class="field col-12 sm:col-2 align-self-end">
                     <button pButton pRipple label="Aceptar" icon="pi pi-check" class="p-button-text" (click)="savePrices()" ></button>    
              </div>
         </div>
