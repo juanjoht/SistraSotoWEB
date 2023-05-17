@@ -39,12 +39,37 @@ export class CustomerBuildingsEditComponent implements OnInit {
     return this.formGroupCustomerBuildings.get('days') as FormArray
   }
 
+  onchangeReceive(e: any, index: number)
+  {
+    let days = this.formGroupCustomerBuildings.controls.days as FormArray;
+    if(e.checked){
+      days.controls[index].get('times')?.setValidators(Validators.required);
+      days.controls[index].get('times')?.updateValueAndValidity();
+    }else
+    {
+      days.controls[index].get('times')?.removeValidators(Validators.required);
+      days.controls[index].get('times')?.updateValueAndValidity();
+    }
+  }
+
   newDay(d: string,r:boolean,t:string): FormGroup {
-    return this.formBuilder.group({
+    let form =  this.formBuilder.group({
       day: [{value:d, disabled: true}],
       receive: [{value:r,disabled: this.viewMode}],
-      times: [{value:t,disabled: this.viewMode},[Validators.required]]
+      times: [{value:t,disabled: this.viewMode}]
     })
+    /*form.controls.receive.valueChanges.subscribe((data) => {
+      if(data)
+      {
+        form.get("times")?.setValidators(Validators.required);
+      }
+      else
+      {
+        form.controls.times.removeValidators(Validators.required);
+      }
+      form.updateValueAndValidity();
+    })*/
+    return form;
   }
   ngOnInit() {
 
@@ -74,6 +99,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
         days: this.formBuilder.array([]),
         stateSelected:[true]
       });
+         
       this.days.push(this.newDay("Lunes",false,""));
       this.days.push(this.newDay("Martes",false,""));
       this.days.push(this.newDay("Miercoles",false,""));

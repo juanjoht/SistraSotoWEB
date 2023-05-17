@@ -16,6 +16,7 @@ import { CustomerShippingListComponent } from '../customer/customer-shipping-lis
 import { ProviderBasicInfo } from 'src/app/ui/models/provider.model';
 import { ProviderService } from 'src/app/ui/service/provider.service';
 import { ProviderPricesComponent } from '../provider/provider-prices.component';
+import { ProviderTimesComponent } from '../provider/provider-times.component';
 
 @Component({
   selector: 'app-grid-third-party',
@@ -33,6 +34,7 @@ export class GridThirdPartyComponent implements OnInit {
   @ViewChild(DriverGeneralInfoComponent)editDriverGeneral!: DriverGeneralInfoComponent;
   @ViewChild(CustomerShippingListComponent)shippingList!: CustomerShippingListComponent;
   @ViewChild(ProviderPricesComponent)providerPrice!: ProviderPricesComponent;
+  @ViewChild(ProviderTimesComponent)providerTime!: ProviderTimesComponent;
 
   tabIndex: number = 0;
   customers: CustomerBasicInfo[] = [];
@@ -72,51 +74,32 @@ export class GridThirdPartyComponent implements OnInit {
      private driverService: DriverService, 
      private providerService: ProviderService     
      ) { }
-
-     checkPermissions(itemMenu: string, action: string) {
-        let modules = Common.Modules;
-        let moduleSearch = `${itemMenu}-${action}`;
-        let module = modules.find(x => x.modulo === moduleSearch);
-      
-        switch (action.toLocaleLowerCase()) {
-          case 'consultar':
-              this.canRead = module.permiso;
-            break;
-           case 'crear':
-              this.canCreate = module.permiso;
-           break; 
-           case 'editar':
-              this.canEdit = module.permiso;
-           break; 
-          default:
-            break;
-        }
-      }
+    
 
   ngOnInit() {
     if(this.feature === 'Cliente')
     {
-      this.checkPermissions('Terceros-Clientes', 'Consultar');
-      this.checkPermissions('Terceros-Clientes', 'Crear');
-      this.checkPermissions('Terceros-Clientes', 'Editar');
+      this.canRead = Common.checkPermissions('Terceros-Clientes', 'Consultar');
+      this.canCreate = Common.checkPermissions('Terceros-Clientes', 'Crear');
+      this.canEdit = Common.checkPermissions('Terceros-Clientes', 'Editar');
     }
     if(this.feature === 'Transportador')
     {
-      this.checkPermissions('Terceros-Transportadores', 'Consultar');
-      this.checkPermissions('Terceros-Transportadores', 'Crear');
-      this.checkPermissions('Terceros-Transportadores', 'Editar');
+      this.canRead = Common.checkPermissions('Terceros-Transportadores', 'Consultar');
+      this.canCreate = Common.checkPermissions('Terceros-Transportadores', 'Crear');
+      this.canEdit = Common.checkPermissions('Terceros-Transportadores', 'Editar');
     }
     if(this.feature === 'Conductor')
     {
-      this.checkPermissions('Terceros-Conductores', 'Consultar');
-      this.checkPermissions('Terceros-Conductores', 'Crear');
-      this.checkPermissions('Terceros-Conductores', 'Editar');
+      this.canRead = Common.checkPermissions('Terceros-Conductores', 'Consultar');
+      this.canCreate = Common.checkPermissions('Terceros-Conductores', 'Crear');
+      this.canEdit = Common.checkPermissions('Terceros-Conductores', 'Editar');
     }
     if(this.feature === 'Proveedor')
     {
-      this.checkPermissions('Terceros-Proveedores', 'Consultar');
-      this.checkPermissions('Terceros-Proveedores', 'Crear');
-      this.checkPermissions('Terceros-Proveedores', 'Editar');
+      this.canRead = Common.checkPermissions('Terceros-Proveedores', 'Consultar');
+      this.canCreate = Common.checkPermissions('Terceros-Proveedores', 'Crear');
+      this.canEdit = Common.checkPermissions('Terceros-Proveedores', 'Editar');
     }
   }
 
@@ -137,6 +120,8 @@ export class GridThirdPartyComponent implements OnInit {
     this.isViewMode = false;
     this.showOptions = true;
     this.disabledDocInfoEdit = false;
+    this.pricesListTab = true;
+    this.loadingTimeListTab = true;
     this.tabIndex = 0;
   }
 
@@ -185,6 +170,7 @@ export class GridThirdPartyComponent implements OnInit {
   }
 
   getCommercialInfoByClient(clientId : number){
+    this.customerCommercialInfo = {};
     this.customerService.getCommercialInfoByClient(clientId)
     .subscribe({
         next: (data:any) => {
@@ -235,9 +221,6 @@ export class GridThirdPartyComponent implements OnInit {
         switch (this.tabIndex) {
           case 0:
             this.saveProviderBasic();
-            break;
-          case 1:
-           // this.saveDriverGeneral();
             break;
           default:
             break;
@@ -605,7 +588,6 @@ export class GridThirdPartyComponent implements OnInit {
         {
           this.buildingList.getGridData();
         }
-        
       }
     }
     if(this.feature === 'Transportador')
@@ -621,9 +603,13 @@ export class GridThirdPartyComponent implements OnInit {
     if(this.feature === 'Proveedor')
     {
       this.showOptions = event.index === 1 || event.index === 2? false: true;
-      if (this.tabIndex === 1)
+        if (this.tabIndex === 1)
         {
           this.providerPrice.getGridData();
+        }
+        if (this.tabIndex === 2)
+        {
+          this.providerTime.getGridData();
         }
     }
   }

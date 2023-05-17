@@ -65,7 +65,15 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Maestros',
                         icon: 'pi pi-fw pi-pencil',
-                        routerLink: ['/pages/crud']
+                        routerLink: ['/pages/crud'],
+                        items: [
+                            {
+                                label: 'Vehículos',
+                                //class: this.checkPermissions('Terceros-Vehículos'),
+                                icon: 'pi pi-fw pi-car',
+                                routerLink: ['/pages/vehicle']
+                            }
+                        ]
                     },
                     {
                         label: 'Programación',

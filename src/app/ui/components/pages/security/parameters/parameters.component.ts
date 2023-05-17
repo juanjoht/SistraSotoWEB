@@ -106,7 +106,7 @@ export class ParametersComponent implements OnInit {
                 {
                   this.paramDialog = false;
                   this.getGridData();
-                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Usuario Actualizado', life: 3000 });
+                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Parametro Actualizado', life: 3000 });
                 }
               },
               error: error => {
@@ -121,7 +121,7 @@ export class ParametersComponent implements OnInit {
                 {
                   this.paramDialog = false;
                   this.getGridData();
-                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Usuario Creado', life: 3000 });
+                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Parametro Creado', life: 3000 });
                 }
               },
               error: error => {

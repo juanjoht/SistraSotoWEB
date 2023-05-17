@@ -25,6 +25,7 @@ export class CustomerCommercialEditComponent implements OnInit {
   clientTypes: params[] = [];
   submittedCommercial: boolean = false;
   assignedQuotaDisabled: boolean = true;
+  
   constructor(
     private formBuilder: FormBuilder,
     private paramService: ParamService,
@@ -62,12 +63,12 @@ export class CustomerCommercialEditComponent implements OnInit {
         priorityGroupSelected: [{value:this.customerCommercialEdit.priorityGroup, disabled: this.viewMode},[Validators.required]],
         clientTypeSelected:[{value:this.customerCommercialEdit.customerType, disabled: this.viewMode},[Validators.required]],
         iva:[{value: this.customerCommercialEdit.iva, disabled: this.viewMode},[Validators.required]],
-        assignedQuota:[{ value: this.customerCommercialEdit.assignedQuota, disabled: this.assignedQuotaDisabled},[]],
-        usedQuota:[{value: this.customerCommercialEdit.usedQuota, disabled: this.viewMode},[]],
-        availableQuota:[{value: this.customerCommercialEdit.availableQuota, disabled: this.viewMode},[]],
+        assignedQuota:[{ value: this.customerCommercialEdit.assignedQuota, disabled: this.viewMode},[]],
+        usedQuota:[{value: this.customerCommercialEdit.usedQuota, disabled: true},[]],
+        availableQuota:[{value: this.customerCommercialEdit.availableQuota, disabled: true},[]],
         maturityDays:[{value: this.customerCommercialEdit.maturityDays, disabled: this.viewMode},[Validators.required]],
         additionalDays:[{value: this.customerCommercialEdit.additionalDays, disabled: this.viewMode},[]],
-        delayDays:[{value: this.customerCommercialEdit.delayDays, disabled: this.viewMode},[]],
+        delayDays:[{value: this.customerCommercialEdit.delayDays, disabled: true},[]],
         intermediationPercentage:[{value: this.customerCommercialEdit.intermediationPercentage, disabled: this.viewMode},[Validators.required]],
         measureUnitSelected:[{value: this.customerCommercialEdit.measureUnit, disabled: this.viewMode},[Validators.required]]
        });
@@ -82,6 +83,8 @@ export class CustomerCommercialEditComponent implements OnInit {
         this.formGroupCommercial?.get('assignedQuota')?.disable();
       }
     })
+    this.getIvaDefault();
+    this.getMaturityDaysDefault();
   }
   get f() { return this.formGroupCommercial?.controls; }
 
@@ -93,12 +96,12 @@ export class CustomerCommercialEditComponent implements OnInit {
       priorityGroupSelected: [{value:CustomerCommercialInfo.priorityGroup, disabled: this.viewMode},[Validators.required]],
       clientTypeSelected:[{value:CustomerCommercialInfo.customerType, disabled: this.viewMode},[Validators.required]],
       iva:[{value: CustomerCommercialInfo.iva, disabled: this.viewMode},[Validators.required]],
-      assignedQuota:[{ value: CustomerCommercialInfo.assignedQuota, disabled: this.assignedQuotaDisabled},[]],
-      usedQuota:[{value: CustomerCommercialInfo.usedQuota, disabled: this.viewMode},[]],
-      availableQuota:[{value: CustomerCommercialInfo.availableQuota, disabled: this.viewMode},[]],
+      assignedQuota:[{ value: CustomerCommercialInfo.assignedQuota, disabled: this.viewMode},[]],
+      usedQuota:[{value: CustomerCommercialInfo.usedQuota, disabled: true},[]],
+      availableQuota:[{value: CustomerCommercialInfo.availableQuota, disabled: true},[]],
       maturityDays:[{value: CustomerCommercialInfo.maturityDays, disabled: this.viewMode},[Validators.required]],
       additionalDays:[{value: CustomerCommercialInfo.additionalDays, disabled: this.viewMode},[]],
-      delayDays:[{value: CustomerCommercialInfo.delayDays, disabled: this.viewMode},[]],
+      delayDays:[{value: CustomerCommercialInfo.delayDays, disabled: true},[]],
       intermediationPercentage:[{value: CustomerCommercialInfo.intermediationPercentage, disabled: this.viewMode},[Validators.required]],
       measureUnitSelected:[{value: CustomerCommercialInfo.measureUnit, disabled: this.viewMode},[Validators.required]]
      });
@@ -123,6 +126,38 @@ export class CustomerCommercialEditComponent implements OnInit {
             .subscribe({
                 next: (data:any) => {
                   this.measureUnits = data;
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+                  console.log(error);
+                }
+            });
+  }
+
+  getIvaDefault(){
+    this.paramService.getParamByType('Iva')
+            .subscribe({
+                next: (data:any) => {
+                  if(data !== null && data !== undefined && data.length !== 0)
+                  {
+                    this.formGroupCommercial.get('iva')?.setValue(data[0].name);
+                  }
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+                  console.log(error);
+                }
+            });
+  }
+
+  getMaturityDaysDefault(){
+    this.paramService.getParamByType('Días de Vencimiento')
+            .subscribe({
+                next: (data:any) => {
+                  if(data !== null && data !== undefined && data.length !== 0)
+                  {
+                    this.formGroupCommercial.get('maturityDays')?.setValue(data[0].name);
+                  }
                 },
                 error: error => {
                   this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });

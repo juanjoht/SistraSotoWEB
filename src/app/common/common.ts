@@ -49,4 +49,26 @@ export class Common {
         const result: string = environment.urlBaseApi;
         return result;
     }
+
+
+    public static checkPermissions(itemMenu: string, action: string) {
+        let modules = Common.Modules;
+        let moduleSearch = `${itemMenu}-${action}`;
+        let module = modules.find(x => x.modulo === moduleSearch);
+        let right: boolean = true;
+        switch (action.toLocaleLowerCase()) {
+          case 'consultar':
+            right = module.permiso;
+            break;
+           case 'crear':
+            right = module.permiso;
+           break; 
+           case 'editar':
+            right = module.permiso;
+           break; 
+          default:
+            break;
+        }
+        return right;
+      }
 }

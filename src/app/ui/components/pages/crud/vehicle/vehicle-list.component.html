@@ -1,0 +1,55 @@
+<p-table #dt [value]="vehicles" *ngIf="canRead" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Vehículos</h5>
+            <span class="block mt-2 md:mt-0">
+                <button pButton *ngIf="canCreate" pRipple title="Adicionar Nuevo Vehículo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>                            
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="licensePlate">Placa <p-sortIcon field="licensePlate"></p-sortIcon></th>
+            <th pSortableColumn="transporter">Transportador <p-sortIcon field="transporter"></p-sortIcon></th>
+            <th pSortableColumn="type">Tipo <p-sortIcon field="type"></p-sortIcon></th>
+            <th pSortableColumn="capacityM3">Capacidad m3 <p-sortIcon field="capacityM3"></p-sortIcon></th>
+            <th pSortableColumn="capacityTon">Capacidad ton <p-sortIcon field="capacityTon"></p-sortIcon></th>
+            <th pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vehicle>
+        <tr>
+            <td>
+                <span class="p-column-title">licensePlate</span>
+                {{vehicle.licensePlate}}
+            </td>
+            <td>
+                <span class="p-column-title">transporter</span>
+                {{vehicle.transporter}}
+            </td>
+            <td>
+                <span class="p-column-title">type</span>
+                {{vehicle.type}}
+            </td>
+            <td>
+                <span class="p-column-title">capacityM3</span>
+                {{vehicle.capacityM3}}
+            </td>
+            <td>
+                <span class="p-column-title">capacityTon</span>
+                {{vehicle.capacityTon}}
+            </td>
+            <td>
+                <span class="p-column-title">state</span>
+                {{vehicle.state}}
+            </td>
+            <td>
+                <div class="flex">
+                    <button title="Editar" *ngIf="canEdit" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editVehicle(vehicle)"></button>
+                    <button title="Ver" *ngIf="canRead" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-warning" (click)="editVehicle(vehicle,true)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

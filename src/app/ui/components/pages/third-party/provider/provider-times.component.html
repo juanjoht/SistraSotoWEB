@@ -3,12 +3,12 @@
         <label class="font-bold text-center">{{providerName}}</label>
     </div>
     <div class="field col-12 sm:col-12">
-            <p-table #dtproviderTimes [value]="providerTimes" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+            <p-table *ngIf="canRead" #dtproviderTimes [value]="providerTimes" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Tiempos de Carga por Material y Tipo de Vehículo</h5>
                         <span *ngIf="!viewMode" class="block mt-2 md:mt-0">
-                            <button pButton pRipple title="Adicionar Nuevo Tiempo de Carga" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewTime()"></button>                            
+                            <button pButton *ngIf="canCreate" pRipple title="Adicionar Nuevo Tiempo de Carga" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewTime()"></button>                            
                         </span>
                     </div>
                 </ng-template>
@@ -45,7 +45,7 @@
                             {{providerTime.state}}
                         </td>
                         <td *ngIf="!viewMode">
-                            <button title="Editar" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editproviderTime(providerTime)" ></button>
+                            <button *ngIf="canEdit" title="Editar" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editproviderTime(providerTime)" ></button>
                         </td>
                     </tr>
                 </ng-template>

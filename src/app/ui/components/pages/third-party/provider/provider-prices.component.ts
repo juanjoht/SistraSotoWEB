@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Common } from 'src/app/common/common';
 import { material } from 'src/app/ui/models/material.model';
 import { ProviderPrices } from 'src/app/ui/models/provider.model';
 import { MaterialService } from 'src/app/ui/service/material.service';
@@ -24,6 +25,9 @@ export class ProviderPricesComponent implements OnInit {
   editMode: boolean = false;
   providerPriceId: number = 0;
   cols: any[] = [];
+  canRead: boolean = true;
+  canCreate: boolean = true;
+  canEdit: boolean = true;
   constructor(
     private materialService: MaterialService,
     private providerService: ProviderService,
@@ -46,7 +50,9 @@ export class ProviderPricesComponent implements OnInit {
         valueTon: [0,[Validators.required]],
         stateSelected: [false]
        });
-  
+       this.canRead = Common.checkPermissions('Terceros-Proveedores', 'Consultar');
+       this.canCreate = Common.checkPermissions('Terceros-Proveedores', 'Crear');
+       this.canEdit = Common.checkPermissions('Terceros-Proveedores', 'Editar');
    }
 
    getGridData(){

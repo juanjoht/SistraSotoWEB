@@ -62,7 +62,7 @@
         </div>
         <div class="field col-12 sm:col-4">
             <label for="tolerancePercentageInput" class="font-bold" cellphone >Porcentaje de tolerancia*</label>
-            <p-inputNumber id="tolerancePercentageInput" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
+            <p-inputNumber id="tolerancePercentageInput" [min]="0" [max]="100" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.tolerancePercentage?.errors?.required">Porcentaje de tolerancia es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
@@ -88,7 +88,7 @@
                                 <input id="disabled-input" type="text" pInputText  formControlName="day" />
                             </div>
                             <div class="field col-12 sm:col-2 flex align-items-center">
-                                <p-checkbox  [binary]="true" inputId="binary" formControlName="receive"></p-checkbox>
+                                <p-checkbox attr.data-id={{i}} (onChange)="onchangeReceive($event, i)"  [binary]="true" inputId="binary" formControlName="receive"></p-checkbox>
                             </div>
                             <div class="field col-12 sm:col-7">
                                 <input id="timeMonday" type="text" pInputText  formControlName="times" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && item?.get('times')?.errors  }" >
@@ -110,7 +110,7 @@
                     <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.allowedVehicleTypesSelected?.errors?.required">Tipo de Vehículo permitidos es requerido</small>
                 </div>
         <div class="field col-12 sm:col-12 flex justify-content-center">
-            <p-fieldset legend="Tiempo de cargue*">
+            <p-fieldset legend="Tiempo de cargue (min)*">
                 <div class="field col-12 sm:col-12">
                     <span class="p-float-label">
                         <small>Sencillo</small>

@@ -1,11 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Customer } from '../api/customer';
-import { CustomerBasicInfo, CustomerBuildings, CustomerCommercialInfo, CustomerShipping, CustomerTransport } from '../models/customer.model';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
-import { BehaviorSubject, Observable, map } from 'rxjs';
-import { TransporterBasicInfo, TransporterDocuments, TransporterDriver, TransporterRoutes, TransporterVehicles } from '../models/transporter.model';
+import { map } from 'rxjs';
 import { Vehicles } from '../models/vehicles.model';
 
 @Injectable()
@@ -22,8 +19,17 @@ export class VehicleService {
                     id: item.id,
                     licensePlate: item.placa,
                     type: item.tipo,
+                    model: item.modelo,
+                    color: item.color,
+                    chassisNumber: item.numeroChasis,
+                    grossWeight: item.pesoBruto,
+                    cubed: item.cubicado,
                     capacityTon: item.capacidadTonelada,
                     capacityM3: item.capacidadMetroCubico,
+                    transporter: item.transportador,
+                    kilometerToInspection: item.kilometroParaInspeccion,
+                    kilometerLastInspection: item.kilometroUltimaInspeccion,
+                    dateLastInspection: item.fechaUltimaInspeccion,
                     AuthCode:item.codigoAutorizacion,
                     state: item.estado,
                 }
