@@ -56,6 +56,8 @@ export const Constants = {
     apiProvider: '/proveedor',
     apiProviderPrices: '/precioMaterialProveedor',
     apiProviderTimes: '/tiempoCargueProveedor',
+    apiMaterialVehicle: '/material/vehiculo',
+    apiLinkMaterialsVehicle: '/material/linkMaterialesVehiculo',
     pathHome: 'home',
     pathLogin: 'login',
     numRowMax: 2147483647

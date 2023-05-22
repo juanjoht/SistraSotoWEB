@@ -1,4 +1,4 @@
-export interface Vehicles{
+export interface Vehicle{
     id?: number;
     transporter?:string;
     licensePlate?: string;
@@ -14,5 +14,14 @@ export interface Vehicles{
     capacityTon?:number;
     capacityM3?:  number;
     AuthCode?: string;
+    state?: string;
+}
+
+export interface allowedMaterial{
+    id?: number;
+    name?:string;
+    materialId?: number;
+    vehicleId?: number;
+    materialsId?: number[]
     state?: string;
 }

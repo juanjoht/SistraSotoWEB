@@ -48,6 +48,8 @@ import { ProviderComponent } from './third-party/provider/provider.component';
 import { ProviderPricesComponent } from './third-party/provider/provider-prices.component';
 import { ProviderTimesComponent } from './third-party/provider/provider-times.component';
 import { VehicleListComponent } from './crud/vehicle/vehicle-list.component';
+import { VehicleBasicEditComponent } from './crud/vehicle/vehicle-basic-edit.component';
+import { VehicleMaterialComponent } from './crud/vehicle/vehicle-material.component';
 
 
 @NgModule({
@@ -78,7 +80,9 @@ import { VehicleListComponent } from './crud/vehicle/vehicle-list.component';
         ProviderComponent,
         ProviderPricesComponent,
         ProviderTimesComponent,
-        VehicleListComponent
+        VehicleListComponent,
+        VehicleBasicEditComponent,
+        VehicleMaterialComponent
     ],
     imports: [
         CommonModule,

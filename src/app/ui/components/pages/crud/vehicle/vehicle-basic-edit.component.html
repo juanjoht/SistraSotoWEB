@@ -1,0 +1,88 @@
+<form [formGroup]="formGroupBasic" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-4">
+            <label for="licensePlateInput" class="font-bold">Placa*</label>
+            <input id="licensePlateInput" type="text" pInputText  formControlName="licensePlate" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.licensePlate.errors }" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.licensePlate?.errors?.required">Placa es requerido.</small>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.licensePlate?.errors?.pattern">Placa no tiene el formato correcto</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="vehicleTypeSelect" class="font-bold">Tipo Vehículo*</label>
+            <p-dropdown id="vehicleTypeSelect"  placeholder="Seleccione un Tipo Vehículo" 
+            formControlName="vehicleTypeSelected" [options]="vehicleTypes" optionValue="name"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.vehicleTypeSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" 
+            *ngIf="submittedBasic && f?.vehicleTypeSelected?.errors?.required">
+            Tipo Vehículo es requerido
+            </small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="modelInput" class="font-bold">Modelo*</label>
+            <p-inputNumber id="modelInput" inputId="minmax" inputId="minmax" [min]="1990" [max]="maxModel" formControlName="model" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.model.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.model?.errors?.required">Modelo es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="colorInput" class="font-bold">Color*</label>
+            <input id="colorInput" type="text" pInputText  formControlName="color" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.color.errors }" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.color?.errors?.required">Color es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="ChassisNumberInput" class="font-bold">Número de Chasis*</label>
+            <input id="ChassisNumberInput" type="text" pInputText  formControlName="ChassisNumber" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.ChassisNumber.errors }" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.ChassisNumber?.errors?.required">Número de Chasis es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="grossWeightInput" class="font-bold">Peso bruto(ton)*</label>
+            <p-inputNumber id="grossWeightInput" inputId="minmax" inputId="minmax" [min]="0" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" formControlName="grossWeight" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.grossWeight.errors}"> </p-inputNumber>
+            <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.grossWeight?.errors?.required">Peso bruto(ton) es Requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="cubicadoInput" class="font-bold">Cubicado</label>
+            <input id="cubicadoInput" type="text" pInputText  formControlName="cubed" >
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="capacityM3Input" class="font-bold">Capacidad m3*</label>
+            <p-inputNumber id="capacityM3Input" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityM3" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.capacityM3.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.capacityM3?.errors?.required">Capacidad m3 es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="capacityTonInput" class="font-bold">Capacidad ton*</label>
+            <p-inputNumber id="capacityTonInput" inputId="minmax" inputId="minmax" [min]="1" formControlName="capacityTon" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.capacityTon.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.capacityTon?.errors?.required">Capacidad ton es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="trnasporterSelect" class="font-bold">Transportador*</label>
+            <p-dropdown id="trnasporterSelect"  placeholder="Seleccione un Transportador" 
+            formControlName="transporterSelected" [options]="transporters" optionValue="name"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.transporterSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" 
+            *ngIf="submittedBasic && f?.transporterSelected?.errors?.required">
+            Transportador es requerido
+            </small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="kmToInspectionInput" class="font-bold">Km para inspección*</label>
+            <p-inputNumber id="kmToInspectionInput" inputId="minmax" inputId="minmax" [min]="1" formControlName="kmToInspection" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.kmToInspection.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.kmToInspection?.errors?.required">Km para inspección es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="kmLastInspectionInput" class="font-bold">Km última inspección*</label>
+            <p-inputNumber id="kmLastInspectionInput" inputId="minmax" inputId="minmax" [min]="1" formControlName="kmLastInspection" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.kmLastInspection.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.kmLastInspection?.errors?.required">Km última inspección es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="dateLastInspectionInput" class="font-bold">Fecha última inspección*</label>
+            <p-calendar [showClear]="true" [maxDate]="maxDate"  [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="dateLastInspection" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.dateLastInspection.errors }">></p-calendar>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.dateLastInspection?.errors?.required">Fecha última inspección es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="stateYesorNot" class="font-bold">Estado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+            </div>
+        </div>
+    </div>
+    </form>

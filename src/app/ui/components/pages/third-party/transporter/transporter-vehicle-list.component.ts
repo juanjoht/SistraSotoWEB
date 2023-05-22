@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TransporterVehicles } from 'src/app/ui/models/transporter.model';
-import { Vehicles } from 'src/app/ui/models/vehicles.model';
+import { Vehicle } from 'src/app/ui/models/vehicles.model';
 import { TransporterService } from 'src/app/ui/service/transporter.service';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
 
@@ -17,7 +17,7 @@ export class TransporterVehicleListComponent implements OnInit {
   @Input() viewMode: boolean = false;
   formTransporterVehicle!: FormGroup;
   transporterVehicles: TransporterVehicles[] = [];
-  vehicles: Vehicles[] = [];
+  vehicles: Vehicle[] = [];
   submittedTransporterVehicle: boolean = false;
   validateTransporterVehicle: boolean = false;
   transporterVehicleDialog: boolean = false;
