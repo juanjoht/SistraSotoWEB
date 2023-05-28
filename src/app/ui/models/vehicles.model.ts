@@ -25,3 +25,25 @@ export interface allowedMaterial{
     materialsId?: number[]
     state?: string;
 }
+
+export interface Driver{
+    id?: number;
+    vehicleId?: number;
+    name?: string;
+    state?: string;
+}
+
+export interface VehicleDocuments{
+    id?: number;
+    vehicleId?:number;
+    docId?:number;
+    docName?: string;
+    docUrl?: string;
+    state?: string;
+    maturityDate? : string;
+}
+
+export interface VehicleRestrictedDestination{
+    restrictedDestinationId?: number;
+    vehicleId?:number;
+}

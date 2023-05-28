@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { ProviderBasicInfo, ProviderPrices } from '../models/provider.model';
 import { material } from '../models/material.model';
 
 @Injectable()
@@ -30,4 +29,51 @@ export class MaterialService {
             })
         }));
     }
+
+    postMaterial(request: material){
+        return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiMaterial}`,
+        {
+            material: {
+                nombre: request.name,
+                masaUnitaria: request.unitMass,
+                valorMetroCubico: request.valueM3,
+                valorMinimoMetroCubico: request.valueMinM3,
+                valorMaximoMetroCubico: request.valueMaxM3,
+                valorTonelada: request.valueTon,
+                valorMinimoTonelada: request.valueMinTon,
+                valorMaximoTonelada: request.valueMaxTon,
+                estado: request.state
+            }
+          })
+            .pipe(map(user => {
+                if (user.material?.id !== 0 && user.material?.id != null) {
+                    return user.material; 
+                }
+            }));
+    }
+
+    putMaterial(request: material){
+        return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiMaterial}`,
+        {
+            material: {
+                id: request.id,
+                nombre: request.name,
+                masaUnitaria: request.unitMass,
+                valorMetroCubico: request.valueM3,
+                valorMinimoMetroCubico: request.valueMinM3,
+                valorMaximoMetroCubico: request.valueMaxM3,
+                valorTonelada: request.valueTon,
+                valorMinimoTonelada: request.valueMinTon,
+                valorMaximoTonelada: request.valueMaxTon,
+                estado: request.state
+            }
+          })
+            .pipe(map(user => {
+                if (user.material?.id !== 0 && user.material?.id != null) {
+                    return user.material; 
+                }
+            }));
+    }
+
+
 }

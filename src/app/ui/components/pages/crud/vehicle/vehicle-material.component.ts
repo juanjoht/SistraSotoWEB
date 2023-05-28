@@ -42,6 +42,7 @@ export class VehicleMaterialComponent implements OnInit {
         { field: 'state', header: 'Estado' }
     ];
       this.formAllowedMaterial = this.formBuilder.group({
+        allMaterials:[false],
         materialSelected: ['',[Validators.required]],
         stateSelected: [true]
        });
@@ -80,6 +81,7 @@ export class VehicleMaterialComponent implements OnInit {
     this.editMode= false;
     this.submittedAllowedMaterial = false;
     this.formAllowedMaterial.reset();
+    this.f?.stateSelected.setValue(true);
   }
   
 
@@ -89,7 +91,7 @@ export class VehicleMaterialComponent implements OnInit {
     this.allowedMaterial  = allowedMaterialModel;
     this.allowedMaterialId = allowedMaterialModel.id as number;
     this.formAllowedMaterial = this.formBuilder.group({
-      materialSelected: [allowedMaterialModel.materialId,[Validators.required]],
+      materialSelected: [allowedMaterialModel.id,[Validators.required]],
       stateSelected:[allowedMaterialModel.state === 'Activo' ? true: false]
      });
   }
@@ -109,6 +111,7 @@ export class VehicleMaterialComponent implements OnInit {
      }
      if (this.editMode){
       objAllowedMaterial.id = this.allowedMaterialId;
+      objAllowedMaterial.materialId = this.allowedMaterialId;
       this.vehicleService.putVehicleMaterial(objAllowedMaterial)
       .subscribe({
           next: (data) => {
@@ -139,6 +142,40 @@ export class VehicleMaterialComponent implements OnInit {
                    }
                });
               }
+  }
+
+  saveAll(e: any){
+    if(e.checked){
+      let objAllowedMaterial: allowedMaterial = {};
+      objAllowedMaterial.vehicleId =  this.vehicleId;
+      objAllowedMaterial.materialsId =[];
+      objAllowedMaterial.state = 'Activo'
+
+      this.materials.forEach(element => {
+          let haveMaterial = this.allowedMaterials.find(x=> x.id === element.id)
+          if (haveMaterial === null || haveMaterial === undefined){
+            objAllowedMaterial.materialsId?.push(element.id as number);
+          }
+      });
+      this.vehicleService.postVehicleMaterial(objAllowedMaterial)
+               .subscribe({
+                   next: (data) => {
+                     if(data !== null)
+                     {
+                      this.canCreate = false
+                       this.getGridData();
+                       this.allowedMaterialDialog = false;
+                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Todos los Materiales Creados', life: 3000 });
+                     }
+                   },
+                   error: error => {
+                     this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                   }
+               });
+    }else
+    {
+      this.canCreate = false
+    }
   }
 
 

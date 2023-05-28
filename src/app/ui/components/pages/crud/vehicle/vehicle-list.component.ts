@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { Vehicle } from 'src/app/ui/models/vehicles.model';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
 import { VehicleBasicEditComponent } from './vehicle-basic-edit.component';
+import { VehicleMaterialComponent } from './vehicle-material.component';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -12,6 +13,7 @@ import { VehicleBasicEditComponent } from './vehicle-basic-edit.component';
 })
 export class VehicleListComponent implements OnInit {
   @ViewChild(VehicleBasicEditComponent)editBasic!: VehicleBasicEditComponent;
+  @ViewChild(VehicleMaterialComponent)vehicleMaterial!: VehicleMaterialComponent;
 
   vehicles: Vehicle[] = [];
   vehicle : Vehicle = {};
@@ -30,6 +32,8 @@ export class VehicleListComponent implements OnInit {
   isViewMode: boolean = false;
   vehicleId: number= 0;
   vehicleLicensePlate: string  = '';
+  vehicleFeature: string = 'Vehículo';
+
   constructor(private vehicleService: VehicleService, private messageService: MessageService) { }
 
   ngOnInit() {
@@ -61,12 +65,14 @@ export class VehicleListComponent implements OnInit {
   openNew(){
     this.vehicleDialog = true;
     this.editMode= false;
+    this.vehicle = {};
+    this.showOptions = true;
   }
 
   editVehicle(vehicleBasic: any, isviewMode: boolean = false) {
     this.editMode= true;
     this.vehicleId = vehicleBasic.id as number;
-    this.vehicleLicensePlate = vehicleBasic.vehicleLicensePlate;
+    this.vehicleLicensePlate = vehicleBasic.licensePlate;
     this.vehicleDialog = true;
     this.allowedMaterialsTab = false;
     this.driverTab = false;
@@ -74,12 +80,18 @@ export class VehicleListComponent implements OnInit {
     this.restrictedDestinationsTab = false;
     this.vehicle = vehicleBasic;
     this.isViewMode = isviewMode;
+    this.showOptions = !isviewMode;
   }
 
   reloadGridAfterSave(){}
 
   onChangeTab(event: any){
     this.tabIndex = event.index;
+    this.showOptions = event.index === 1 || event.index === 2 || event.index === 3 ? false: true;
+    if (this.tabIndex === 1)
+    {
+      this.vehicleMaterial.getGridData();
+    }
   }
 
   saveContentTabs(){

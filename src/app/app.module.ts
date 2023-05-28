@@ -23,7 +23,7 @@ import { MaterialService } from './ui/service/material.service';
 @NgModule({
   declarations: [
     AppComponent
-    ],
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

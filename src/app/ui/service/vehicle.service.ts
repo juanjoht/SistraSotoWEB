@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { Vehicle, allowedMaterial } from '../models/vehicles.model';
+import { Driver, Vehicle, VehicleDocuments, VehicleRestrictedDestination, allowedMaterial } from '../models/vehicles.model';
+import { RestrictedDestination } from '../models/route.model';
 
 @Injectable()
 export class VehicleService {
@@ -124,12 +125,12 @@ export class VehicleService {
     }
 
     putVehicleMaterial(request: allowedMaterial){
-        return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiMaterialVehicle}`,
+        return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiMaterialVehicle}`,
         {
             materialVehiculo: {
                 materialId: request.materialId,
                 vehiculoId: request.vehicleId,
-                state: request.state
+                estado: request.state
             }
           })
             .pipe(map(user => {
@@ -138,6 +139,164 @@ export class VehicleService {
                 }
             }));
     }
+
+    getVehicleDriver(vehicleId: number) {
+        let newData: Driver = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiDriverVehicle}?VehiculoId=${vehicleId}`)
+        .pipe(map(data => {
+            return data?.conductores?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    name: item.nombre,
+                    state: item.estado,
+                }
+            })
+        }));
+    }
+
+    postVehicleDriver(request: Driver){
+        return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiLinkDriverVehicle}`,
+        {
+            conductorRelacionVehiculo: {
+                vehiculoId: request.vehicleId,
+                conductorId: request.id
+            }
+          })
+            .pipe(map(user => {
+                if (user.conductorRelacionadoVehiculo !== undefined && user.conductorRelacionadoVehiculo != null) {
+                    return user.conductorRelacionadoVehiculo; 
+                }
+            }));
+    }
+
+    getDriverRelated(vehicleId?: number, driverId?: number) {
+        let newData: boolean = false;
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiDriverRelatedToVehicle}?ConductorId=${driverId}&VehiculoId=${vehicleId}`)
+        .pipe(map(data => {
+                if (data?.conductorRelacionado !== null && data?.conductorRelacionado !== undefined){
+                    newData = data?.conductorRelacionado;
+                }
+                 return newData;
+        }));
+    }
+
+    getVehicleDocs(vehicleId: number) {
+        let newData: VehicleDocuments = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiDocsByVehicle}?VehiculoId=${vehicleId}`)
+        .pipe(map(data => {
+            return data?.documentos?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    docName: item.nombreDocumento,
+                    docUrl: item.urlDocumento,
+                    state: item.estado,
+                    maturityDate : item.creado
+                }
+            })
+        }));
+    }
+
+    postVehicleDoc(request: VehicleDocuments){
+        return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiVehicleDocument}`,
+        {
+            documentoVehiculo: {
+                vehiculoId: request.vehicleId,
+                documentoId: request.docId,
+                estado: request.state,
+                fechaVencimiento: request.maturityDate
+            }
+          })
+            .pipe(map(client => {
+                if (client?.documentoRelacionado !== undefined && client?.documentoRelacionado != null) {
+                    return client.documentoRelacionado; 
+                }
+            }));
+    }
+    
+    putVehicleDoc(request: VehicleDocuments){
+        return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiVehicleDocument}`,
+        {
+            documentoVehiculo: {
+                vehiculoId: request.vehicleId,
+                documentoId: request.docId,
+                urlDocumento: request.docUrl,
+                estado: request.state,
+                fechaVencimiento: request.maturityDate
+            }
+          })
+            .pipe(map(client => {
+                if (client?.documentoRelacionActualizado !== undefined && client?.documentoRelacionActualizado != null) {
+                    return client.documentoRelacionActualizado; 
+                }
+            }));
+    }
+
+    postUploadVehicleDoc(formData: any){
+        return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiUploadVehicleDoc}`,formData)
+            .pipe(map(client => {
+                if (client?.fileUrl !== '' && client?.fileUrl != null) {
+                    return client.fileUrl; 
+                }
+            }));
+    }
+
+    
+    getRestrictedDestination() {
+        let newData: RestrictedDestination = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiRestrictedDestination}`)
+        .pipe(map(data => {
+            return data?.destinosRestringidos?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    name: item.nombre,
+                    description: item.description,
+                    state: item.estado
+                }
+            })
+        }));
+    }
+
+    getRestrictedDestinationVehicle(vehicleId : number) {
+        let newData: RestrictedDestination = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiRestrictedDestinationByVehicle}?VehiculoId=${vehicleId}`)
+        .pipe(map(data => {
+            return data?.destinosRestringidos?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    name: item.nombre,
+                    description: item.description,
+                    state: item.estado
+                }
+            })
+        }));
+    }
+
+    postRestrictedDestinationVehicle(request: VehicleRestrictedDestination){
+        return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiLinkRestrictedDestinationVehicle}`,
+        {
+            destinoRestringidoRelacionVehiculo: {
+                destinoRestringidoId: request.restrictedDestinationId,
+                vehiculoId: request.vehicleId
+            }
+          })
+            .pipe(map(client => {
+                if (client?.destinoRestringidoVehiculoRelacionado !== undefined && client?.destinoRestringidoVehiculoRelacionado != null) {
+                    return client.destinoRestringidoVehiculoRelacionado; 
+                }
+            }));
+    }
+
+    deleteRestrictedDestinationVehicle(restrictedDestinationId: number, vehicleId: number){
+        return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiRestrictedDestinationByVehicle}?DestinoRestringidoId=${restrictedDestinationId}&VehiculoId=${vehicleId}`)
+            .pipe(map(client => {
+                    return (client?.destinoRestringidoVehiculoEliminado !== null || client?.destinoRestringidoVehiculoEliminado !== undefined) ? client?.destinoRestringidoVehiculoEliminado: false;
+            }));
+    }
+
+    
+
+
+    
 
 
     

@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
         { path: 'userprofile', loadChildren: () => import('./security/user/user-profile.module').then(m => m.UserProfileModule) },
         { path: 'parameter', loadChildren: () => import('./security/parameters/parameters.module').then(m => m.ParametersModule) },
         { path: 'vehicle', loadChildren: () => import('./crud/vehicle/vehicle.module').then(m => m.VehicleModule) },
+        { path: 'material', loadChildren: () => import('./crud/material/material.module').then(m => m.MaterialModule) },
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]

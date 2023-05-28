@@ -70,13 +70,13 @@
                     <app-vehicle-material [vehicleName]="vehicleLicensePlate" [viewMode]="isViewMode" [vehicleId]="vehicleId"></app-vehicle-material>
                 </p-tabPanel>
                 <p-tabPanel  header="Conductores" [disabled]="driverTab" >
-
+                    <app-vehicle-driver [vehicleName]="vehicleLicensePlate" [viewMode]="isViewMode" [vehicleId]="vehicleId"></app-vehicle-driver>
                 </p-tabPanel>
                 <p-tabPanel  header="Documentos" [disabled]="docsTab">
-
-                </p-tabPanel>   
+                    <app-transporter-document-list [transporterDoc]="vehicleLicensePlate" [transporterName]="vehicleLicensePlate" [feature]="vehicleFeature" [viewMode]="isViewMode" [transporterId]="vehicleId" ></app-transporter-document-list>
+                </p-tabPanel>
                 <p-tabPanel  header="Destinos Restringidos" [disabled]="restrictedDestinationsTab">
-
+                    <app-vehicle-restricted-destination [vehicleName]="vehicleLicensePlate" [viewMode]="isViewMode" [vehicleId]="vehicleId"></app-vehicle-restricted-destination>
                 </p-tabPanel>
             </p-tabView>
     </ng-template>

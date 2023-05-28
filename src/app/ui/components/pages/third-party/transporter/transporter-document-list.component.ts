@@ -10,6 +10,8 @@ import { ParamService } from 'src/app/ui/service/param.service';
 import { TransporterService } from 'src/app/ui/service/transporter.service';
 import { environment } from 'src/environments/environment';
 import * as FileSaver from 'file-saver';
+import { VehicleService } from 'src/app/ui/service/vehicle.service';
+import { VehicleDocuments } from 'src/app/ui/models/vehicles.model';
 @Component({
   selector: 'app-transporter-document-list',
   templateUrl: './transporter-document-list.component.html',
@@ -36,20 +38,25 @@ export class TransporterDocumentListComponent implements OnInit {
     private parameterService: ParamService,
     private transporterService: TransporterService,
     private driverService: DriverService,
+    private vehicleService: VehicleService,
     private formBuilder: FormBuilder,
     private messageService: MessageService
     ) { }
 
   ngOnInit() {
-    if(this.feature.toLowerCase() === 'conductor'){
-      this.getGridDataDrivers();
+    switch (this.feature.toLowerCase()) {
+      case 'conductor':
+        this.getGridDataDrivers();
+        break;
+      case 'transportador':
+        this.getGridDataTransporters(); 
+        break;
+      case 'vehículo':
+        this.getGridDataVehicles(); 
+        break;
+      default:
+        break;
     }
-    else if (this.feature.toLowerCase() === 'transportador')
-    {
-       this.getGridDataTransporters(); 
-    }
-    
-
     this.cols = [
         { field: 'docName', header: 'Documento' },
         { field: 'maturityDate', header: 'Fecha' },
@@ -98,6 +105,18 @@ getGridDataDrivers(){
   });
 }
 
+getGridDataVehicles(){
+  this.vehicleService.getVehicleDocs(this.transporterId)
+  .subscribe({
+      next: (data:any) => {
+        this.transporterDocs = data;
+      },
+      error: error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error?.detail, life: 5000 });
+      }
+  });
+}
+
 getAllDocs(){
   this.parameterService.getParamByType('Documento')
   .subscribe({
@@ -122,12 +141,18 @@ downloadDoc(urlDoc:string, docName: string)
 
 saveContentDialog()
   {
-    if(this.feature.toLowerCase() === 'conductor'){
-      this.saveDriverDocs()
-    }
-    else if (this.feature.toLowerCase() === 'transportador')
-    {
-       this.saveTransporterDocs(); 
+    switch (this.feature.toLowerCase()) {
+      case 'conductor':
+        this.saveDriverDocs()
+        break;
+      case 'transportador':
+        this.saveTransporterDocs(); 
+        break;
+      case 'vehículo':
+        this.saveVehicleDocs();
+        break;
+      default:
+        break;
     }
   }
 
@@ -167,7 +192,7 @@ saveContentDialog()
  changeDoc(event: any)
  {
   this.docName = this.Docs.find(x=> x.id === event.value)?.name as string;
-  if(this.feature.toLowerCase() === 'conductor'){
+  if(this.feature.toLowerCase() === 'conductor' || this.feature.toLowerCase() === 'vehículo'){
     this.showMatutityDate = this.Docs.find(x=> x.id === event.value)?.expire as boolean;
     if(this.showMatutityDate)
     {
@@ -214,6 +239,39 @@ saveContentDialog()
 
  }
 
+ saveVehicleDocs()
+ {
+  this.submittedTransporterDoc = true;
+  if (this.formTransporterDoc.invalid) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
+    return;
+  }
+    let formValues  = this.f;
+    let objvehicleDoc: VehicleDocuments = {
+      vehicleId: this.transporterId,
+      docId: formValues.docSelected.value,
+      state: 'Pendiente'
+    }
+    this.vehicleService.postVehicleDoc(objvehicleDoc)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      this.showMatutityDate = false;
+                      this.showVarCode = true;
+                      this.action = "Cargar";
+                      this.getGridDataVehicles();
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Documento del vehículo Creado', life: 3000 });
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+                  }
+              });
+
+
+ }
+
 
  uploadFiles(event: any)
  {
@@ -223,15 +281,21 @@ saveContentDialog()
           formData.append('', element);
   });
   formData.append('NumeroDocumento', this.transporterDoc);
-  if(this.feature.toLowerCase() === 'transportador'){
+
+switch (this.feature.toLowerCase()) {
+  case 'conductor':
+    this.UploadFileDriver(formData);
+    break;
+  case 'transportador':
     this.UploadFileTransporter(formData);
-  }else if (this.feature.toLowerCase() === 'conductor')
-  {
-     this.UploadFileDriver(formData); 
-  }
-  
-  
- }
+    break;
+  case 'vehículo':
+    this.UploadFileVehicle(formData);
+    break;
+  default:
+    break;
+}
+}
 
  UploadFileTransporter(formData: FormData)
  {
@@ -258,6 +322,23 @@ saveContentDialog()
                     if(data !== null)
                     {
                       this.putDriverDocs(data);
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+                  }
+              });
+
+ }
+
+ UploadFileVehicle(formData: FormData)
+ {
+  this.vehicleService.postUploadVehicleDoc(formData)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      this.putVehicleDocs(data);
                     }
                   },
                   error: error => {
@@ -310,6 +391,30 @@ saveContentDialog()
                       this.transporterDocDialog = false;
                       this.getGridDataDrivers();
                       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Documento del Conductor Actualizado', life: 3000 });
+                    }
+                  },
+                  error: error => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+                  }
+              });
+ }
+
+ putVehicleDocs(urlDoc: string)
+ {
+  let formValues  = this.f;
+    let objVehicleDoc: VehicleDocuments = {
+      vehicleId: this.transporterId,
+      docId: formValues.docSelected.value,
+      docUrl:urlDoc
+    }
+  this.vehicleService.putVehicleDoc(objVehicleDoc)
+              .subscribe({
+                  next: (data) => {
+                    if(data !== null)
+                    {
+                      this.transporterDocDialog = false;
+                      this.getGridDataVehicles();
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Documento del Vehículo Actualizado', life: 3000 });
                     }
                   },
                   error: error => {

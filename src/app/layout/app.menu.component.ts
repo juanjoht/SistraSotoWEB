@@ -72,6 +72,12 @@ export class AppMenuComponent implements OnInit {
                                 //class: this.checkPermissions('Terceros-Vehículos'),
                                 icon: 'pi pi-fw pi-car',
                                 routerLink: ['/pages/vehicle']
+                            },
+                            {
+                                label: 'Materiales',
+                                //class: this.checkPermissions('Terceros-Vehículos'),
+                                icon: 'pi pi-fw pi-wrench',
+                                routerLink: ['/pages/material']
                             }
                         ]
                     },

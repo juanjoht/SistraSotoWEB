@@ -132,7 +132,7 @@ export class GridThirdPartyComponent implements OnInit {
 
   reloadGridAfterSave()
   {
-    this.reloadGridParent.emit({ reloadGrid: true });;
+    this.reloadGridParent.emit({ reloadGrid: true });
   }
 
   editCustomer(customerBasic: any, isviewMode: boolean = false) {
