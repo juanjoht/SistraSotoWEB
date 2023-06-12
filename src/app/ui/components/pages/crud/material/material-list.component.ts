@@ -3,6 +3,7 @@ import { MaterialEditComponent } from './material-edit.component';
 import { material } from 'src/app/ui/models/material.model';
 import { MaterialService } from 'src/app/ui/service/material.service';
 import { MessageService } from 'primeng/api';
+import { Common } from 'src/app/common/common';
 
 @Component({
   selector: 'app-material-list',
@@ -30,8 +31,10 @@ export class MaterialListComponent implements OnInit {
   constructor(private materialService: MaterialService, private messageService: MessageService) { }
 
   ngOnInit() {
+    this.canRead = Common.checkPermissions('Maestros-Materiales', 'Consultar');
+    this.canCreate = Common.checkPermissions('Maestros-Materiales', 'Crear');
+    this.canEdit = Common.checkPermissions('Maestros-Materiales', 'Editar');
     this.getGridData();
-
     this.cols = [
         { field: 'name', header: 'Placa' },
         { field: 'unitMass', header: 'Masa Unitaria' },

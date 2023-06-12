@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Common } from 'src/app/common/common';
 import { DriverGeneralInfo } from 'src/app/ui/models/driver.model';
 import { Driver } from 'src/app/ui/models/vehicles.model';
 import { DriverService } from 'src/app/ui/service/driver.service';
@@ -35,6 +36,9 @@ export class VehicleDriverComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+      this.canRead = Common.checkPermissions('Maestros-Vehiculos', 'Consultar');
+      this.canCreate = Common.checkPermissions('Maestros-Vehiculos', 'Crear');
+      this.canEdit = Common.checkPermissions('Maestros-Vehiculos', 'Editar');
       this.getGridData();
       this.getAllDrivers();
       this.cols = [

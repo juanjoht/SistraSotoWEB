@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Common } from 'src/app/common/common';
 import { RestrictedDestination } from 'src/app/ui/models/route.model';
 import { VehicleRestrictedDestination } from 'src/app/ui/models/vehicles.model';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
@@ -34,6 +35,9 @@ export class VehicleRestrictedDestinationComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+      this.canRead = Common.checkPermissions('Maestros-Vehiculos', 'Consultar');
+      this.canCreate = Common.checkPermissions('Maestros-Vehiculos', 'Crear');
+      this.canEdit = Common.checkPermissions('Maestros-Vehiculos', 'Editar');
       this.getGridData();
       this.getAllRestrictedDestination();
       this.cols = [

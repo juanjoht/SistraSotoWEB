@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import * as FileSaver from 'file-saver';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
 import { VehicleDocuments } from 'src/app/ui/models/vehicles.model';
+import { Common } from 'src/app/common/common';
 @Component({
   selector: 'app-transporter-document-list',
   templateUrl: './transporter-document-list.component.html',
@@ -34,6 +35,9 @@ export class TransporterDocumentListComponent implements OnInit {
   action: string = "Adicionar";
   docName: string = '';
   showMatutityDate: boolean= false;
+  canRead: boolean = true;
+  canCreate: boolean = true;
+  canEdit: boolean = true;
   constructor(
     private parameterService: ParamService,
     private transporterService: TransporterService,
@@ -52,6 +56,9 @@ export class TransporterDocumentListComponent implements OnInit {
         this.getGridDataTransporters(); 
         break;
       case 'vehículo':
+        this.canRead = Common.checkPermissions('Maestros-Vehiculos', 'Consultar');
+        this.canCreate = Common.checkPermissions('Maestros-Vehiculos', 'Crear');
+        this.canEdit = Common.checkPermissions('Maestros-Vehiculos', 'Editar');
         this.getGridDataVehicles(); 
         break;
       default:

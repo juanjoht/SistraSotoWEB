@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Common } from 'src/app/common/common';
 import { material } from 'src/app/ui/models/material.model';
 import { allowedMaterial } from 'src/app/ui/models/vehicles.model';
 import { MaterialService } from 'src/app/ui/service/material.service';
@@ -35,6 +36,9 @@ export class VehicleMaterialComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+      this.canRead = Common.checkPermissions('Maestros-Vehiculos', 'Consultar');
+      this.canCreate = Common.checkPermissions('Maestros-Vehiculos', 'Crear');
+      this.canEdit = Common.checkPermissions('Maestros-Vehiculos', 'Editar');
       this.getGridData();
       this.getMaterials();
       this.cols = [

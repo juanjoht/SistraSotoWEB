@@ -1,0 +1,48 @@
+<form [formGroup]="formGroupBasic" >
+    <div class="formgrid grid">
+        <div class="field col-12 sm:col-5">
+            <label for="route" class="font-bold">Ruta*</label>
+            <p-dropdown id="route"placeholder="Seleccione una Ruta" 
+            formControlName="routeSelected" [options]="routes" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.routeSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.routeSelected?.errors?.required">La ruta es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="valuem3Input" class="font-bold">Valor m3*</label>
+            <p-inputNumber id="valuem3Input" inputId="minmax" inputId="minmax" [min]="f?.valueMinm3?.value" [max]="f.valueMaxm3?.value" formControlName="valuem3" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valuem3.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valuem3?.errors?.required">Valor m3 es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="valuetonInput" class="font-bold">Valor ton*</label>
+            <p-inputNumber id="valuetonInput" inputId="minmax" inputId="minmax" [min]="f?.valueMinTon?.value" [max]="f.valueMaxton.value" formControlName="valueton" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valueton.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valueton?.errors?.required">Valor ton es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-1">
+            <label for="stateYesorNot" class="font-bold">Estado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="valueminm3Input" class="font-bold">Valor min m3*</label>
+            <p-inputNumber id="valueminm3Input" inputId="minmax" inputId="minmax" [min]="0" formControlName="valueMinm3" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valueMinm3.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valueMinm3?.errors?.required">Valor min m3 es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="valuemaxm3Input" class="font-bold">Valor max m3*</label>
+            <p-inputNumber id="valuemaxm3Input" inputId="minmax" inputId="minmax" [min]="0" formControlName="valueMaxm3" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valueMaxm3.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valueMaxm3?.errors?.required">Valor max m3 es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="valuemintonInput" class="font-bold">Valor min ton*</label>
+            <p-inputNumber id="valuemintonInput" inputId="minmax" inputId="minmax" [min]="0" formControlName="valueMinTon" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valueMinTon.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valueMinTon?.errors?.required">Valor min ton es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="valuemaxtonInput" class="font-bold">Valor max ton*</label>
+            <p-inputNumber id="valuemaxtonInput" inputId="minmax" inputId="minmax" [min]="0" formControlName="valueMaxton" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valueMaxton.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valueMaxton?.errors?.required">Valor max ton es requerido.</small>
+        </div>
+    </div>
+    </form>

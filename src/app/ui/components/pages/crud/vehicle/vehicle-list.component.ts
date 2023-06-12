@@ -4,6 +4,7 @@ import { Vehicle } from 'src/app/ui/models/vehicles.model';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
 import { VehicleBasicEditComponent } from './vehicle-basic-edit.component';
 import { VehicleMaterialComponent } from './vehicle-material.component';
+import { Common } from 'src/app/common/common';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -37,6 +38,9 @@ export class VehicleListComponent implements OnInit {
   constructor(private vehicleService: VehicleService, private messageService: MessageService) { }
 
   ngOnInit() {
+    this.canRead = Common.checkPermissions('Maestros-Vehiculos', 'Consultar');
+    this.canCreate = Common.checkPermissions('Maestros-Vehiculos', 'Crear');
+    this.canEdit = Common.checkPermissions('Maestros-Vehiculos', 'Editar');
     this.getGridData();
 
     this.cols = [

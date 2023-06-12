@@ -64,27 +64,48 @@ export class AppMenuComponent implements OnInit {
                     },
                     {
                         label: 'Maestros',
+                        class: this.checkPermissions('Maestros'),
                         icon: 'pi pi-fw pi-pencil',
                         routerLink: ['/pages/crud'],
                         items: [
                             {
                                 label: 'Vehículos',
-                                //class: this.checkPermissions('Terceros-Vehículos'),
+                                class: this.checkPermissions('Maestros-Vehiculos'),
                                 icon: 'pi pi-fw pi-car',
                                 routerLink: ['/pages/vehicle']
                             },
                             {
                                 label: 'Materiales',
-                                //class: this.checkPermissions('Terceros-Vehículos'),
+                                class: this.checkPermissions('Maestros-Materiales'),
                                 icon: 'pi pi-fw pi-wrench',
                                 routerLink: ['/pages/material']
+                            },
+                            {
+                                label: 'Rutas',
+                                class: this.checkPermissions('Maestros-Rutas'),
+                                icon: 'pi pi-fw pi-map-marker',
+                                routerLink: ['/pages/route']
+                            },
+                            {
+                                label: 'Tarifas de Transporte',
+                                class: this.checkPermissions('Maestros-Tarifas-Transporte'),
+                                icon: 'pi pi-fw pi-chart-line',
+                                routerLink: ['/pages/rate-transport']
                             }
                         ]
                     },
                     {
                         label: 'Programación',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/timeline']
+                        routerLink: ['/pages/timeline'],
+                        items: [
+                            {
+                                label: 'Pedidos del cliente',
+                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                icon: 'pi pi-fw pi-hashtag',
+                                routerLink: ['/pages/order']
+                            }
+                        ]
                     },
                     {
                         label: 'Administrativo',

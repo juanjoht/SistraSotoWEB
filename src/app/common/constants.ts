@@ -1,6 +1,7 @@
 export const Constants = {
     apiLogin: '/auth/login',
     apiCustomer: '/cliente',
+    apiCustomerList: '/cliente/lista',
     apiParamStaticDept: '/parametroEstatico/departamentos',
     apiParamStaticCitiesByDept: '/parametroEstatico/municipiosPorDepartamento',
     apiParamsByType: '/parametro/tipo',
@@ -67,6 +68,9 @@ export const Constants = {
     apiRestrictedDestination: '/destinoRestringido/lista',
     apiRestrictedDestinationByVehicle: '/destinoRestringido/vehiculo',
     apiLinkRestrictedDestinationVehicle: '/destinoRestringido/linkVehiculoDestinoRestringido',
+    apiRateTransport: '/tarifaTransporte',
+    apiRouteList: '/ruta/lista',
+    apiOrder: '/pedido',
     pathHome: 'home',
     pathLogin: 'login',
     numRowMax: 2147483647

@@ -54,6 +54,12 @@ import { VehicleDriverComponent } from './crud/vehicle/vehicle-driver.component'
 import { VehicleRestrictedDestinationComponent } from './crud/vehicle/vehicle-restricted-destination.component';
 import { MaterialListComponent } from './crud/material/material-list.component';
 import { MaterialEditComponent } from './crud/material/material-edit.component';
+import { RouteListComponent } from './crud/route/route-list.component';
+import { RouteEditComponent } from './crud/route/route-edit.component';
+import { RateTransportListComponent } from './crud/rate-transport/rate-transport-list.component';
+import { RateTransportEditComponent } from './crud/rate-transport/rate-transport-edit.component';
+import { OrderListComponent } from './programming/order/order-list.component';
+import { OrderEditComponent } from './programming/order/order-edit.component';
 
 
 @NgModule({
@@ -90,7 +96,13 @@ import { MaterialEditComponent } from './crud/material/material-edit.component';
         VehicleDriverComponent,
         VehicleRestrictedDestinationComponent,
         MaterialListComponent,
-        MaterialEditComponent
+        MaterialEditComponent,
+        RouteListComponent,
+        RouteEditComponent,
+        RateTransportListComponent,
+        RateTransportEditComponent,
+        OrderListComponent,
+        OrderEditComponent
     ],
     imports: [
         CommonModule,

@@ -11,6 +11,21 @@ export class CustomerService {
 
     constructor(private http: HttpClient) { }
 
+    getCustomerList() {
+        let newCustomerBasic: CustomerBasicInfo = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiCustomerList}`)
+        .pipe(map(data => {
+            return data?.clientes?.map((item: any) =>{
+                 return newCustomerBasic =  {
+                    id: item.id,
+                    name: item.nombre
+                }
+            })
+        }));
+    }
+
+
+
     getCustomerBasic() {
         let newCustomerBasic: CustomerBasicInfo = {};
         return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiCustomer}`)

@@ -5,7 +5,7 @@
     <div class="field col-12 sm:col-12">
 
 
-        <p-table #dtTransporterDocs [value]="transporterDocs" styleClass="p-datatable-gridlines"
+        <p-table  *ngIf="canRead" #dtTransporterDocs [value]="transporterDocs" styleClass="p-datatable-gridlines"
             [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10" [rows]="10"
             [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
             currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros" [rowHover]="true"
@@ -14,7 +14,7 @@
                 <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                     <h5 class="m-0">Documentos del {{feature}}</h5>
                     <span *ngIf="!viewMode" class="block mt-2 md:mt-0">
-                        <button pButton pRipple title="Adicionar Nuevo Documento" icon="pi pi-plus"
+                        <button *ngIf="canCreate" pButton pRipple title="Adicionar Nuevo Documento" icon="pi pi-plus"
                             class="p-button-success mr-2" (click)="openNewTransporterDoc()"></button>
                     </span>
                 </div>
@@ -44,7 +44,7 @@
                         {{transporterDoc.state}}
                     </td>
                     <td  *ngIf="!viewMode">
-                        <button title="Cargar" pButton pRipple icon="pi pi-upload"
+                        <button title="Cargar" *ngIf="canEdit" pButton pRipple icon="pi pi-upload"
                             class="p-button-rounded p-button-danger mr-2" (click)="loadDoc(transporterDoc.docName,transporterDoc.id,transporterDoc.maturityDate)" ></button>
                         <button title="Descargar" *ngIf="transporterDoc.state === 'Cargado' || transporterDoc.state === 'Vencido'" pButton pRipple icon="pi pi-download" (click)="downloadDoc(transporterDoc.docUrl,transporterDoc.docName)"
                             class="p-button-rounded p-button-success mr-2"></button>

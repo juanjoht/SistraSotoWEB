@@ -13,6 +13,9 @@ import { RouterModule } from '@angular/router';
         { path: 'parameter', loadChildren: () => import('./security/parameters/parameters.module').then(m => m.ParametersModule) },
         { path: 'vehicle', loadChildren: () => import('./crud/vehicle/vehicle.module').then(m => m.VehicleModule) },
         { path: 'material', loadChildren: () => import('./crud/material/material.module').then(m => m.MaterialModule) },
+        { path: 'route', loadChildren: () => import('./crud/route/route.module').then(m => m.RouteModule) },
+        { path: 'rate-transport', loadChildren: () => import('./crud/rate-transport/rate-transport.module').then(m => m.RateTransportModule) },
+        { path: 'order', loadChildren: () => import('./programming/order/order.module').then(m => m.OrderModule) },
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]
