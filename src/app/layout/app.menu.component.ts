@@ -104,6 +104,24 @@ export class AppMenuComponent implements OnInit {
                                 //class: this.checkPermissions('Maestros-Vehiculos'),
                                 icon: 'pi pi-fw pi-hashtag',
                                 routerLink: ['/pages/order']
+                            },
+                            {
+                                label: 'Pedidos del cliente - Aprobación',
+                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                icon: 'pi pi-fw pi-hashtag',
+                                routerLink: ['/pages/order-approve']
+                            },
+                            {
+                                label: 'Pedidos Proveedores',
+                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                icon: 'pi pi-fw pi-calendar-plus',
+                                routerLink: ['/pages/provider-order']
+                            },
+                            {
+                                label: 'Preasignaciones',
+                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                icon: 'pi pi-fw pi-calendar',
+                                routerLink: ['/pages/preasignment']
                             }
                         ]
                     },

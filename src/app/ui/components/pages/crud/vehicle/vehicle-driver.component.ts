@@ -49,9 +49,6 @@ export class VehicleDriverComponent implements OnInit {
         driverSelected: ['',[Validators.required]],
         stateSelected: [true]
        });
-       //this.canRead = Common.checkPermissions('Terceros-Proveedores', 'Consultar');
-       //this.canCreate = Common.checkPermissions('Terceros-Proveedores', 'Crear');
-       //this.canEdit = Common.checkPermissions('Terceros-Proveedores', 'Editar');
    }
 
    getGridData(){

@@ -14,6 +14,7 @@ import { MaterialService } from 'src/app/ui/service/material.service';
 })
 export class OrderEditComponent implements OnInit {
   @Input() orderEdit!: order;
+  @Input() feature!: string;
   @Output() disableSaveParent = new EventEmitter<{ disabledSave: boolean }>();
   customers: CustomerBasicInfo[] = []
   customersBuildings: any[] = [];
@@ -63,26 +64,31 @@ export class OrderEditComponent implements OnInit {
       friday: [0],
       saturday: [0],
       sunday: [0],
-      totalAmount: [,[Validators.required]],
-      stateSelected:[true]
-     });
+      totalAmount: [,[Validators.required]]
+    });
     }else
     {
+      let disableControl: boolean = false;
+      if (this.feature === 'approve'){
+        disableControl = true;
+        this.totalAmountDisabled = true;
+      }
       this.isEdit = true;
       this.formGroupBasic = this.formBuilder.group({
-      clientSelected: [],
-      startDateSelected: [new Date(this.orderEdit.startDate as Date), [Validators.required]],
-      buildingSelected: [this.orderEdit.buildingId],
-      materialSelected: [this.orderEdit.materialId],
-      monday: [this.orderEdit.monday],
-      tuesday: [this.orderEdit.tuesday],
-      wednesday: [this.orderEdit.wednesday],
-      thursday: [this.orderEdit.thursday],
-      friday: [this.orderEdit.friday],
-      saturday: [this.orderEdit.saturday],
-      sunday: [this.orderEdit.sunday],
+      clientSelected: [{value : '', disabled : disableControl }],
+      startDateSelected: [{value : new Date(this.orderEdit.startDate as Date), disabled : disableControl }, [Validators.required]],
+      buildingSelected: [{value : this.orderEdit.buildingId, disabled : disableControl}],
+      materialSelected: [{value:  this.orderEdit.materialId, disabled : disableControl}],
+      monday: [{value :this.orderEdit.monday, disabled : disableControl}],
+      tuesday: [{value :this.orderEdit.tuesday, disabled : disableControl}],
+      wednesday: [{value :this.orderEdit.wednesday, disabled : disableControl}],
+      thursday: [{value :this.orderEdit.thursday, disabled : disableControl}],
+      friday: [{value :this.orderEdit.friday, disabled : disableControl}],
+      saturday: [{value :this.orderEdit.saturday, disabled : disableControl}],
+      sunday: [{value :this.orderEdit.sunday, disabled : disableControl}],
       totalAmount: [{value: this.orderEdit.totalAmount, disabled: this.totalAmountDisabled},  [Validators.required]],
-      stateSelected:[this.orderEdit.state === 'Activo' ? true: false]
+      amountApprove: [{value: this.orderEdit.totalAmount, disabled: false},[Validators.required]],
+      state: [{value: this.orderEdit.state, disabled: false}],
       });
     }
   }

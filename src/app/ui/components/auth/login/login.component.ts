@@ -61,4 +61,8 @@ export class LoginComponent {
         });    
   }
 
+  recoverPw(){
+    this.router.navigate(["/recovery"]);
+  }
+
 }

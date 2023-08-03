@@ -16,14 +16,14 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { OrderRoutingModule } from './order-routing.module'; 
+import { OrderApproveRoutingModule } from './order-approve-routing.module';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     CommonModule,
-    OrderRoutingModule,
+    OrderApproveRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     TableModule,
@@ -42,4 +42,4 @@ import { OrderRoutingModule } from './order-routing.module';
     InputTextareaModule
   ]
 })
-export class OrderModule { }
+export class OrderApproveModule { }

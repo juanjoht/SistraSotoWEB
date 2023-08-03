@@ -1,0 +1,76 @@
+<form [formGroup]="formGroupBasic" >
+    <div class="formgrid grid">
+        <div  class="calendar-div" class="field col-12 sm:col-3">
+            <label for="dateInput" class="font-bold">Fecha*</label>    
+            <p-calendar
+                [showClear]="true"
+                [showTime]="true" 
+                [showSeconds]="true"
+                [showIcon]="true" class="calendar" [style]="{width:'300px'}"  
+                [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '270px'}" 
+                [inputStyle]="{'padding-right': '0'}"
+                formControlName="dateSelected"
+                [minDate]="today"
+                hourFormat="12" 
+                [showSeconds]="false"
+                [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.dateSelected.errors }">
+            </p-calendar>
+            
+            <small class="ng-dirty ng-invalid"
+                *ngIf="submittedBasic && f?.dateSelected?.errors?.required">Fecha es
+                requerido</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="clientSelect" class="font-bold">Cliente*</label>
+            <p-dropdown id="clientSelect" [filter]="true" filterBy="name" (onChange)="changeClient($event)" placeholder="Seleccione un Cliente" 
+            formControlName="clientSelected" [options]="customers" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.clientSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.clientSelected?.errors?.required">Cliente es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="buildingSelect" class="font-bold">Obra*</label>
+            <p-dropdown id="buildingSelect"  placeholder="Seleccione una Obra" 
+            formControlName="buildingSelected" [options]="customersBuildings" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.buildingSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.buildingSelected?.errors?.required">Obra es requerida.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="materialSelect" class="font-bold">Material*</label>
+            <p-dropdown id="materialSelect" scrollHeight="200px" formControlName="materialSelected"  [options]="materials" placeholder="Seleccione un Material" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.materialSelected?.errors?.required">Material es requerido</small>
+        </div>
+
+        <div class="field col-12 sm:col-3">
+            <label for="unitMeasureInput" class="font-bold">Unidad de medida*</label>
+            <input id="unitMeasureInput" type="text" pInputText  formControlName="unitMeasure" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.unitMeasure.errors }" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.unitMeasure?.errors?.required">Unidad de medida es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="amountInput" class="font-bold">Cantidad*</label>
+            <p-inputNumber id="amountInput" inputId="minmax" inputId="minmax"  formControlName="amount" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.amount.errors}"> </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.amount?.errors?.required">Cantidad es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="plateSelect" class="font-bold">Placa*</label>
+            <p-dropdown id="plateSelect"  placeholder="Seleccione una placa" 
+            formControlName="plateSelected" [options]="customerPlates" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.plateSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.plateSelected?.errors?.required">Placa es requerida.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="driverSelect" class="font-bold">Conductor*</label>
+            <p-dropdown id="driverSelect" scrollHeight="200px" formControlName="driverSelected"  [options]="allDrivers" placeholder="Seleccione un conductor" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.driverSelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.driverSelected?.errors?.required">Conductor es requerido</small>
+        </div>
+        <div *ngIf="action === 'Rechazar'" class="field col-12 sm:col-12">
+            <label for="float-input" class="font-bold">Motivo Rechazo*</label>
+            <div>
+                <textarea id="float-input" rows="5" cols="60" pInputTextarea formControlName="reasonReject"  [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.reasonReject.errors }"></textarea>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.reasonReject?.errors?.required">Motivo Rechazo es requerido</small>
+            </div>
+        </div>
+    </div>
+</form>

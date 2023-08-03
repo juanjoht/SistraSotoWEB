@@ -10,6 +10,7 @@ const routes: Routes = [];
       RouterModule.forRoot([
           { path: '', pathMatch: 'full', redirectTo: 'login' },
           { path: 'login', loadChildren: () => import('./ui/components/auth/login/login.module').then(m => m.LoginModule) },
+          { path: 'recovery', loadChildren: () => import('./ui/components/auth/recovery/recovery.module').then(m => m.RecoveryModule) },
           {
               path: '', component: AppLayoutComponent,
               children: [

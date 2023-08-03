@@ -19,6 +19,15 @@ export class AuthService {
 ) { }
 
 
+recovery(username: string) {
+  return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiRecovery}`, { nombreUsuario: username })
+      .pipe(map(user => {
+          if (user.contrasenaEnviada) {
+            return user.contrasenaEnviada
+          }
+      }));
+}
+
 login(username: string, password: string) {
   return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiLogin}`, { usuario:{ nombreUsuario: username, contrasena: password }})
       .pipe(map(user => {

@@ -16,6 +16,9 @@ import { RouterModule } from '@angular/router';
         { path: 'route', loadChildren: () => import('./crud/route/route.module').then(m => m.RouteModule) },
         { path: 'rate-transport', loadChildren: () => import('./crud/rate-transport/rate-transport.module').then(m => m.RateTransportModule) },
         { path: 'order', loadChildren: () => import('./programming/order/order.module').then(m => m.OrderModule) },
+        { path: 'order-approve', loadChildren: () => import('./programming/order/order-approve.module').then(m => m.OrderApproveModule) },
+        { path: 'provider-order', loadChildren: () => import('./programming/provider-order/provider-order.module').then(m => m.ProviderOrderModule) },
+        { path: 'preasignment', loadChildren: () => import('./programming/preassignment/preassignment.module').then(m => m.PreassignmentModule) },
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]

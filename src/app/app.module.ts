@@ -22,6 +22,7 @@ import { MaterialService } from './ui/service/material.service';
 import { RouteService } from './ui/service/route.service';
 import { RateTransportService } from './ui/service/rate-transport.service';
 import { OrderService } from './ui/service/order.service';
+import { PreassignmentService } from './ui/service/preassignment.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { OrderService } from './ui/service/order.service';
       useClass: JwtInterceptor,
       multi: true
      },
-     CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService,UserService, ProfileService, ProviderService, MaterialService, RouteService,RateTransportService, OrderService],
+     CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService,UserService, ProfileService, ProviderService, MaterialService, RouteService,RateTransportService, OrderService,PreassignmentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

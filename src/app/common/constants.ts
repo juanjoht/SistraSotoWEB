@@ -1,5 +1,6 @@
 export const Constants = {
     apiLogin: '/auth/login',
+    apiRecovery: '/auth/recuperarContrasena',
     apiCustomer: '/cliente',
     apiCustomerList: '/cliente/lista',
     apiParamStaticDept: '/parametroEstatico/departamentos',
@@ -71,6 +72,12 @@ export const Constants = {
     apiRateTransport: '/tarifaTransporte',
     apiRouteList: '/ruta/lista',
     apiOrder: '/pedido',
+    apiOrderApprove: '/pedido/aprobar',
+    apiProviderOrder: '/PedidoProveedor',
+    apiPreassignment: '/preasignacion',
+    apiPreassignmentApprove: '/preasignacion/aprobar',
+    apiPreassignmentReject: '/preasignacion/rechazar',
+    apiCustomerPlate: '/cliente/placasTransportadores',
     pathHome: 'home',
     pathLogin: 'login',
     numRowMax: 2147483647

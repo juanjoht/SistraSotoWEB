@@ -2,18 +2,19 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
-<p-table #dt [value]="orders" *ngIf="canRead" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+<p-table #dt [value]="orders" [globalFilterFields]="['startDateFormat', 'clientName']"  *ngIf="canRead" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
     <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 class="m-0">Pedidos del Cliente</h5>
+            <h5 class="m-0">Pedidos del Cliente <span *ngIf="feature === 'approve'" > - Aprobación</span></h5>
             <span class="block mt-2 md:mt-0">
+                <button pButton *ngIf="feature === 'approve' && allowApproveAll" pRipple title="Aprobar Todos los pedidos" icon="pi pi-check" class="p-button-danger mr-2" (click)="approveAll()"></button>                            
                 <button pButton *ngIf="canCreate" pRipple title="Adicionar Nuevo Pedido" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>                            
             </span>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="startDate">Fecha Inicial <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="startDate">Fecha Inicial <p-sortIcon field="startDate"></p-sortIcon></th>
             <th pSortableColumn="clientName">Cliente <p-sortIcon field="clientName"></p-sortIcon></th>
             <th pSortableColumn="buildingName">Obra <p-sortIcon field="buildingName"></p-sortIcon></th>
             <th pSortableColumn="materialName">Material <p-sortIcon field="materialName"></p-sortIcon></th>
@@ -29,12 +30,60 @@
             <th pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
             <th></th>
         </tr>
+        <tr>
+            <th>
+                <p-columnFilter type="date"  matchMode="equals"  field="startDate"  [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <p-calendar [showClear]="true" [disabledDays]="[0,2,3,4,5,6]" [showIcon]="true" [style]="{width:'200px'}" appendTo="body" [panelStyle]="{'overflow': 'scroll',height: '280px', 'z-index': '10000',width: '280px'}" 
+                        #fd [ngModel]="value" 
+                        dataType="date" 
+                        dateFormat="dd/mm/yy" 
+                        (onSelect)="filter(fd.value)">
+                    </p-calendar>
+                    </ng-template>
+                   </p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter field="clientName" matchMode="equals" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown [ngModel]="value" appendTo="body" optionValue="name" optionName="name" optionLabel="name" [options]="customers" (onChange)="filter($event.value)" placeholder="Seleccione un cliente" [showClear]="true">
+                        </p-dropdown>
+                    </ng-template>
+                </p-columnFilter>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+        </tr>
     </ng-template>
     <ng-template pTemplate="body" let-order>
         <tr>
             <td>
                 <span class="p-column-title">startDate</span>
-                {{order.startDate | date: 'dd/MM/yyyy'}}
+                {{ order.startDate | date: 'dd/MM/yyyy' }}
             </td>
             <td>
                 <span class="p-column-title">clientName</span>
@@ -91,6 +140,8 @@
             <td>
                 <div class="flex">
                     <button title="Editar" *ngIf="canEdit" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editOrder(order)"></button>
+                    <button title="Aprobar" *ngIf="feature === 'approve' && order.state === 'Pendiente'" pButton pRipple icon="pi pi-check" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editOrder(order)"></button>
+                    <button title="Rechazar" *ngIf="feature === 'approve' && order.state === 'Pendiente'" pButton pRipple icon="pi pi-times" styleClass="p-button-sm" class="p-button-rounded p-button-danger mr-2" (click)="reject(order)"></button>
                 </div>
             </td>
         </tr>
@@ -101,14 +152,26 @@
         <span class="text-xl font-bold text-center">Crear/Editar Pedido</span>
     </ng-template>
     <ng-template pTemplate="content">
-        <app-order-edit [orderEdit]="order" (disableSaveParent)="reloadSave($event)"  ></app-order-edit>
+        <app-order-edit [orderEdit]="order" [feature]="feature === 'approve' ? 'approve': ''"  (disableSaveParent)="reloadSave($event)"  ></app-order-edit>
     </ng-template>
     
     <ng-template  pTemplate="footer">
         <ng-container *ngIf="showOptions">
-        <button pButton pRipple label="Guardar" [disabled]="disabledSave" icon="pi pi-check" class="p-button-text" (click)="saveOrder()"></button>
+        <button pButton pRipple #saveBt [label]="saveLabel" [disabled]="disabledSave" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
         </ng-container>   
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="deleteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Esta seguro que desea rechazar el pedido?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="deleteDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="confirmRejectSelected()"></button>
     </ng-template>
 </p-dialog>
 </div>

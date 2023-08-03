@@ -85,3 +85,8 @@ export interface CustomerShipping{
     m3Value?: number;
     state?: string;
 }
+
+export interface CustomerLicensePlate{
+    id?: number;
+    name?: string;
+}

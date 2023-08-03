@@ -60,6 +60,11 @@ import { RateTransportListComponent } from './crud/rate-transport/rate-transport
 import { RateTransportEditComponent } from './crud/rate-transport/rate-transport-edit.component';
 import { OrderListComponent } from './programming/order/order-list.component';
 import { OrderEditComponent } from './programming/order/order-edit.component';
+import { OrderListApproveComponent } from './programming/order/order-list-approve.component';
+import { ProviderOrderListComponent } from './programming/provider-order/provider-order-list.component';
+import { ProviderOrderEditComponent } from './programming/provider-order/provider-order-edit.component';
+import { PreassignmentListComponent } from './programming/preassignment/preassignment-list.component';
+import { PreassignmentEditComponent } from './programming/preassignment/preassignment-edit.component';
 
 
 @NgModule({
@@ -102,7 +107,12 @@ import { OrderEditComponent } from './programming/order/order-edit.component';
         RateTransportListComponent,
         RateTransportEditComponent,
         OrderListComponent,
-        OrderEditComponent
+        OrderEditComponent,
+        OrderListApproveComponent,
+        ProviderOrderListComponent,
+        ProviderOrderEditComponent,
+        PreassignmentListComponent,
+        PreassignmentEditComponent
     ],
     imports: [
         CommonModule,

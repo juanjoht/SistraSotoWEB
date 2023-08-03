@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProviderOrderRoutingModule } from './provider-order-routing.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -16,14 +17,14 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { OrderRoutingModule } from './order-routing.module'; 
+
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     CommonModule,
-    OrderRoutingModule,
+    ProviderOrderRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     TableModule,
@@ -42,4 +43,4 @@ import { OrderRoutingModule } from './order-routing.module';
     InputTextareaModule
   ]
 })
-export class OrderModule { }
+export class ProviderOrderModule { }

@@ -14,7 +14,8 @@
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
         <p-overlayPanel #op>
             <ng-template pTemplate="content">
-                <p-button label="Cerrar Sesión" icon="pi pi-sign-out" styleClass="p-button-secondary p-button-text" (click)="logOut()"></p-button>
+                <p-button label="Cambiar Contraseña" icon="pi pi-refresh" styleClass="block p-button-secondary p-button-text" (click)="showDialog('top-right')"></p-button>
+                <p-button label="Cerrar Sesión" icon="pi pi-sign-out" styleClass="block p-button-secondary p-button-text" (click)="logOut()"></p-button>
             </ng-template>
         </p-overlayPanel>
         <div>
@@ -26,3 +27,35 @@
         </button>
     </div>
 </div>
+<p-dialog header="Cambiar Contraseña" [(visible)]="visible" [position]="position" [style]="{ width: '50vw' }">
+    <form [formGroup]="formChangePw" >
+        <p-toast></p-toast>
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div>
+            <p-password id="newPassword"  formControlName="newPass" placeholder="Nueva Contraseña*" 
+            [toggleMask]="true" styleClass="block mb-2" [feedback]="false" inputStyleClass="w-full p-3 md:w-30rem"
+            [ngClass]="{ 'is-invalid ng-dirty': submittedChangePw && f.newPass.errors }"
+            ></p-password>
+            <div class="block mb-2">
+                <small class="ng-dirty ng-invalid"  *ngIf="submittedChangePw && f?.newPass?.errors?.required">
+                    Nueva Contraseña es requerida
+                </small>
+            </div>
+        </div>
+        <div>
+            <p-password id="confirmNewPassword"  formControlName="confirmPass" placeholder="Confirmar Nueva Contraseña*" 
+            [toggleMask]="true" styleClass="mb-2" [feedback]="false" inputStyleClass="w-full p-3 md:w-30rem"
+            [ngClass]="{ 'is-invalid ng-dirty': submittedChangePw && f.confirmPass.errors }"
+            ></p-password>
+            <div class="block mb-2">
+                <small class="ng-dirty ng-invalid"  *ngIf="submittedChangePw && f?.confirmPass?.errors?.required">
+                    Confirmar Nueva Contraseña es requerida
+                    </small>
+            </div>
+        </div>
+        <div class="flex align-items-center justify-content-center  m-2">
+                <button pButton pRipple label="Cambiar Contraseña" class="w-full p-3 md:w-20rem text-xl" (click)="changePw()" ></button>
+        </div>
+    </div>
+    </form>
+</p-dialog>

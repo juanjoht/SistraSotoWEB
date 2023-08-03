@@ -1,0 +1,52 @@
+<form [formGroup]="formGroupBasic" >
+    <div class="formgrid grid">
+        <div  class="calendar-div" class="field col-12 sm:col-3">
+            <label for="shippingDateInput" class="font-bold">Fecha Despacho*</label>    
+            <p-calendar [showClear]="true" [minDate]="currentDate" [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="shippingDateSelected" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.shippingDateSelected.errors }">></p-calendar>
+            <small class="ng-dirty ng-invalid"
+                *ngIf="submittedBasic && f?.shippingDateSelected?.errors?.required">Fecha Despacho es
+                requerido</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="providerSelect" class="font-bold">Proveedor*</label>
+            <p-dropdown id="providerSelect" [filter]="true" filterBy="name"  placeholder="Seleccione un Proveedor" 
+            formControlName="providerSelected" [options]="providers" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.providerSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.providerSelected?.errors?.required">Proveedor es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="clientSelect" class="font-bold">Cliente*</label>
+            <p-dropdown id="clientSelect" [filter]="true" filterBy="name" (onChange)="changeClient($event)" placeholder="Seleccione un Cliente" 
+            formControlName="clientSelected" [options]="customers" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.clientSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.clientSelected?.errors?.required">Cliente es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="buildingSelect" class="font-bold">Obra*</label>
+            <p-dropdown id="buildingSelect"  placeholder="Seleccione una Obra" 
+            formControlName="buildingSelected" [options]="customersBuildings" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.buildingSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.buildingSelected?.errors?.required">Obra es requerida.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="materialSelect" class="font-bold">Material*</label>
+            <p-dropdown id="materialSelect" scrollHeight="200px" formControlName="materialSelected"  [options]="materials" placeholder="Seleccione un Material" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.materialSelected?.errors?.required">Material es requerido</small>
+        </div>
+                <div class="field col-12 sm:col-3">
+                    <label for="amountInput" class="font-bold">Cantidad*</label>
+                    <p-inputNumber id="amountInput" inputId="minmax" [min]="1" inputId="minmax"  formControlName="amount" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.amount.errors}"> </p-inputNumber>
+                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.amount?.errors?.required">Cantidad es requerido.</small>
+                </div>
+                <div class="field col-12 sm:col-3">
+                    <label for="stateYesorNot" class="font-bold">Estado</label>
+                    <div class="flex align-items-center h-3rem">
+                        <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+                    </div>
+                </div>
+    </div>
+    </form>

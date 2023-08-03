@@ -1,0 +1,30 @@
+<form [formGroup]="formGroupRecovery" >
+    <p-toast></p-toast>
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-full overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <div class="text-center mb-5">
+                    <div class="text-900 text-3xl font-medium mb-3">Sistra Soto 13</div>
+                </div>
+                <div>
+                    <label for="email1" class="block text-900 text-xl font-medium mb-2">Ingrese el usuario para recuperar contraseña*</label>
+                    <input id="email1" type="text" placeholder="Usuario" formControlName="username" 
+                    pInputText class="w-full md:w-30rem mb-2" style="padding:1rem"
+                    [ngClass]="{ 'is-invalid ng-dirty': submittedLogin && f.username.errors }">
+                    <div class="mb-2">
+                        <small class="ng-dirty ng-invalid"  *ngIf="submittedLogin && f?.username?.errors?.required">
+                            Por favor ingrese el usuario
+                            </small>
+                    </div>
+                    <div class="flex align-items-center">                        
+                        <button pButton pRipple label="Enviar Contraseña" class="w-70 p-3 m-2 text-xl" (click)="recover()" ></button>
+                        <button pButton pRipple label="Cancelar" class="w-30 p-3 text-xl" (click)="cancel()" ></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

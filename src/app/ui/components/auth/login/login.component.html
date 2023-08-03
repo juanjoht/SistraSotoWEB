@@ -29,10 +29,12 @@
                             Contraseña es requerida
                             </small>
                     </div>
-                    <div class="flex align-items-center justify-content-between mb-5 gap-5">                        
+                    <div class="flex align-items-center justify-content-between  gap-5">                        
                         <button pButton pRipple label="Iniciar Sesión" class="w-full p-3 text-xl" (click)="logIn()" [routerLink]="['/']"></button>
                     </div>
-                    
+                    <div>
+                        <p-button label="Recuperar Contraseña" (click)="recoverPw()" styleClass="p-button-link"></p-button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from '../api/customer';
-import { CustomerBasicInfo, CustomerBuildings, CustomerCommercialInfo, CustomerShipping, CustomerTransport } from '../models/customer.model';
+import { CustomerBasicInfo, CustomerBuildings, CustomerCommercialInfo, CustomerLicensePlate, CustomerShipping, CustomerTransport } from '../models/customer.model';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { BehaviorSubject, Observable, map } from 'rxjs';
@@ -131,6 +131,19 @@ export class CustomerService {
                     m3Value: item.valorMetroCubico,
                     tonValue: item.valorTonelada,
                     state: item.estado
+                }
+            })
+        }));
+    }
+
+    getLicensePlatesByClient(clientId: number) {
+        let newInfo: CustomerLicensePlate; 
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiCustomerPlate}?ClienteId=${clientId}`)
+        .pipe(map(data => {
+            return data?.placas?.map((item: any) =>{
+                 return newInfo =  {
+                    id: item.id,
+                    name: item.nombre
                 }
             })
         }));

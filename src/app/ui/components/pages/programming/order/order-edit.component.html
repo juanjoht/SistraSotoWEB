@@ -29,31 +29,31 @@
             <p-dropdown id="materialSelect" scrollHeight="200px" formControlName="materialSelected"  [options]="materials" placeholder="Seleccione un Material" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" ></p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.materialSelected?.errors?.required">Material es requerido</small>
         </div>
-                <div class="field col-12 sm:col-1 days">
+                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
                     <label for="unitMassInput" class="font-bold">Lunes</label>
                     <p-inputNumber id="mondayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="monday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days">
+                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
                     <label for="TuesdayInput" class="font-bold">Martes</label>
                     <p-inputNumber id="TuesdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="tuesday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days">
+                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
                     <label for="wednesdayInput" class="font-bold">Miercoles</label>
                     <p-inputNumber id="wednesdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="wednesday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days">
+                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
                     <label for="thursdayInput" class="font-bold">Jueves</label>
                     <p-inputNumber id="thursdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="thursday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days">
+                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''" >
                     <label for="fridayInput" class="font-bold">Viernes</label>
                     <p-inputNumber id="fridayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="friday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days">
+                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
                     <label for="saturdayInput" class="font-bold">Sabado</label>
                     <p-inputNumber id="saturdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="saturday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days">
+                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
                     <label for="sundayInput" class="font-bold">Domingo</label>
                     <p-inputNumber id="sundayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="sunday" > </p-inputNumber>
                 </div>           
@@ -62,11 +62,10 @@
                     <p-inputNumber id="totalAmountInput" inputId="minmax" inputId="minmax"  formControlName="totalAmount" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.totalAmount.errors}"> </p-inputNumber>
                     <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.totalAmount?.errors?.required">Cantidad total es requerido.</small>
                 </div>
-        <div class="field col-12 sm:col-3">
-            <label for="stateYesorNot" class="font-bold">Estado</label>
-            <div class="flex align-items-center h-3rem">
-                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
-            </div>
-        </div>
+                <div class="field col-12 sm:col-3" *ngIf="feature === 'approve'">
+                    <label for="AmountApproveInput" class="font-bold">Cantidad Aprobada*</label>
+                    <p-inputNumber id="AmountApproveInput" inputId="minmax" inputId="minmax"  formControlName="amountApprove" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.amountApprove.errors}"> </p-inputNumber>
+                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.amountApprove?.errors?.required">Cantidad Aprobada es requerida.</small>
+                </div>
     </div>
     </form>
