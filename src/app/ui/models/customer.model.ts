@@ -30,6 +30,8 @@ export interface CustomerCommercialInfo {
     delayDays?: number;
     intermediationPercentage?: number;
     measureUnit?: string;
+    creditBalance?:number;
+    exclusiveTransport?: boolean;
 }
 
 export interface CustomerBuildings{

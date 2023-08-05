@@ -28,12 +28,23 @@ recovery(username: string) {
       }));
 }
 
+changePw(username: string, pw: string) {
+  return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiChangePw}`, { usuario: {nombreUsuario: username, contrasena: pw }})
+      .pipe(map(user => {
+          if (user.contrasenaCambiada) {
+            return user.contrasenaCambiada
+          }
+      }));
+}
+
+
 login(username: string, password: string) {
   return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiLogin}`, { usuario:{ nombreUsuario: username, contrasena: password }})
       .pipe(map(user => {
           if (user.usuario?.token !== '' && user.usuario?.token != null && user.usuario?.modulosPerfil?.length !== 0) {
             Common.Token = user.usuario?.token;
             Common.UserName = user.usuario?.nombre;
+            Common.UserId = username;
             Common.Modules = user.usuario?.modulosPerfil;
             this.router.navigate([Constants.pathHome]);
           }

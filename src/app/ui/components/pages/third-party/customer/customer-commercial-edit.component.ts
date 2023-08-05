@@ -53,42 +53,27 @@ export class CustomerCommercialEditComponent implements OnInit {
       maturityDays:[{value:'',disabled: this.viewMode},[Validators.required]],
       additionalDays:[{value:'',disabled: this.viewMode},[]],
       delayDays:[{value: '',disabled: this.viewMode},[]],
-      intermediationPercentage:[{value: '',disabled: this.viewMode},[Validators.required]],
-      measureUnitSelected:[{value: '',disabled: this.viewMode},[Validators.required]]
+      measureUnitSelected:[{value: '',disabled: this.viewMode},[Validators.required]],
+      creditBalance:[{value: '',disabled: true},[]],
+      exclusiveTransport: [{value: false,disabled: this.viewMode},[]]
      });
     }
-    else
-    {
-      this.formGroupCommercial = this.formBuilder.group({
-        priorityGroupSelected: [{value:this.customerCommercialEdit.priorityGroup, disabled: this.viewMode},[Validators.required]],
-        clientTypeSelected:[{value:this.customerCommercialEdit.customerType, disabled: this.viewMode},[Validators.required]],
-        iva:[{value: this.customerCommercialEdit.iva, disabled: this.viewMode},[Validators.required]],
-        assignedQuota:[{ value: this.customerCommercialEdit.assignedQuota, disabled: this.viewMode},[]],
-        usedQuota:[{value: this.customerCommercialEdit.usedQuota, disabled: true},[]],
-        availableQuota:[{value: this.customerCommercialEdit.availableQuota, disabled: true},[]],
-        maturityDays:[{value: this.customerCommercialEdit.maturityDays, disabled: this.viewMode},[Validators.required]],
-        additionalDays:[{value: this.customerCommercialEdit.additionalDays, disabled: this.viewMode},[]],
-        delayDays:[{value: this.customerCommercialEdit.delayDays, disabled: true},[]],
-        intermediationPercentage:[{value: this.customerCommercialEdit.intermediationPercentage, disabled: this.viewMode},[Validators.required]],
-        measureUnitSelected:[{value: this.customerCommercialEdit.measureUnit, disabled: this.viewMode},[Validators.required]]
-       });
-    }
-     this.formGroupCommercial.controls.clientTypeSelected.valueChanges.subscribe((data) => {
-      if( data.toLocaleLowerCase() === "crédito")
-      {
-        this.formGroupCommercial?.get('assignedQuota')?.enable();
-      }
-      else
-      {
-        this.formGroupCommercial?.get('assignedQuota')?.disable();
-      }
-    })
     this.getIvaDefault();
     this.getMaturityDaysDefault();
   }
   get f() { return this.formGroupCommercial?.controls; }
 
-
+  clientTypeChange(event: any){
+        if(event.value.toLocaleLowerCase() === "anticipo")
+        {
+          this.formGroupCommercial?.get('assignedQuota')?.disable();
+        }
+        else
+        {
+          this.formGroupCommercial?.get('assignedQuota')?.enable();
+        }
+  }
+  
   setValuesEdit(CustomerCommercialInfo : CustomerCommercialInfo)
   {
     if (Object.keys(CustomerCommercialInfo).length !== 0){
@@ -102,9 +87,18 @@ export class CustomerCommercialEditComponent implements OnInit {
       maturityDays:[{value: CustomerCommercialInfo.maturityDays, disabled: this.viewMode},[Validators.required]],
       additionalDays:[{value: CustomerCommercialInfo.additionalDays, disabled: this.viewMode},[]],
       delayDays:[{value: CustomerCommercialInfo.delayDays, disabled: true},[]],
-      intermediationPercentage:[{value: CustomerCommercialInfo.intermediationPercentage, disabled: this.viewMode},[Validators.required]],
-      measureUnitSelected:[{value: CustomerCommercialInfo.measureUnit, disabled: this.viewMode},[Validators.required]]
+      measureUnitSelected:[{value: CustomerCommercialInfo.measureUnit, disabled: this.viewMode},[Validators.required]],
+      creditBalance:[{value: CustomerCommercialInfo.creditBalance, disabled: true},[]],
+      exclusiveTransport: [{value: CustomerCommercialInfo.exclusiveTransport,disabled: this.viewMode},[]]
      });
+     if(CustomerCommercialInfo?.customerType?.toLocaleLowerCase() === "anticipo")
+      {
+        this.formGroupCommercial?.get('assignedQuota')?.disable();
+      }
+      else
+      {
+        this.formGroupCommercial?.get('assignedQuota')?.enable();
+      }
     }
   }
 

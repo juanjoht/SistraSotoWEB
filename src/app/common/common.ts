@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 export class Common {
     private static token: string | null;
     private static userName: string | null;
+    private static userId: string | null;
     private static moduleStr: string | null;
     private static modules: any[];
 
@@ -29,6 +30,19 @@ export class Common {
         localStorage.setItem('userName', userName);
         this.userName = userName;
     }
+
+    public static get UserId(): any {
+        if (this.userId === undefined && localStorage.getItem('userId') !== undefined) {
+                this.userId = localStorage.getItem('userId');
+        }
+        return this.userId;
+    }
+
+    public static set UserId(userId: string) {
+        localStorage.setItem('userId', userId);
+        this.userId = userId;
+    }
+
 
     public static get Modules(): any[] {
         if (this.moduleStr === undefined && localStorage.getItem('modules') !== undefined) {

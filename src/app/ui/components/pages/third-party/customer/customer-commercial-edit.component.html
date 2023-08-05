@@ -10,7 +10,7 @@
     </div>
     <div class="field col-12 sm:col-4">
         <label for="clientTipeSelect" class="font-bold">Tipo Cliente*</label>
-        <p-dropdown id="clientTipeSelect" [options]="clientTypes" placeholder="Seleccione un Tipo Cliente" formControlName="clientTypeSelected" optionLabel="name" optionValue="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.priorityGroupSelected.errors }"></p-dropdown>
+        <p-dropdown id="clientTipeSelect" [options]="clientTypes" (onChange)="clientTypeChange($event)" placeholder="Seleccione un Tipo Cliente" formControlName="clientTypeSelected" optionLabel="name" optionValue="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.priorityGroupSelected.errors }"></p-dropdown>
         <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.clientTypeSelected?.errors?.required">Tipo Cliente es requerido</small>
     </div>
     <div class="field col-12 sm:col-4">
@@ -44,9 +44,8 @@
         <p-inputNumber id="delayDaysInput" formControlName="delayDays" inputId="integeronly"  > </p-inputNumber>
     </div>
     <div class="field col-12 sm:col-4">
-        <label for="intermediationPercentageInput" class="font-bold">Porcentaje Intermediación*</label>
-        <p-inputNumber id="intermediationPercentageInput" inputId="percent" formControlName="intermediationPercentage" suffix=" %" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.intermediationPercentage.errors }"> </p-inputNumber>
-        <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.intermediationPercentage?.errors?.required">Porcentaje Intermediación es requerido.</small>
+        <label for="creditBalanceInput" class="font-bold">Saldo a Favor</label>
+        <p-inputNumber id="creditBalanceInput" formControlName="creditBalance" inputId="integeronly"  > </p-inputNumber>
     </div>
     <div class="field col-12 sm:col-4">
         <label for="measureUnitSelect" class="font-bold">Unidad de medida*</label>
@@ -54,6 +53,10 @@
         <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.measureUnitSelected?.errors?.required">Unidad de medida es requerido</small>
     </div>
     <div class="field col-12 sm:col-4">
+        <label for="stateYesorNot" class="font-bold">Transporte Exclusivo</label>
+        <div class="flex align-items-center h-3rem">
+            <p-checkbox formControlName="exclusiveTransport" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+        </div>
     </div>
 </div>
 </form>

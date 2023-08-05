@@ -1,6 +1,7 @@
 export const Constants = {
     apiLogin: '/auth/login',
     apiRecovery: '/auth/recuperarContrasena',
+    apiChangePw: '/auth/cambiarContrasena',
     apiCustomer: '/cliente',
     apiCustomerList: '/cliente/lista',
     apiParamStaticDept: '/parametroEstatico/departamentos',

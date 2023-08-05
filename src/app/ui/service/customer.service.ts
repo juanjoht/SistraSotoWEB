@@ -64,7 +64,9 @@ export class CustomerService {
                     additionalDays: item.informacionComercial.diasAdicionales,
                     delayDays: item.informacionComercial.diasMora,
                     intermediationPercentage: item.informacionComercial.porcentajeIntermediacion,
-                    measureUnit: item.informacionComercial.unidadMedida
+                    measureUnit: item.informacionComercial.unidadMedida,
+                    creditBalance: item.informacionComercial.saldoFavor,
+                    exclusiveTransport : item.informacionComercial.transporteExclusivo
                 }
         }));
     }
@@ -260,8 +262,9 @@ putThirdParty(requestCustmerBasic: any){
               DiasVencimiento: requestCustmerCommercial.maturityDays,
               diasAdicionales:requestCustmerCommercial.additionalDays,
               DiasMora: requestCustmerCommercial.delayDays,
-              PorcentajeIntermediacion: requestCustmerCommercial.intermediationPercentage,
-              UnidadMedida: requestCustmerCommercial.measureUnit
+              UnidadMedida: requestCustmerCommercial.measureUnit,
+              saldoFavor: requestCustmerCommercial.creditBalance,
+              transporteExclusivo: requestCustmerCommercial.exclusiveTransport
             }
           })
             .pipe(map(client => {
@@ -285,8 +288,8 @@ putCustomerCommercial(requestCustmerCommercial: CustomerCommercialInfo){
           DiasVencimiento: requestCustmerCommercial.maturityDays,
           diasAdicionales:requestCustmerCommercial.additionalDays,
           DiasMora: requestCustmerCommercial.delayDays,
-          PorcentajeIntermediacion: requestCustmerCommercial.intermediationPercentage,
-          UnidadMedida: requestCustmerCommercial.measureUnit
+          UnidadMedida: requestCustmerCommercial.measureUnit,
+          transporteExclusivo: requestCustmerCommercial.exclusiveTransport
         }
       })
         .pipe(map(client => {
