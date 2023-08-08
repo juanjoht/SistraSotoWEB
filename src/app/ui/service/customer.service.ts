@@ -90,14 +90,10 @@ export class CustomerService {
                     latitude: item.latitud,
                     length: item.longitud,
                     isAdminBySoto13: item.administraSotoTrece === 'Si' ? true: false,
-                    queueWaitingTime: item.tiempoEsperaCola,
                     tolerancePercentage: item.porcentajeTolerancia,
                     deliveryConfirmation: item.confirmacionEntrega,
                     receptionTimes : item.horariosRecepcion,
                     allowedVehicleTypes: item.tipoVehiculoPermitido,
-                    simpleLoadingTime: parseInt((item.tiempoDescargue as string)?.split(';')[0]?.split(':')[1]),
-                    doubleLoadingTime: parseInt((item.tiempoDescargue as string)?.split(';')[1]?.split(':')[1]),
-                    truckLoadingTime: parseInt((item.tiempoDescargue as string)?.split(';')[2]?.split(':')[1]),
                     state : item.estado
                 }
             })
@@ -315,7 +311,6 @@ postCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
             latitud: requestCustmerBuilding.latitude,
             longitud: requestCustmerBuilding.length,
             administraSotoTrece: requestCustmerBuilding.isAdminBySoto13 ? 'Si': 'No',
-            tiempoEsperaCola: requestCustmerBuilding.queueWaitingTime,
             porcentajeTolerancia: requestCustmerBuilding.tolerancePercentage,
             confirmacionEntrega: requestCustmerBuilding.deliveryConfirmation,
             horariosRecepcion: requestCustmerBuilding.receptionTimes,
@@ -347,7 +342,6 @@ putCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
             latitud: requestCustmerBuilding.latitude,
             longitud: requestCustmerBuilding.length,
             administraSotoTrece: requestCustmerBuilding.isAdminBySoto13 ? 'Si': 'No',
-            tiempoEsperaCola: requestCustmerBuilding.queueWaitingTime,
             porcentajeTolerancia: requestCustmerBuilding.tolerancePercentage,
             confirmacionEntrega: requestCustmerBuilding.deliveryConfirmation,
             horariosRecepcion: requestCustmerBuilding.receptionTimes,

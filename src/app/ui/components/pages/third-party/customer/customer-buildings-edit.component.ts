@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { CustomerBuildings } from 'src/app/ui/models/customer.model';
 import { Cities, Depts } from 'src/app/ui/models/param-static.model';
 import { params } from 'src/app/ui/models/param.model';
@@ -12,7 +12,8 @@ import { ParamService } from 'src/app/ui/service/param.service';
 @Component({
   selector: 'app-customer-buildings-edit',
   templateUrl: './customer-buildings-edit.component.html',
-  styleUrls: ['./customer-buildings-edit.component.scss']
+  styleUrls: ['./customer-buildings-edit.component.scss'],
+  providers: [ConfirmationService, MessageService]
 })
 export class CustomerBuildingsEditComponent implements OnInit {
   @Input() customerBuildingEdit!: CustomerBuildings;
@@ -20,6 +21,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
   formGroupCustomerBuildings!: FormGroup;
   depts: Depts[] = [];
   cities: Cities[] = [];
+  zone: Array<any>[] = [];
   deliveryConfirmations: params[] = [];
   allowedVehicleTypes: params[] = [];
   submittedCustomerBuilding: boolean = false;
@@ -29,8 +31,17 @@ export class CustomerBuildingsEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private paramStaticService: ParamStaticService,
     private paramService: ParamService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
     ) { }
+
+    addHorary(e: Event, index:number) {
+
+      console.log(e);
+      console.log(index);
+      
+      
+  }
   
   getControls(){
     return (<FormArray>this.formGroupCustomerBuildings.get('days')).controls;
@@ -76,6 +87,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
     this.getDepts();
     this.getDeliveryConfirmations();
     this.getAllowedVehicleTypes();
+    this.getZone();
     if (Object.keys(this.customerBuildingEdit).length === 0){
         this.formGroupCustomerBuildings = this.formBuilder.group({
         name: ['', [Validators.required]],
@@ -83,21 +95,20 @@ export class CustomerBuildingsEditComponent implements OnInit {
         contactName: ['', [Validators.required]],
         deptSelected:['',[Validators.required]],
         citySelected:['',[Validators.required]],
+        zoneSelected: ['', [Validators.required]],
         address:['', [Validators.required]],
         email : ['', [Validators.email]],
         scaleSelected: ['', []],
         latitude: ['', []],
         length: ['', []],
         manageSoto13: ['', []],
-        queueWaitingTime: ['', [Validators.required]],
         tolerancePercentage: ['', [Validators.required]],
+        intermediationPercentage: ['', [Validators.required]],
         deliveryConfirmationSelected: ['', [Validators.required]],
         allowedVehicleTypesSelected : ['', [Validators.required]],
-        simpleLoadingTime : ['', [Validators.required]],
-        doubleLoadingTime : ['', [Validators.required]],
-        truckLoadingTime: ['', [Validators.required]],
         days: this.formBuilder.array([]),
-        stateSelected:[true]
+        stateSelected:[true],
+        allCosteSelected:[false]
       });
          
       this.days.push(this.newDay("Lunes",false,""));
@@ -117,21 +128,20 @@ export class CustomerBuildingsEditComponent implements OnInit {
         contactName: [{value:this.customerBuildingEdit.contactName, disabled: this.viewMode}, [Validators.required]],
         deptSelected:[{value:this.customerBuildingEdit.dept, disabled: this.viewMode},[Validators.required]],
         citySelected:[{value:this.customerBuildingEdit.city, disabled: this.viewMode},[Validators.required]],
+        zoneSelected:[{value:this.customerBuildingEdit.zone, disabled: this.viewMode},[Validators.required]],
         address:[{value:this.customerBuildingEdit.address, disabled: this.viewMode}, [Validators.required]],
         email : [{value:this.customerBuildingEdit.email, disabled: this.viewMode}, [Validators.email]],
         scaleSelected: [{value:this.customerBuildingEdit.scale, disabled: this.viewMode}, []],
         latitude: [{value:this.customerBuildingEdit.latitude, disabled: this.viewMode}, []],
         length: [{value:this.customerBuildingEdit.length, disabled: this.viewMode}, []],
         manageSoto13: [{value:this.customerBuildingEdit.isAdminBySoto13, disabled: this.viewMode}, []],
-        queueWaitingTime: [{value:this.customerBuildingEdit.queueWaitingTime, disabled: this.viewMode}, [Validators.required]],
         tolerancePercentage: [{value:this.customerBuildingEdit.tolerancePercentage, disabled: this.viewMode}, [Validators.required]],
+        intermediationPercentage: [{value:this.customerBuildingEdit.intermediationPercentage, disabled: this.viewMode}, [Validators.required]],
         deliveryConfirmationSelected: [{value:this.customerBuildingEdit.deliveryConfirmation, disabled: this.viewMode}, [Validators.required]],
         allowedVehicleTypesSelected : [{value:this.customerBuildingEdit.allowedVehicleTypes, disabled: this.viewMode}, [Validators.required]],
-        simpleLoadingTime : [{value:this.customerBuildingEdit.simpleLoadingTime, disabled: this.viewMode}, [Validators.required]],
-        doubleLoadingTime : [{value:this.customerBuildingEdit.doubleLoadingTime, disabled: this.viewMode}, [Validators.required]],
-        truckLoadingTime: [{value:this.customerBuildingEdit.truckLoadingTime, disabled: this.viewMode}, [Validators.required]],
         days: this.formBuilder.array([]),
         stateSelected:[{value: this.customerBuildingEdit.state === 'Activo' ? true: false, disabled: this.viewMode}],
+        allCosteSelected:[{value: this.customerBuildingEdit.state === 'Activo' ? true: false, disabled: this.viewMode}],
       });
 
       let recTimes = this.customerBuildingEdit.receptionTimes?.split(';');
@@ -172,6 +182,13 @@ export class CustomerBuildingsEditComponent implements OnInit {
     }
   }
   get f() { return this.formGroupCustomerBuildings?.controls; }
+
+  getHorarios(e: any, index: number){
+    console.log(e)
+    console.log(index);
+    ;
+    
+  }
   
   changeDept(event: any)
   {
@@ -203,12 +220,26 @@ export class CustomerBuildingsEditComponent implements OnInit {
         next: (data:any) => {
           console.log(data);
           this.cities = data;
+          this.f["zoneSelected"].setValue(this.customerBuildingEdit.zone);
         },
         error: error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
           console.log(error);
         }
     });
+  }
+
+  getZone(){
+    this.paramService.getParamByType("Zona").subscribe({
+      next:(data) => {
+        console.log(data);
+        this.zone = data;
+      },
+      error:(error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          console.log(error);
+      }
+    })
   }
 
   getDeliveryConfirmations(){
@@ -227,6 +258,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
     this.paramService.getParamByType('Tipos de vehículos permitidos')
             .subscribe({
                 next: (data:any) => {
+                  console.log(data);
                   this.allowedVehicleTypes = data;
                 },
                 error: error => {

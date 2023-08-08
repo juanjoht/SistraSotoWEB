@@ -65,6 +65,10 @@ import { ProviderOrderListComponent } from './programming/provider-order/provide
 import { ProviderOrderEditComponent } from './programming/provider-order/provider-order-edit.component';
 import { PreassignmentListComponent } from './programming/preassignment/preassignment-list.component';
 import { PreassignmentEditComponent } from './programming/preassignment/preassignment-edit.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+
+
 
 
 @NgModule({
@@ -112,7 +116,8 @@ import { PreassignmentEditComponent } from './programming/preassignment/preassig
         ProviderOrderListComponent,
         ProviderOrderEditComponent,
         PreassignmentListComponent,
-        PreassignmentEditComponent
+        PreassignmentEditComponent,
+        
     ],
     imports: [
         CommonModule,
@@ -144,7 +149,9 @@ import { PreassignmentEditComponent } from './programming/preassignment/preassig
         CalendarModule,
         OverlayPanelModule,
         PasswordModule,
-        ImageModule
+        ImageModule,
+        MultiSelectModule,
+        ConfirmPopupModule
     ]
 })
 export class PagesModule { }

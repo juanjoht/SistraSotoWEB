@@ -26,6 +26,11 @@
             <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.citySelected?.errors?.required">Municipio es requerido</small>
         </div>
         <div class="field col-12 sm:col-4">
+            <label for="ZoneSelect" class="font-bold">Zona*</label>
+            <p-dropdown id="ZoneSelect" [options]="zone" placeholder="Seleccione una zona" formControlName="zoneSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.zoneSelected.errors }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.zoneSelected?.errors?.required">Zona es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
             <label for="addressInput" class="font-bold">Dirección*</label>
             <input id="addressInput" type="text" pInputText formControlName="address" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.address.errors}">
             <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.address?.errors?.required">Dirección es requerido.</small>
@@ -56,14 +61,14 @@
             </div>
         </div>
         <div class="field col-12 sm:col-4">
-            <label for="queueWaitingTimeInput" class="font-bold" cellphone >Tiempo de espera en cola*</label>
-            <p-inputNumber id="queueWaitingTimeInput" formControlName="queueWaitingTime" inputId="integeronly" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.queueWaitingTime.errors}" > </p-inputNumber>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.queueWaitingTime?.errors?.required">Tiempo de espera en cola es requerido.</small>
-        </div>
-        <div class="field col-12 sm:col-4">
             <label for="tolerancePercentageInput" class="font-bold" cellphone >Porcentaje de tolerancia*</label>
             <p-inputNumber id="tolerancePercentageInput" [min]="0" [max]="100" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.tolerancePercentage?.errors?.required">Porcentaje de tolerancia es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="intermediationPercentageInput" class="font-bold" cellphone >Porcentaje de intermediación*</label>
+            <p-inputNumber id="intermediationPercentageInput" [min]="0" [max]="100" inputId="percent"  formControlName="intermediationPercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.intermediationPercentage.errors}" > </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.intermediationPercentage?.errors?.required">Porcentaje de tolerancia es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="deliveryConfirmationSelect" class="font-bold">Confirmación de entrega*</label>
@@ -82,6 +87,7 @@
                     <div class="field col-12 sm:col-7">
                         <label  class="font-bold">Horarios</label>
                     </div>
+
                     <div class="field col-12 sm:col-12" *ngFor="let item of getControls(); let i = index">
                         <div class="grid" [formGroupName]="i">
                             <div class="field col-12 sm:col-3">
@@ -90,61 +96,64 @@
                             <div class="field col-12 sm:col-2 flex align-items-center">
                                 <p-checkbox attr.data-id={{i}} (onChange)="onchangeReceive($event, i)"  [binary]="true" inputId="binary" formControlName="receive"></p-checkbox>
                             </div>
-                            <div class="field col-12 sm:col-7">
-                                <input id="timeMonday" type="text" pInputText  formControlName="times" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && item?.get('times')?.errors  }" >
+                            <div class="field col-12 sm:col-5">
+                                <input id="timeMonday" type="text" pInputText  formControlName="times" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && item?.get('times')?.errors  }" (click)="getHorarios($event, i)">
                                 <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && item?.get('times')?.errors?.required">Horario es requerido</small>
                             </div>
+                            <div class="field col-12 sm:col-2">
+                                    <p-overlayPanel #op>
+                                        <ng-template pTemplate="content">
+                                            <h4>Horarios</h4>
+                                            <div class="card grid justify-content-center">
+                                                <div class="col-6 sm:col-6 inputStart">
+                                                    <label class="font-bold">Inicio</label>
+                                                    <input class="col-12" pInputText  type="time" name="inputStart" id="inputStart">
+                                                </div>
+                                                <div class="col-6 sm:col-6 inputEnd">
+                                                    <label class="font-bold">Fin Evento</label>
+                                                    <input class="col-12" pInputText  type="time" name="inputEnd" id="inputEnd">
+                                                </div>
+                                                <br>
+                                                <div class="col-12 btn">
+                                                    <p-button (click)="addHorary($event, i)" icon="pi pi-plus" label="Agregar"></p-button>
+                                                </div>
+                                            </div>
+
+                                        </ng-template>
+                                    </p-overlayPanel>
+                                    <p-button (click)="op.toggle($event)" icon="pi pi-plus" label=""></p-button>
+                                </div>
+                            
+                        </div>
+                        
+                    </div>
+            </div>
+        </div>
+        <div class="field col-12 sm:col-12">
+                <div class="formgrid grid" [style]="{ height: '250px' }">
+                    <div class="field col-12 sm:col-4">
+                        <label for="allowedVehicleTypesSelect" class="font-bold">Tipo de Vehículo permitidos*</label>
+                        <p-multiSelect [appendTo]="'field'" id="allowedVehicleTypesSelect" [options]="allowedVehicleTypes" placeholder="Seleccione un Tipo de Vehículo permitidos" formControlName="allowedVehicleTypesSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.allowedVehicleTypesSelected.errors }"></p-multiSelect>
+                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.allowedVehicleTypesSelected?.errors?.required">Tipo de Vehículo permitidos es requerido</small>
+                    </div>
+
+                    <div class="field col-12 sm:col-4">
+                        <label for="stateYesorNot" class="font-bold">Estado</label>
+                        <div class="flex align-items-center h-3rem">
+                            <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
                         </div>
                     </div>
-                   
-                
-            </div>
-        </div>
-        <div class="field col-12 sm:col-1">
-        </div>
-        <div class="field col-12 sm:col-4">
-            <div class="formgrid grid">
-                <div class="field col-12 sm:col-12">
-                    <label for="allowedVehicleTypesSelect" class="font-bold">Tipo de Vehículo permitidos*</label>
-                    <p-dropdown id="allowedVehicleTypesSelect" optionValue="name" [options]="allowedVehicleTypes" placeholder="Seleccione un Tipo de Vehículo permitidos" formControlName="allowedVehicleTypesSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.allowedVehicleTypesSelected.errors }"></p-dropdown>
-                    <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.allowedVehicleTypesSelected?.errors?.required">Tipo de Vehículo permitidos es requerido</small>
-                </div>
-        <div class="field col-12 sm:col-12 flex justify-content-center">
-            <p-fieldset legend="Tiempo de cargue (min)*">
-                <div class="field col-12 sm:col-12">
-                    <span class="p-float-label">
-                        <small>Sencillo</small>
-                        <p-inputNumber inputId="integeronly"  formControlName="simpleLoadingTime" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.simpleLoadingTime.errors }"> </p-inputNumber>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.simpleLoadingTime?.errors?.required">Sencillo es requerido</small>
-                    </span>
-                </div>
-                <div class="field col-12 sm:col-12">
-                    <span class="p-float-label">
-                        <small>Doble</small>
-                        <p-inputNumber inputId="integeronly" formControlName="doubleLoadingTime" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.doubleLoadingTime.errors }"> </p-inputNumber>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.doubleLoadingTime?.errors?.required">Doble es requerido</small>
-                    </span>
-                </div>
-                <div class="field col-12 sm:col-12">
-                    <span class="p-float-label">
-                        <small>Tractomula</small>
-                        <p-inputNumber inputId="integeronly" formControlName="truckLoadingTime" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.truckLoadingTime.errors }"> </p-inputNumber>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.truckLoadingTime?.errors?.required">Tractomula es requerido</small>
-                    </span>
-                </div>
-            </p-fieldset>
-            </div>
-            </div>
-        </div>
-        <div class="field col-12 sm:col-1">
-        </div>
-        <div class="field col-12 sm:col-4">
-            <label for="stateYesorNot" class="font-bold">Estado</label>
-            <div class="flex align-items-center h-3rem">
-                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
-            </div>
-        </div>
-    </div>
-      
+                    <div class="field col-12 sm:col-4">
+                        <label for="allCosteYesorNot" class="font-bold">Todo costo</label>
+                        <div class="flex align-items-center h-3rem">
+                            <p-checkbox formControlName="allCosteSelected" [binary]="false" inputId="allCosteYesorNot"></p-checkbox>
+                        </div>
+                    </div>
 
-    </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</form>

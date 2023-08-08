@@ -27,6 +27,7 @@ export class CustomerBuildingsListComponent implements OnInit {
     private messageService: MessageService) { }
   
   ngOnInit() {
+    
 
     this.cols = [
         { field: 'name', header: 'Nombre' },
@@ -122,12 +123,10 @@ export class CustomerBuildingsListComponent implements OnInit {
       latitude: formValues.latitude.value,
       length: formValues.length.value,
       isAdminBySoto13: formValues.manageSoto13.value,
-      queueWaitingTime: formValues.queueWaitingTime.value,
       tolerancePercentage: formValues.tolerancePercentage.value,
       deliveryConfirmation: formValues.deliveryConfirmationSelected.value,
       receptionTimes: recTimes.slice(0, -1),
       allowedVehicleTypes: formValues.allowedVehicleTypesSelected.value,
-      loadingTime:`simple:${formValues.simpleLoadingTime.value};doble:${formValues.doubleLoadingTime.value};tractomula:${formValues.truckLoadingTime.value}`,
       state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if (this.editMode){
