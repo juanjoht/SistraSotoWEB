@@ -20,6 +20,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
   formGroupCustomerBuildings!: FormGroup;
   depts: Depts[] = [];
   cities: Cities[] = [];
+  zones: params[] = [];
   deliveryConfirmations: params[] = [];
   allowedVehicleTypes: params[] = [];
   submittedCustomerBuilding: boolean = false;
@@ -58,17 +59,6 @@ export class CustomerBuildingsEditComponent implements OnInit {
       receive: [{value:r,disabled: this.viewMode}],
       times: [{value:t,disabled: this.viewMode}]
     })
-    /*form.controls.receive.valueChanges.subscribe((data) => {
-      if(data)
-      {
-        form.get("times")?.setValidators(Validators.required);
-      }
-      else
-      {
-        form.controls.times.removeValidators(Validators.required);
-      }
-      form.updateValueAndValidity();
-    })*/
     return form;
   }
   ngOnInit() {
@@ -76,6 +66,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
     this.getDepts();
     this.getDeliveryConfirmations();
     this.getAllowedVehicleTypes();
+    this.getZones();
     if (Object.keys(this.customerBuildingEdit).length === 0){
         this.formGroupCustomerBuildings = this.formBuilder.group({
         name: ['', [Validators.required]],
@@ -83,16 +74,19 @@ export class CustomerBuildingsEditComponent implements OnInit {
         contactName: ['', [Validators.required]],
         deptSelected:['',[Validators.required]],
         citySelected:['',[Validators.required]],
+        zoneSelected:['',[Validators.required]],
         address:['', [Validators.required]],
         email : ['', [Validators.email]],
         scaleSelected: ['', []],
         latitude: ['', []],
         length: ['', []],
         manageSoto13: ['', []],
+        allCost: ['', []],
         queueWaitingTime: ['', [Validators.required]],
         tolerancePercentage: ['', [Validators.required]],
+        intermediationPercentage: ['', [Validators.required]],
         deliveryConfirmationSelected: ['', [Validators.required]],
-        allowedVehicleTypesSelected : ['', [Validators.required]],
+        allowedVehicleTypesSelected : [<params[] | null>(null), [Validators.required]],
         simpleLoadingTime : ['', [Validators.required]],
         doubleLoadingTime : ['', [Validators.required]],
         truckLoadingTime: ['', [Validators.required]],
@@ -117,14 +111,17 @@ export class CustomerBuildingsEditComponent implements OnInit {
         contactName: [{value:this.customerBuildingEdit.contactName, disabled: this.viewMode}, [Validators.required]],
         deptSelected:[{value:this.customerBuildingEdit.dept, disabled: this.viewMode},[Validators.required]],
         citySelected:[{value:this.customerBuildingEdit.city, disabled: this.viewMode},[Validators.required]],
+        zoneSelected:[{value:this.customerBuildingEdit.zone, disabled: this.viewMode},[Validators.required]],
         address:[{value:this.customerBuildingEdit.address, disabled: this.viewMode}, [Validators.required]],
         email : [{value:this.customerBuildingEdit.email, disabled: this.viewMode}, [Validators.email]],
         scaleSelected: [{value:this.customerBuildingEdit.scale, disabled: this.viewMode}, []],
         latitude: [{value:this.customerBuildingEdit.latitude, disabled: this.viewMode}, []],
         length: [{value:this.customerBuildingEdit.length, disabled: this.viewMode}, []],
         manageSoto13: [{value:this.customerBuildingEdit.isAdminBySoto13, disabled: this.viewMode}, []],
+        allCost: [{value:this.customerBuildingEdit.allCost, disabled: this.viewMode}, []],
         queueWaitingTime: [{value:this.customerBuildingEdit.queueWaitingTime, disabled: this.viewMode}, [Validators.required]],
         tolerancePercentage: [{value:this.customerBuildingEdit.tolerancePercentage, disabled: this.viewMode}, [Validators.required]],
+        intermediationPercentage: [{value:this.customerBuildingEdit.intermediationPercentage, disabled: this.viewMode}, [Validators.required]],
         deliveryConfirmationSelected: [{value:this.customerBuildingEdit.deliveryConfirmation, disabled: this.viewMode}, [Validators.required]],
         allowedVehicleTypesSelected : [{value:this.customerBuildingEdit.allowedVehicleTypes, disabled: this.viewMode}, [Validators.required]],
         simpleLoadingTime : [{value:this.customerBuildingEdit.simpleLoadingTime, disabled: this.viewMode}, [Validators.required]],
@@ -201,7 +198,6 @@ export class CustomerBuildingsEditComponent implements OnInit {
     this.paramStaticService.getCitiesByDept(id)
     .subscribe({
         next: (data:any) => {
-          console.log(data);
           this.cities = data;
         },
         error: error => {
@@ -234,5 +230,18 @@ export class CustomerBuildingsEditComponent implements OnInit {
                 }
             });
   }
+
+  getZones(){
+    this.paramService.getParamByType('Zona')
+            .subscribe({
+                next: (data:any) => {
+                  this.zones = data;
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });                  
+                }
+            });
+  }
+
  
 }

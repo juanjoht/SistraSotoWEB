@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TabViewModule } from 'primeng/tabview';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -135,6 +136,7 @@ import { PreassignmentEditComponent } from './programming/preassignment/preassig
         TabViewModule,
         DialogModule,
         DropdownModule,
+        MultiSelectModule,
         InputMaskModule,
         InputNumberModule,
         CheckboxModule,

@@ -42,14 +42,17 @@ export interface CustomerBuildings{
     contactName?: string;
     dept?: string;
     city?:string;
+    zone?:string;
     address?: string;
     email?: string;
     scale?:boolean;
     latitude?: number;
     length?: number;
     isAdminBySoto13?: boolean;
+    allCost?: boolean;
     queueWaitingTime?: number;
     tolerancePercentage?: number;
+    intermediationPercentage?: number;
     deliveryConfirmation?: string;
     receptionTimes? : string;
     allowedVehicleTypes?: string;
