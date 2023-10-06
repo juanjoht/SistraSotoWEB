@@ -285,11 +285,11 @@ putTransporterDoc(requestTransporterDoc: TransporterDocuments){
 }
 
 
-deleteTransporterRoute(transporterId: number){
-    return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiTransporterRoute}?id=${transporterId}`)
+deleteTransporterRoute(routeId: number, transporterId: number){
+    return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiTransporterRoute}?RutaId=${routeId}&TransportadorId=${transporterId}`)
         .pipe(map(client => {
-            if (client.rutaEliminado) {
-                return client.rutaEliminado; 
+            if (client.rutaTransportadorEliminado) {
+                return client.rutaTransportadorEliminado; 
             }
         }));
 }

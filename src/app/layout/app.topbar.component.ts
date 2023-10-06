@@ -45,8 +45,6 @@ export class AppTopBarComponent {
             validator: this.ConfirmedValidator('newPass', 'confirmPass')
         }
         );
-   
-   
      }
      get f() { return this.formChangePw?.controls; }
 
@@ -81,6 +79,8 @@ export class AppTopBarComponent {
     showDialog(position: string) {
         this.position = position;
         this.visible = true;
+        this.submittedChangePw = false;
+        this.formChangePw.reset();
     }
 
     changePw(){
@@ -96,7 +96,8 @@ export class AppTopBarComponent {
             {
               if(data.enviado)
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: data.mensaje, life: 3000 });  
-                setTimeout(()=>{this.logOut()}, 5000);  
+                this.visible = false;
+                this.router.navigate(['/dashboard']);
             }
           },
           error: error => {

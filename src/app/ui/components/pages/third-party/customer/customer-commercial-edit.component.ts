@@ -19,6 +19,7 @@ export class CustomerCommercialEditComponent implements OnInit {
   @Input() clientName: string = '';
   @Input() customerCommercialEdit!: CustomerCommercialInfo;
   @Input() viewMode: boolean = false;
+  @Input() editMode: boolean = false;
   formGroupCommercial!: FormGroup;
   priorityGroups: PriorityGroups[] = [];
   measureUnits: params[] = [];
@@ -47,19 +48,22 @@ export class CustomerCommercialEditComponent implements OnInit {
       priorityGroupSelected: [{value:'',disabled: this.viewMode},[Validators.required]],
       clientTypeSelected:[{value:'',disabled: this.viewMode},[Validators.required]],
       iva:[{value:'',disabled: this.viewMode},[Validators.required]],
-      assignedQuota:[{ value: '', disabled: this.assignedQuotaDisabled},[]],
-      usedQuota:[{value:'',disabled: this.viewMode},[]],
-      availableQuota:[{value:'',disabled: this.viewMode},[]],
+      assignedQuota:[{ value: '', disabled: this.viewMode},[]],
+      usedQuota:[{value:'',disabled: true },[]],
+      availableQuota:[{value:'',disabled: true},[]],
       maturityDays:[{value:'',disabled: this.viewMode},[Validators.required]],
       additionalDays:[{value:'',disabled: this.viewMode},[]],
-      delayDays:[{value: '',disabled: this.viewMode},[]],
-      measureUnitSelected:[{value: '',disabled: this.viewMode},[Validators.required]],
+      delayDays:[{value: '', disabled: true},[]],
+      measureUnitSelected:[{value: 'm3',disabled: this.viewMode},[Validators.required]],
       creditBalance:[{value: '',disabled: true},[]],
       exclusiveTransport: [{value: false,disabled: this.viewMode},[]]
      });
     }
-    this.getIvaDefault();
-    this.getMaturityDaysDefault();
+    if(!this.editMode){
+      this.getMaturityDaysDefault();
+      this.getIvaDefault();
+    }
+
   }
   get f() { return this.formGroupCommercial?.controls; }
 

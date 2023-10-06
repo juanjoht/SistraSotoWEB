@@ -59,6 +59,7 @@ export const Constants = {
     apiProvider: '/proveedor',
     apiProviderPrices: '/precioMaterialProveedor',
     apiProviderTimes: '/tiempoCargueProveedor',
+    apiProviderFactories: '/planta/proveedor',
     apiMaterialVehicle: '/material/vehiculo',
     apiLinkMaterialsVehicle: '/material/linkMaterialesVehiculo',
     apiDriverVehicle: '/conductor/vehiculo',

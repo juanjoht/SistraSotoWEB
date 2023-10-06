@@ -78,36 +78,10 @@ export class CustomerBuildingsListComponent implements OnInit {
       return;
     }
     let formValues  = this.editBuilding.f;
-    let formValuesArray  = this.editBuilding.f.days.value;
+    let formValuesArray  = this.editBuilding.schedules;
     let recTimes : string = '';
     formValuesArray.forEach((element: any, index: number) => {
-      let day:string = '';
-        switch (index) {
-          case 0:
-            day = "Lunes"
-          break;
-          case 1:
-            day = "Martes"
-          break;
-          case 2:
-            day = "Miercoles"
-          break;
-          case 3:
-            day = "Jueves"
-          break;
-          case 4:
-            day = "Viernes"
-          break;
-          case 5:
-            day = "Sabado"
-          break; 
-          case 6:
-            day = "Domingo"
-          break;
-          default:
-            break;
-        }
-      recTimes += `${day}=recibe:${element.receive},tiempo:${element.times};`
+      recTimes += `${element.day}=recibe/${element.receive}-tiempo/${element.schedule};`
     });
     let objbuilding: CustomerBuildings = {
       customerId:this.clientId,          
@@ -116,18 +90,23 @@ export class CustomerBuildingsListComponent implements OnInit {
       contactName: formValues.contactName.value,
       dept: formValues.deptSelected.value,
       city: formValues.citySelected.value,
+      zone: formValues.zoneSelected.value,
       address: formValues.address.value,
       email: formValues.email.value,
       scale: formValues.scaleSelected.value,
       latitude: formValues.latitude.value,
       length: formValues.length.value,
       isAdminBySoto13: formValues.manageSoto13.value,
-      queueWaitingTime: formValues.queueWaitingTime.value,
       tolerancePercentage: formValues.tolerancePercentage.value,
       deliveryConfirmation: formValues.deliveryConfirmationSelected.value,
       receptionTimes: recTimes.slice(0, -1),
-      allowedVehicleTypes: formValues.allowedVehicleTypesSelected.value,
-      loadingTime:`simple:${formValues.simpleLoadingTime.value};doble:${formValues.doubleLoadingTime.value};tractomula:${formValues.truckLoadingTime.value}`,
+      allCost: formValues.allCost.value,
+      allowedVehicleTypes: formValues.allowedVehicleTypesSelected.value.join(','),
+      intermediationPercentage: formValues.intermediationPercentage.value,
+      profitability: formValues.profitability.value,
+      roadCondition: formValues.roadCondition.value,
+      unloadingAgility: formValues.unloadingAgility.value,
+      weightedRating: this.editBuilding.weightedRating,
       state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if (this.editMode){

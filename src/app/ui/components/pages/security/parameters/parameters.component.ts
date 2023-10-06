@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Common } from 'src/app/common/common';
-import { params } from 'src/app/ui/models/param.model';
+import { paramType, params } from 'src/app/ui/models/param.model';
 import { ParamService } from 'src/app/ui/service/param.service';
 import { ParametersEditComponent } from './parameters-edit.component';
 
@@ -24,6 +24,7 @@ export class ParametersComponent implements OnInit {
   canRead: boolean = true;
   canCreate: boolean = true;
   canEdit: boolean = true;
+  paramTypes: paramType[] = [];
 
   constructor(
     private messageService: MessageService,
@@ -51,6 +52,7 @@ export class ParametersComponent implements OnInit {
     }
 
     ngOnInit(): void {
+      this.getParamTypes();
       this.getGridData();
       this.cols = [
         { field: 'type', header: 'Tipo' },
@@ -61,6 +63,18 @@ export class ParametersComponent implements OnInit {
       this.checkPermissions('Seguridad-Parametros', 'Consultar');
       this.checkPermissions('Seguridad-Parametros', 'Crear');
       this.checkPermissions('Seguridad-Parametros', 'Editar');
+    }
+
+    getParamTypes(){
+      this.paramService.getParamTypes()
+      .subscribe({
+          next: (data:any) => {
+            this.paramTypes = data;
+          },
+          error: error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+          }
+      });
     }
 
     getGridData(){

@@ -35,7 +35,7 @@
                     </td>
                     <td  style="width: 10%;" *ngIf="!viewMode">
                         <button title="Eliminar" pButton pRipple icon="pi pi-trash"
-                            class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterRoute()"></button>
+                            class="p-button-rounded p-button-danger mr-2" (click)="deleteTransporterRoute(transporterRoute.id)"></button>
                     </td>
                 </tr>
             </ng-template>

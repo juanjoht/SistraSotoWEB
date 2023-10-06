@@ -22,6 +22,12 @@
         </tr>
         <tr>
             <th>
+                <p-columnFilter field="type" matchMode="equals" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown [ngModel]="value" optionValue="name" optionName="name" optionLabel="name" [options]="paramTypes" (onChange)="filter($event.value)" placeholder="Seleccione un Tipo de Parametro" [showClear]="true">
+                        </p-dropdown>
+                    </ng-template>
+                </p-columnFilter>
             </th>
             <th>
                 <p-columnFilter type="text" field="name" 

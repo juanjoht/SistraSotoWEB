@@ -16,15 +16,19 @@ export class ParamService {
             id: 0,
             type: '',
             name: '',
+            value1:'',
+            value2:'',
             expire: false
         };
         return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiParamsByType}?Tipo=${type}`)
         .pipe(map(data => {
-            return data?.parametros?.map((item: { id: number, tipo : string, descripcion: string; expira: boolean }) =>{
+            return data?.parametros?.map((item: { id: number, tipo : string, descripcion: string; expira: boolean, valor1:string,valor2: string }) =>{
                  return newParam =  {
                     id: item.id,
                     type: item.tipo,
                     name: item.descripcion,
+                    value1: item.valor1,
+                    value2: item.valor2,
                     expire: item.expira
                 }
             })

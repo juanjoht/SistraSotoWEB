@@ -191,6 +191,16 @@ getAllVehicles(){
   
  }
 
+ showAuthWin(idVehicle: number)
+ {
+  this.transporterVehicleDialog = true;
+  this.formTransporterVehicle.reset();
+  this.formTransporterVehicle.get("vehicleSelected")?.setValue(idVehicle);
+  this.validateTransporterVehicle = true;
+  this.showVarCode = true;
+  this.action = "Autorizar";
+ }
+
  sendCodeAgain(idVehicle: number)
  {
   this.formTransporterVehicle.reset();

@@ -55,6 +55,7 @@ export class GridThirdPartyComponent implements OnInit {
   driversGeneralInfoTab: boolean = true;
   pricesListTab: boolean = true;
   loadingTimeListTab: boolean = true;
+  factoryListTab: boolean = true;
   clientId: number= 0;
   transporterId: number= 0;
   clientName: string  = '';
@@ -122,6 +123,7 @@ export class GridThirdPartyComponent implements OnInit {
     this.disabledDocInfoEdit = false;
     this.pricesListTab = true;
     this.loadingTimeListTab = true;
+    this.factoryListTab = true;
     this.tabIndex = 0;
   }
 
@@ -157,6 +159,7 @@ export class GridThirdPartyComponent implements OnInit {
     this.driversGeneralInfoTab = false;
     this.pricesListTab = false;
     this.loadingTimeListTab = false;
+    this.factoryListTab = false;
     this.clientName = customerBasic.name as string;
     this.clientId = customerBasic.id as number;
     this.clientdoc = customerBasic.docNumber as string;
@@ -567,6 +570,7 @@ export class GridThirdPartyComponent implements OnInit {
               this.clientName = data.nombre;
               this.pricesListTab = false;
               this.loadingTimeListTab = false;
+              this.buildingListTab = false;
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Proveedor Creado', life: 3000 });
             }
           },
@@ -582,7 +586,7 @@ export class GridThirdPartyComponent implements OnInit {
     this.tabIndex = event.index;
     if(this.feature === 'Cliente')
     {
-      this.showOptions = event.index === 2 || event.index === 3 || event.index === 4 ? false: true;
+      this.showOptions = this.isViewMode ? false : event.index === 2 || event.index === 3 || event.index === 4 ? false: true;
       if(this.editMode)
       {
         if (this.tabIndex === 2)
@@ -593,17 +597,17 @@ export class GridThirdPartyComponent implements OnInit {
     }
     if(this.feature === 'Transportador')
     {
-      this.showOptions = event.index === 1 || event.index === 2 || event.index === 3 || event.index === 4 || event.index === 5 ? false: true;
+      this.showOptions = this.isViewMode ? false : event.index === 1 || event.index === 2 || event.index === 3 || event.index === 4 || event.index === 5 ? false: true;
     }
 
     if(this.feature === 'Conductor')
     {
-      this.showOptions = event.index === 2 ? false: true;
+      this.showOptions = this.isViewMode ? false : event.index === 2 ? false: true;
     }
 
     if(this.feature === 'Proveedor')
     {
-      this.showOptions = event.index === 1 || event.index === 2? false: true;
+      this.showOptions = this.isViewMode ? false : event.index === 1 || event.index === 2? false: true;
         if (this.tabIndex === 1)
         {
           this.providerPrice.getGridData();

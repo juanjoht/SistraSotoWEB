@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { ProviderBasicInfo, ProviderPrices, ProviderTimes } from '../models/provider.model';
+import { ProviderBasicInfo, ProviderFactories, ProviderPrices, ProviderTimes } from '../models/provider.model';
 
 @Injectable()
 export class ProviderService {
@@ -53,7 +53,7 @@ export class ProviderService {
         let newData: ProviderTimes = {};
         return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiProviderTimes}/proveedorId?ProveedorId=${providerId}`)
         .pipe(map(data => {
-            return data?.tiemposCargueProveedor?.map((item: any) =>{
+            return data?.plantas?.map((item: any) =>{
                  return newData =  {
                     id: item.id,
                     providerId: item.proveedorId,
@@ -66,6 +66,33 @@ export class ProviderService {
             })
         }));
     }
+
+    getProviderFactories(providerId: number) {
+        let newData: ProviderFactories = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiProviderFactories}?ProveedorId=${providerId}`)
+        .pipe(map(data => {
+            return data?.tiemposCargueProveedor?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    providerId: item.proveedorId,
+                    name: item.nombre,
+                    phone: item.telefono,
+                    contactName: item.nombreContacto,
+                    dept: item.departamento,
+                    city:item.municipio,
+                    address: item.direccion,
+                    zone: item.zona,
+                    email: item.correoElectronico,
+                    latitude: item.latitud,
+                    length: item.longitud,
+                    haveSoto13System: item.tieneSistemaSotoTrece === 'Si' ? true: false,
+                    workTimes : item.horariosDespacho,
+                    state : item.estado
+                }
+            })
+        }));
+    }
+
 
 
     postProviderBasic(requestProveedorBasic: ProviderBasicInfo){

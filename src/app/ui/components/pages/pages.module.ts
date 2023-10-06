@@ -66,6 +66,7 @@ import { ProviderOrderListComponent } from './programming/provider-order/provide
 import { ProviderOrderEditComponent } from './programming/provider-order/provider-order-edit.component';
 import { PreassignmentListComponent } from './programming/preassignment/preassignment-list.component';
 import { PreassignmentEditComponent } from './programming/preassignment/preassignment-edit.component';
+import { ProviderFactoriesComponent } from './third-party/provider/provider-factories.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { PreassignmentEditComponent } from './programming/preassignment/preassig
         ProviderComponent,
         ProviderPricesComponent,
         ProviderTimesComponent,
+        ProviderFactoriesComponent,
         VehicleListComponent,
         VehicleBasicEditComponent,
         VehicleMaterialComponent,

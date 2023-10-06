@@ -52,7 +52,7 @@
                     <app-customer-basic-edit #edit [disabledDocInfo]="disabledDocInfoEdit" [customerBasicEdit]="customerBasic" [viewMode]="isViewMode"  [isTransporter]="feature === 'Transportador'" [isDriver]="feature === 'Conductor'" [isDriver]="feature === 'Conductor'" [isProvider]="feature === 'Proveedor'" ></app-customer-basic-edit>
                 </p-tabPanel>
                 <p-tabPanel *ngIf="feature === 'Cliente'"  header="Información Comercial" [disabled]="commercialInfoTab">
-                    <app-customer-commercial-edit [clientName]="clientName" [viewMode]="isViewMode" [customerCommercialEdit]="customerCommercialInfo" ></app-customer-commercial-edit>
+                    <app-customer-commercial-edit [clientName]="clientName" [viewMode]="isViewMode" [editMode]="editMode" [customerCommercialEdit]="customerCommercialInfo" ></app-customer-commercial-edit>
                 </p-tabPanel>
                 <p-tabPanel *ngIf="feature === 'Cliente'"  header="Obras" [disabled]="buildingListTab" >
                     <app-customer-buildings-list [clientName]="clientName" [clientId]="clientId" [viewMode]="isViewMode"></app-customer-buildings-list>
@@ -83,6 +83,9 @@
                 </p-tabPanel>
                 <p-tabPanel  *ngIf="feature === 'Proveedor'" header="Tiempos de carga por Material y Tipo de Vehículo" [disabled]="loadingTimeListTab">
                     <app-provider-times [providerName]="clientName" [viewMode]="isViewMode" [providerId]="clientId"></app-provider-times>
+                </p-tabPanel>
+                <p-tabPanel  *ngIf="feature === 'Proveedor'" header="Plantas" [disabled]="factoryListTab">
+                    <app-provider-factories [providerName]="clientName" [viewMode]="isViewMode" [providerId]="clientId"></app-provider-factories>
                 </p-tabPanel>
             </p-tabView>
     </ng-template>

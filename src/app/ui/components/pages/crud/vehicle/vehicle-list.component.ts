@@ -91,7 +91,7 @@ export class VehicleListComponent implements OnInit {
 
   onChangeTab(event: any){
     this.tabIndex = event.index;
-    this.showOptions = event.index === 1 || event.index === 2 || event.index === 3 ? false: true;
+    this.showOptions = this.isViewMode? false: event.index === 1 || event.index === 2 || event.index === 3 || event.index === 4? false: true;
     if (this.tabIndex === 1)
     {
       this.vehicleMaterial.getGridData();

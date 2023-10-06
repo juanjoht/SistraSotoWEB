@@ -71,13 +71,13 @@
                             *ngIf="submittedTransporterDoc && f?.docSelected?.errors?.required">Documento es
                             requerido</small>
                     </div>
-                    <div  class="calendar-div"  *ngIf="showMatutityDate && feature === 'Conductor'" class="field col-12 sm:col-5">
+                    <div  class="calendar-div"  *ngIf="showMatutityDate && (feature === 'Conductor' || feature === 'Vehículo')" class="field col-12 sm:col-5">
                         <label for="docNumberInput" class="font-bold">Fecha Vencimiento*</label>
                         <p-calendar [showClear]="true"  [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="maturityDateSelected" 
                         [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterDoc && f.maturityDateSelected.errors }">></p-calendar>
                         <small class="ng-dirty ng-invalid"
                             *ngIf="submittedTransporterDoc && f?.maturityDateSelected?.errors?.required">Fecha Vencimiento es
-                            requerido</small>
+                            requerida</small>
                     </div>
                     <div *ngIf="!showVarCode" class="field col-12 sm:col-2 align-self-end">
                         <button pButton pRipple label="Guardar" (click)="saveContentDialog()" icon="pi pi-check"

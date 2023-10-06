@@ -17,11 +17,11 @@ interface hours {
   value?: number;
 }
 @Component({
-  selector: 'app-customer-buildings-edit',
-  templateUrl: './customer-buildings-edit.component.html',
-  styleUrls: ['./customer-buildings-edit.component.scss']
+  selector: 'app-provider-factories-edit',
+  templateUrl: './provider-factories-edit.component.html',
+  styleUrls: ['./provider-factories-edit.component.scss']
 })
-export class CustomerBuildingsEditComponent implements OnInit {
+export class ProviderFactoriesEditComponent implements OnInit {
   @Input() customerBuildingEdit!: CustomerBuildings;
   @Input() viewMode: boolean = false;
   formGroupCustomerBuildings!: FormGroup;

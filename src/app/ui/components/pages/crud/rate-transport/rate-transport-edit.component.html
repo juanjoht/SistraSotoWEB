@@ -10,13 +10,19 @@
         </div>
         <div class="field col-12 sm:col-3">
             <label for="valuem3Input" class="font-bold">Valor m3*</label>
-            <p-inputNumber id="valuem3Input" inputId="minmax" inputId="minmax" [min]="f?.valueMinm3?.value" [max]="f.valueMaxm3?.value" formControlName="valuem3" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valuem3.errors}"> </p-inputNumber>
+            <p-inputNumber id="valuem3Input" inputId="minmax" inputId="minmax" formControlName="valuem3" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valuem3.errors}"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valuem3?.errors?.required">Valor m3 es requerido.</small>
+            <small class="ng-dirty ng-invalid"  *ngIf="f?.valuem3?.errors?.maxMinError">
+                El valor m3 debe de estar en rango de valor min m3 y valor max m3
+            </small>
         </div>
         <div class="field col-12 sm:col-3">
             <label for="valuetonInput" class="font-bold">Valor ton*</label>
-            <p-inputNumber id="valuetonInput" inputId="minmax" inputId="minmax" [min]="f?.valueMinTon?.value" [max]="f.valueMaxton.value" formControlName="valueton" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valueton.errors}"> </p-inputNumber>
+            <p-inputNumber id="valuetonInput" inputId="minmax" inputId="minmax" formControlName="valueton" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.valueton.errors}"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.valueton?.errors?.required">Valor ton es requerido.</small>
+            <small class="ng-dirty ng-invalid"  *ngIf="f?.valueton?.errors?.maxMinError">
+                El valor ton debe de estar en rango de valor min ton y valor max ton
+            </small>
         </div>
         <div class="field col-12 sm:col-1">
             <label for="stateYesorNot" class="font-bold">Estado</label>

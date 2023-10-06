@@ -39,7 +39,8 @@ export class RecoveryComponent {
             if(data !== null)
             {
               if(data.enviado)
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: data.mensaje, life: 3000 });  
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: data.mensaje, life: 3000 });
+                setTimeout(()=>{this.goToLogin()}, 3000);  
               }
           },
           error: error => {

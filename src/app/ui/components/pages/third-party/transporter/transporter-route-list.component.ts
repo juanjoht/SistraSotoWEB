@@ -24,7 +24,7 @@ export class TransporterRouteListComponent {
   origins: params[] = [];
   destinations: params[] = [];
   cols: any[] = [];
-  
+  routeID: number = 0
   constructor(
     private TransporterService: TransporterService,
     private paramService: ParamService,
@@ -125,14 +125,15 @@ getDestinationsParams(){
  }
 
 
- deleteTransporterRoute ()
+ deleteTransporterRoute(routeId: number)
  {
   this.deleteTransporterRouteDialog = true;
+  this.routeID = routeId;
  }
 
  confirmDeleteSelected()
  {
-  this.TransporterService.deleteTransporterRoute(this.transporterId)
+  this.TransporterService.deleteTransporterRoute(this.routeID,this.transporterId)
       .subscribe({
           next: (data) => {
             if(data !== null)

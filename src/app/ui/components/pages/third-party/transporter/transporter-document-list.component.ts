@@ -439,7 +439,7 @@ switch (this.feature.toLowerCase()) {
   this.docName = docName;
   this.formTransporterDoc.reset();
   this.formTransporterDoc.get('docSelected')?.setValue(docId);
-  if(this.feature.toLowerCase() === 'conductor'){
+  if(this.feature.toLowerCase() === 'conductor' || this.feature.toLocaleLowerCase() === 'vehículo'){
     this.showMatutityDate = false;
     this.formTransporterDoc.get('maturityDateSelected')?.setValue(matuDate);
   }

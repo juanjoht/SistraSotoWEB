@@ -34,6 +34,9 @@ export class RateTransportEditComponent {
       valueMinTon: ['', [Validators.required]],
       valueMaxton:['',[Validators.required]],
       stateSelected:[true]
+     },
+     { 
+      validators: [this.maxMin('valuem3','valueMinm3', 'valueMaxm3'),this.maxMin('valueton','valueMinTon', 'valueMaxton') ]
      });
     }else
     {
@@ -46,7 +49,25 @@ export class RateTransportEditComponent {
         valueMinTon:[{value: this.rateEdit.valueMinTon, disabled: this.viewMode},[Validators.required]],
         valueMaxton:[{value: this.rateEdit.valueMaxTon, disabled: this.viewMode},[Validators.required]],
         stateSelected:[{value: this.rateEdit.state === 'Activo' ? true: false, disabled: this.viewMode}]
+       },
+       { 
+        validators: [this.maxMin('valuem3','valueMinm3', 'valueMaxm3'),this.maxMin('valueton','valueMinTon', 'valueMaxton') ]
        });
+    }
+  }
+
+  maxMin(valueM3: any, min: any, max: any){
+    return (formGroup: FormGroup) => {
+    const vm3 = formGroup.controls[valueM3];
+    const vminm3 = formGroup.controls[min];
+    const vmaxm3 = formGroup.controls[max];
+      if(vm3.value >= vminm3.value && vm3.value <= vmaxm3.value)
+      {
+        vm3.setErrors(null);
+      }else
+      {
+        vm3.setErrors({ maxMinError: true });
+      }
     }
   }
 

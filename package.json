@@ -21,6 +21,8 @@
     "@auth0/angular-jwt": "^5.1.2",
     "chart.js": "^4.2.1",
     "file-saver": "^2.0.5",
+    "moment": "^2.29.4",
+    "moment-range": "^4.0.2",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primeng": "^15.3.0",

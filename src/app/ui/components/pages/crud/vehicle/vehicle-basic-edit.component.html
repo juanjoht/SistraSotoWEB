@@ -34,7 +34,7 @@
         </div>
         <div class="field col-12 sm:col-4">
             <label for="grossWeightInput" class="font-bold">Peso bruto(ton)*</label>
-            <p-inputNumber id="grossWeightInput" inputId="minmax" inputId="minmax" [min]="0" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" formControlName="grossWeight" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.grossWeight.errors}"> </p-inputNumber>
+            <p-inputNumber id="grossWeightInput" inputId="minmax" inputId="minmax"  mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" formControlName="grossWeight" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.grossWeight.errors}"> </p-inputNumber>
             <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.grossWeight?.errors?.required">Peso bruto(ton) es Requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
@@ -42,9 +42,8 @@
             <input id="cubicadoInput" type="text" pInputText  formControlName="cubed" >
         </div>
         <div class="field col-12 sm:col-4">
-            <label for="capacityM3Input" class="font-bold">Capacidad m3*</label>
-            <p-inputNumber id="capacityM3Input" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityM3" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.capacityM3.errors}"> </p-inputNumber>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.capacityM3?.errors?.required">Capacidad m3 es requerido</small>
+            <label for="capacityM3Input" class="font-bold">Capacidad m3</label>
+            <p-inputNumber id="capacityM3Input" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityM3"> </p-inputNumber>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="capacityTonInput" class="font-bold">Capacidad ton*</label>

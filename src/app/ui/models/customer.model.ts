@@ -57,9 +57,10 @@ export interface CustomerBuildings{
     receptionTimes? : string;
     allowedVehicleTypes?: string;
     loadingTime?: string;
-    simpleLoadingTime?: number;
-    doubleLoadingTime?: number;
-    truckLoadingTime?: number;
+    profitability?: number;
+    roadCondition?: number;
+    unloadingAgility?: number;
+    weightedRating?: number;
     state?:string;
 }
 

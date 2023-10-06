@@ -15,7 +15,7 @@
     </div>
     <div class="field col-12 sm:col-4">
         <label for="ivaInput" class="font-bold">IVA*</label>
-        <p-inputNumber id="ivaInput" inputId="percent" formControlName="iva" suffix=" %" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.iva.errors }"> </p-inputNumber>
+        <p-inputNumber id="ivaInput" [step]="0.1" formControlName="iva" suffix=" %" [ngClass]="{ 'is-invalid ng-dirty': submittedCommercial && f.iva.errors }"> </p-inputNumber>
         <small class="ng-dirty ng-invalid" *ngIf="submittedCommercial && f?.iva?.errors?.required">IVA es requerido</small>
     </div>
     <div class="field col-12 sm:col-4">
