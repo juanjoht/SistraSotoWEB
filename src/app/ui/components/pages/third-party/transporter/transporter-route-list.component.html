@@ -51,14 +51,9 @@
             <form [formGroup]="formTransporterRoutes">
                 <div class="formgrid grid mb-10">
                     <div class="field col-12 sm:col-5">
-                        <label for="originSelect" class="font-bold">Origen*</label>
-                        <p-dropdown id="originSelect"  scrollHeight="100px" placeholder="Seleccione un Origen" formControlName="originSelected" [options]="origins" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterRoute && f.originSelected.errors }"></p-dropdown>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterRoute && f?.originSelected?.errors?.required">Origen es requerido</small>
-                    </div>
-                    <div class="field col-12 sm:col-5">
-                        <label for="DestinationSelect" class="font-bold">Destino*</label>
-                        <p-dropdown id="DestinationSelect" scrollHeight="100px" [options]="destinations" placeholder="Seleccione un Destino" formControlName="destinationSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterRoute && f.destinationSelected.errors }" ></p-dropdown>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterRoute && f?.destinationSelected?.errors?.required">Destino es requerido</small>
+                        <label for="routeSelect" class="font-bold">Ruta*</label>
+                        <p-dropdown id="routeSelect"  scrollHeight="100px" placeholder="Seleccione una Ruta" formControlName="routeSelected" [options]="routes" optionValue="id" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedTransporterRoute && f.routeSelected.errors }"></p-dropdown>
+                        <small class="ng-dirty ng-invalid" *ngIf="submittedTransporterRoute && f?.routeSelected?.errors?.required">Ruta es requerida</small>
                     </div>
                     <div class="field col-12 sm:col-2 align-self-end">
                         <button pButton pRipple label="Guardar" (click)="saveTransporterByClient()" icon="pi pi-check"

@@ -52,7 +52,40 @@ export class PreassignmentService {
                     vehiclePlate: item.vehiculoPlaca,
                     driverId: item.conductorId,
                     driverName: item.conductorNombre,
+                    factoryId: item.plantaId,
+                    factoryName: item.plantaNombre,
                     rejectionReason: item.motivoRechazo,
+                    state: item.estado
+                }
+            })
+        }));
+    }
+
+    getPreassignmentByPlate(plate: string, factoryId: number) {
+        let newData: preassignment = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiPreassignmentByPlate}?Placa=${plate}&PlantaId=${factoryId}`)
+        .pipe(map(data => {
+            return data?.preasignaciones?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    serviceDate: this.removeTime(new Date(item.fechaServicio)),
+                    originalServiceDate: new Date(item.fechaServicio),
+                    serviceHour: this.formatAMPM(new Date(item.fechaServicio)),
+                    buildingId: item.obraId,
+                    buildingName: item.obraNombre,
+                    clientName: item.clienteNombre,
+                    materialId: item.materialId,
+                    materialName: item.materialNombre,
+                    measureUnit: item.unidadMedida,
+                    amount: item.cantidad,
+                    vehicleId : item.vehiculoId,
+                    vehiclePlate: item.vehiculoPlaca,
+                    driverId: item.conductorId,
+                    driverName: item.conductorNombre,
+                    factoryId: item.plantaId,
+                    rejectionReason: item.motivoRechazo,
+                    factoryEnterDoc: item.plantaIngresaDocumento,
+                    buildingAllCost: item.obraTodoCosto,
                     state: item.estado
                 }
             })
@@ -70,6 +103,7 @@ export class PreassignmentService {
                 cantidad: request.amount,
                 vehiculoId: request.vehicleId,
                 conductorId: request.driverId,
+                plantaId: request.factoryId,
                 motivoRechazo: request.rejectionReason,
                 estado: request.state
             }
@@ -93,6 +127,7 @@ export class PreassignmentService {
                 cantidad: request.amount,
                 vehiculoId: request.vehicleId,
                 conductorId: request.driverId,
+                plantaId: request.factoryId,
                 motivoRechazo: request.rejectionReason,
                 estado: request.state
             }
@@ -108,9 +143,9 @@ export class PreassignmentService {
         return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiPreassignmentApprove}`,
         {
             aprobarPreasignacion: {
-                id: requestIds
-            },
-            cantidad: amountApprove
+                id: requestIds,
+                cantidad: amountApprove
+            }
           })
             .pipe(map(user => {
                 if (user?.preasignacionAprobado !== null && user?.preasignacionAprobado !== undefined) {

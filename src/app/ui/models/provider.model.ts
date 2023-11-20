@@ -16,6 +16,7 @@ export interface ProviderBasicInfo {
 export interface ProviderPrices{
     id?: number;
     providerId?: number;
+    materialId?: number;
     material?: string;
     valueM3?:number;
     valueTon?:  number;
@@ -46,6 +47,7 @@ export interface ProviderFactories{
     latitude?: number;
     length?: number;
     haveSoto13System?: boolean;
+    enterDoc?: boolean;
     workTimes? : string;
     state?:string;
 }

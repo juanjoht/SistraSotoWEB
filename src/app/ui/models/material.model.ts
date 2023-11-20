@@ -1,6 +1,8 @@
 export interface material {
     id?: number;
     name?: string;
+    materialTypeId?: number,
+    materialType?: string,
     unitMass?: number;
     valueM3?: number;
     valueMinM3?: number;

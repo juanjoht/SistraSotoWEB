@@ -36,7 +36,8 @@ export class MaterialListComponent implements OnInit {
     this.canEdit = Common.checkPermissions('Maestros-Materiales', 'Editar');
     this.getGridData();
     this.cols = [
-        { field: 'name', header: 'Placa' },
+        { field: 'name', header: 'Material' },
+        { field: 'tipoMaterial', header: 'Tipo de Material' },
         { field: 'unitMass', header: 'Masa Unitaria' },
         { field: 'valueM3', header: 'Precio Venta m3' },
         { field: 'valueTon', header: 'Precio Venta ton' },
@@ -88,6 +89,7 @@ export class MaterialListComponent implements OnInit {
     let formValues  = this.editBasic.f;
     let objBasic: material = {
       name: formValues.material.value,
+      materialTypeId: formValues.materialTypeSelected.value,
       unitMass: formValues.unitMass.value,
       valueM3: formValues.valuem3.value,
       valueTon: formValues.valueton.value,

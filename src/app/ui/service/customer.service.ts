@@ -90,7 +90,7 @@ export class CustomerService {
                     scale: item.bascula === 'Si' ? true: false,
                     latitude: item.latitud,
                     length: item.longitud,
-                    isAdminBySoto13: item.administraSotoTrece === 'Si' ? true: false,
+                    isAdminBySoto13: item.administraSotoTrece,
                     tolerancePercentage: item.porcentajeTolerancia,
                     intermediationPercentage: item.porcentajeIntermediacion,
                     deliveryConfirmation: item.confirmacionEntrega,
@@ -128,8 +128,8 @@ export class CustomerService {
             return data?.tarifaFletes?.map((item: any) =>{
                  return newInfo =  {
                     id: item.id,
-                    origin: item.origen,
-                    destination: item.destino,
+                    routeId: item.rutaId,
+                    route: item.ruta,
                     material: item.material,
                     measureUnit: item.unidadMedida,
                     shippingValue: item.valorFlete,
@@ -318,7 +318,7 @@ postCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
             bascula: requestCustmerBuilding.scale ? 'Si': 'No',
             latitud: requestCustmerBuilding.latitude,
             longitud: requestCustmerBuilding.length,
-            administraSotoTrece: requestCustmerBuilding.isAdminBySoto13 ? 'Si': 'No',
+            administraSotoTrece: requestCustmerBuilding.isAdminBySoto13,
             porcentajeTolerancia: requestCustmerBuilding.tolerancePercentage,
             confirmacionEntrega: requestCustmerBuilding.deliveryConfirmation,
             horariosRecepcion: requestCustmerBuilding.receptionTimes,
@@ -355,7 +355,7 @@ putCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
             bascula: requestCustmerBuilding.scale ? 'Si': 'No',
             latitud: requestCustmerBuilding.latitude,
             longitud: requestCustmerBuilding.length,
-            administraSotoTrece: requestCustmerBuilding.isAdminBySoto13 ? 'Si': 'No',
+            administraSotoTrece: requestCustmerBuilding.isAdminBySoto13,
             porcentajeTolerancia: requestCustmerBuilding.tolerancePercentage,
             confirmacionEntrega: requestCustmerBuilding.deliveryConfirmation,
             horariosRecepcion: requestCustmerBuilding.receptionTimes,
@@ -381,8 +381,7 @@ postCustomerShipping(requestCustmerShipping: CustomerShipping){
     {
         tarifaFleteCliente: {
             clienteId: requestCustmerShipping.customerId,
-            origen: requestCustmerShipping.origin,
-            destino: requestCustmerShipping.destination,
+            rutaId: requestCustmerShipping.routeId,
             material: requestCustmerShipping.material,
             unidadMedida: requestCustmerShipping.measureUnit,
             valorFlete: requestCustmerShipping.shippingValue,
@@ -404,8 +403,7 @@ putCustomerShipping(requestCustmerShipping: CustomerShipping, clientId: number){
             estado: requestCustmerShipping.state,
             tarifaFlete: {
                 id: requestCustmerShipping.id,
-                origen: requestCustmerShipping.origin,
-                destino: requestCustmerShipping.destination,
+                rutaId: requestCustmerShipping.routeId,
                 material: requestCustmerShipping.material,
                 valorMetroCubico: requestCustmerShipping.m3Value,
                 valorTonelada: requestCustmerShipping.tonValue,

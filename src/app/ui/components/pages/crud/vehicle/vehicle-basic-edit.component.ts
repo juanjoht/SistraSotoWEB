@@ -48,7 +48,11 @@ export class VehicleBasicEditComponent implements OnInit {
       kmLastInspection:['',[Validators.required]],
       dateLastInspection:['', [Validators.required]],
       stateSelected:[true]
-     });
+     },
+     { 
+      validators: [this.kmMax('kmToInspection','kmLastInspection') ]
+     }
+     );
     }else
     {
       this.formGroupBasic = this.formBuilder.group({
@@ -67,6 +71,21 @@ export class VehicleBasicEditComponent implements OnInit {
         dateLastInspection:[{value: new Date(this.vehicleEdit.dateLastInspection as string), disabled: this.viewMode},[Validators.required]],
         stateSelected:[{value: this.vehicleEdit.state === 'Activo' ? true: false, disabled: this.viewMode}]
        });
+    }
+  }
+
+  kmMax(kmNext: any, kmLast: any){
+    return (formGroup: FormGroup) => {
+    const kNext = formGroup.controls[kmNext];
+    const kLast = formGroup.controls[kmLast];
+    
+      if(kNext.value > kLast.value)
+      {
+        kNext.setErrors({ maxKmError: true });
+      }else
+      {
+        kNext.setErrors(null);
+      }
     }
   }
 
@@ -94,6 +113,8 @@ export class VehicleBasicEditComponent implements OnInit {
         }
     });
   }
+
+
 
   get f() { return this.formGroupBasic?.controls; }
 

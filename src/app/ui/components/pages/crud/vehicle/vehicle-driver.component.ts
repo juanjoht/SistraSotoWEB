@@ -109,6 +109,7 @@ export class VehicleDriverComponent implements OnInit {
        id: this.f?.driverSelected.value,
        state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
      }
+     if(!this.editMode){
       this.vehicleService.getDriverRelated(objDriver.vehicleId, objDriver.id)
       .subscribe({
           next: (data) => {
@@ -124,6 +125,10 @@ export class VehicleDriverComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
           }
       });
+     }else
+     {
+      this.postVehicleDriver(objDriver);
+     }
   }
 
   postVehicleDriver(objDriver:Driver)

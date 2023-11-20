@@ -1,14 +1,9 @@
 <form [formGroup]="formGroupShippingRate" >
     <div class="formgrid grid">
         <div class="field col-12 sm:col-4">
-            <label for="originSelect" class="font-bold">Origen*</label>
-            <p-dropdown id="originSelect"  placeholder="Seleccione un Origen" formControlName="originSelected" [options]="origins" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.originSelected.errors }"></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.originSelected?.errors?.required">Origen es requerido</small>
-        </div>
-        <div class="field col-12 sm:col-4">
-            <label for="DestinationSelect" class="font-bold">Destino*</label>
-            <p-dropdown id="DestinationSelect" [options]="destinations" placeholder="Seleccione un Destino" formControlName="destinationSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.destinationSelected.errors }" ></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.destinationSelected?.errors?.required">Destino es requerido</small>
+            <label for="rutaSelect" class="font-bold">Ruta*</label>
+            <p-dropdown id="rutaSelect"  placeholder="Seleccione una Ruta" formControlName="routeSelected" [options]="routes" optionValue="id" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedShippingRate && f.routeSelected.errors }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedShippingRate && f?.routeSelected?.errors?.required">Ruta es requerida</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="MaterialSelect" class="font-bold">Material*</label>

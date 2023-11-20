@@ -19,6 +19,7 @@ import { RouterModule } from '@angular/router';
         { path: 'order-approve', loadChildren: () => import('./programming/order/order-approve.module').then(m => m.OrderApproveModule) },
         { path: 'provider-order', loadChildren: () => import('./programming/provider-order/provider-order.module').then(m => m.ProviderOrderModule) },
         { path: 'preasignment', loadChildren: () => import('./programming/preassignment/preassignment.module').then(m => m.PreassignmentModule) },
+        { path: 'load-plant', loadChildren: () => import('./plant/plant-load/plant-load.module').then(m => m.PlantLoadModule) },
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]

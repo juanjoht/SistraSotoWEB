@@ -1,0 +1,48 @@
+<p-card header="Carga en Planta">
+<ng-template pTemplate="content">
+    <form [formGroup]="formGroupBasic" >
+        <p-toast></p-toast>
+            <div class="formgrid grid">
+                <div class="field col-12 sm:col-12">
+                    <label for="plateSelect" class="font-bold mr-2">Ingrese la Placa del Vehículo</label>
+                    <p-autoComplete formControlName="plateSelected" [suggestions]="filteredPlates" (completeMethod)="filterByPlate($event)" (onSelect)="changePlate($event)" field="name" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.plateSelected.errors}"></p-autoComplete>
+                    <small class="ml-2 ng-dirty ng-invalid" *ngIf="submittedBasic && f?.plateSelected?.errors?.required">Placa es requerida.</small>
+                </div>
+                <div class="field col-12 sm:col-4">
+                    <label for="clientSelect" class="flex font-bold">Cliente</label>
+                    <input id="clientSelected" class="p-inputtext-lg" type="text" pInputText  formControlName="clientSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.clientSelected.errors }" >
+                </div>
+                <div class="field col-12 sm:col-4">
+                    <label for="buildingSelect" class="flex font-bold">Obra</label>
+                    <input id="buildingSelect" type="text" class="p-inputtext-lg" pInputText  formControlName="buildingSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.buildingSelected.errors }" >
+                </div>
+                <div class="field col-12 sm:col-4">
+                    <label for="materialSelect" class="flex font-bold">Material</label>
+                    <input id="materialSelect" type="text"  class="p-inputtext-lg" pInputText  formControlName="materialSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" >
+                </div>
+        
+                <div class="field col-12 sm:col-4">
+                    <label for="unitMeasureInput" class="flex font-bold">Unidad de medida</label>
+                    <input id="unitMeasureInput" type="text" class="p-inputtext-lg" pInputText  formControlName="unitMeasure" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.unitMeasure.errors }" >
+                </div>
+                <div class="field col-12 sm:col-4">
+                    <label for="amountInput" class="flex font-bold">Cantidad</label>
+                    <input id="unitMeasureInput" type="text" pInputText class="p-inputtext-lg" formControlName="amount" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.amount.errors }" >
+                </div>
+                <div *ngIf="showDocNumber" class="field col-12 sm:col-4">
+                    <label for="docNumberInput" class="flex font-bold">Número de documento*</label>
+                    <input id="docNumberInput" type="text" pInputText class="p-inputtext-lg" formControlName="docNumberSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.docNumberSelected.errors }" >
+                    <small class="flex ng-dirty ng-invalid" *ngIf="submittedBasic && f?.docNumberSelected?.errors?.required">Número de documento es requerido.</small>
+                </div>
+            </div>
+        </form>
+</ng-template>
+<ng-template pTemplate="footer" >
+    <div *ngIf="showOptions" class="flex justify-content-center flex-wrap">
+        <p-button [label]="labelState" [disabled]="labelDisabled" class="align-content-center" icon="pi pi-check" (click)="load()"></p-button>
+        <p-button label="Cancel" class="align-content-center" icon="pi pi-times" styleClass="p-button-secondary" (click)="cancel()" [style]="{ 'margin-left': '.5em' }"></p-button>
+    </div>
+</ng-template>
+</p-card>
+
+

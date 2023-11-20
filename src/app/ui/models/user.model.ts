@@ -6,10 +6,12 @@ export interface User{
     userName?: string;
     password?: string;
     name?: string;
+    docNumber?:string;
     phone?: string;
     email?: string;
     profile?: string;
     verificationCode?: string;
+    factoryId?: number;
     state?:string;
 }
 

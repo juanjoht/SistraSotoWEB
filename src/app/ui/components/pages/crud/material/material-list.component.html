@@ -14,6 +14,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="name">Material <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="materialType">Tipo de Material <p-sortIcon field="materialType"></p-sortIcon></th>
             <th pSortableColumn="unitMass">Masa Unitaria <p-sortIcon field="unitMass"></p-sortIcon></th>
             <th pSortableColumn="valueM3">Precio Venta m3 <p-sortIcon field="valueM3"></p-sortIcon></th>
             <th pSortableColumn="valueTon">Precio Venta ton <p-sortIcon field="valueTon"></p-sortIcon></th>
@@ -30,6 +31,10 @@
             <td>
                 <span class="p-column-title">name</span>
                 {{material.name}}
+            </td>
+            <td>
+                <span class="p-column-title">materialType</span>
+                {{material.materialType}}
             </td>
             <td>
                 <span class="p-column-title">unitMass</span>

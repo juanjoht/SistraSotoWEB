@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { Driver, Vehicle, VehicleDocuments, VehicleRestrictedDestination, allowedMaterial } from '../models/vehicles.model';
+import { Driver, Vehicle, VehicleDocuments, VehiclePlate, VehicleRestrictedDestination, allowedMaterial } from '../models/vehicles.model';
 import { RestrictedDestination } from '../models/route.model';
 
 @Injectable()
@@ -33,6 +33,20 @@ export class VehicleService {
                     dateLastInspection: item.fechaUltimaInspeccion,
                     AuthCode:item.codigoAutorizacion,
                     state: item.estado,
+                }
+            })
+        }));
+    }
+
+
+    getVehiclePlate() {
+        let newData: VehiclePlate = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiVehiclePlate}`)
+        .pipe(map(data => {
+            return data?.placas?.map((item: any) =>{
+                 return newData =  {
+                    id: item.id,
+                    name: item.nombre
                 }
             })
         }));
@@ -159,7 +173,8 @@ export class VehicleService {
         {
             conductorRelacionVehiculo: {
                 vehiculoId: request.vehicleId,
-                conductorId: request.id
+                conductorId: request.id,
+                estado: request.state
             }
           })
             .pipe(map(user => {

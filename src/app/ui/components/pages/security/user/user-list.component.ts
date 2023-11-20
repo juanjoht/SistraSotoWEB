@@ -156,14 +156,15 @@ export class UserListComponent implements OnInit {
   }
 
   saveContent(){
+    console.log(this.userBasic);
     this.editBasic.submittedBasic = true;
     if (this.editBasic.formGroupBasic.invalid) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
     let formValues  = this.editBasic.f;
-    let thirdPartyId =  this.thirdParties.find(x=>x.name === formValues.thirdPartySelected.value)?.id;
-    let thirdPartyType =  this.thirdParties.find(x=>x.name === formValues.thirdPartySelected.value)?.type;
+    let thirdPartyId =  this.thirdParties.find(x=>x.name === formValues.thirdPartySelected.value  && x.type === this.editBasic.typeThird)?.id;
+    let thirdPartyType =  this.editBasic.typeThird;
     let objBasic: User = {
       thirdPartyId: thirdPartyId?.toString(),
       thirdPartyType: thirdPartyType,
@@ -172,6 +173,8 @@ export class UserListComponent implements OnInit {
       phone: formValues.phone.value,
       email: formValues.email.value,
       profile: formValues.profileSelected.value,
+      factoryId : formValues.factorySelected.value === 0? null: formValues.factorySelected.value,
+      docNumber: formValues.docNumber.value,
       state: (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
       }
       if (this.editMode){

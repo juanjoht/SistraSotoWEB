@@ -2,8 +2,10 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { params } from 'src/app/ui/models/param.model';
+import { route } from 'src/app/ui/models/route.model';
 import { TransporterRoutes } from 'src/app/ui/models/transporter.model';
 import { ParamService } from 'src/app/ui/service/param.service';
+import { RouteService } from 'src/app/ui/service/route.service';
 import { TransporterService } from 'src/app/ui/service/transporter.service';
 
 @Component({
@@ -21,13 +23,12 @@ export class TransporterRouteListComponent {
   submittedTransporterRoute: boolean = false;
   transporterRouteDialog: boolean = false;
   deleteTransporterRouteDialog: boolean = false;
-  origins: params[] = [];
-  destinations: params[] = [];
+  routes: route[] = [];
   cols: any[] = [];
   routeID: number = 0
   constructor(
     private TransporterService: TransporterService,
-    private paramService: ParamService,
+    private RouteService: RouteService,
     private formBuilder: FormBuilder,
     private messageService: MessageService
     ) { }
@@ -40,16 +41,14 @@ export class TransporterRouteListComponent {
     ];
   
     this.formTransporterRoutes = this.formBuilder.group({
-      originSelected: ['',[Validators.required]],
-      destinationSelected: ['',[Validators.required]]
+      routeSelected: ['',[Validators.required]]
      });
  }
 
  openNewRoute()
  {
    this.transporterRouteDialog = true;
-   this.getOriginsParams();
-   this.getDestinationsParams();
+   this.getRouteList();
    this.formTransporterRoutes.reset();
    this.submittedTransporterRoute= false;
  }
@@ -67,30 +66,17 @@ export class TransporterRouteListComponent {
   });
 }
 
-getOriginsParams(){
-  this.paramService.getParamByType('Origen')
-          .subscribe({
-              next: (data:any) => {
-                this.origins = data;
-              },
-              error: error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
-                console.log(error);
-              }
-          });
-}
-
-getDestinationsParams(){
-  this.paramService.getParamByType('Destino')
-          .subscribe({
-              next: (data:any) => {
-                this.destinations = data;
-              },
-              error: error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
-                console.log(error);
-              }
-          });
+getRouteList(){
+  this.RouteService.getRoutesList()
+  .subscribe({
+      next: (data:any) => {
+        this.routes = data;
+      },
+      error: error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+        console.log(error);
+      }
+  });
 }
 
  saveTransporterByClient()
@@ -105,8 +91,7 @@ getDestinationsParams(){
   let formValues  = this.f;
     let objTransporterRoutes: TransporterRoutes = {
       transporterId: this.transporterId,
-      origin: formValues.originSelected.value,
-      destination: formValues.destinationSelected.value,
+      routeId: formValues.routeSelected.value,
     }
       this.TransporterService.postTransporterRoute(objTransporterRoutes)
       .subscribe({

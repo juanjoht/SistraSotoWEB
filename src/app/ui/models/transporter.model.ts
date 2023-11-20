@@ -16,8 +16,8 @@ export interface TransporterBasicInfo {
 export interface TransporterRoutes{
     transporterId?:number;
     id?: number;
-    origin?: string;
-    destination?: string;
+    route?: string;
+    routeId?: number;
     state?: string;
     routeName?:string;
 }
@@ -79,8 +79,8 @@ export interface TransporterDriver{
 export interface transporterShipping{
     transporterId?: number;
     id?: number;
-    origin?: string;
-    destination?: string;
+    route?: string;
+    routeId?: number;
     material?: string;
     measureUnit?: string;
     shippingValue?: number;

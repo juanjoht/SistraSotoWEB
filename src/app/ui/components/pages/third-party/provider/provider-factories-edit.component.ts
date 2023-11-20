@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { CustomerBuildings } from 'src/app/ui/models/customer.model';
 import { Cities, Depts } from 'src/app/ui/models/param-static.model';
 import { params } from 'src/app/ui/models/param.model';
 import { schedule } from 'src/app/ui/models/schedule.model';
@@ -10,6 +9,7 @@ import { ParamService } from 'src/app/ui/service/param.service';
 import { ScheduleService } from 'src/app/ui/service/schedule.service';
 import * as moment from 'moment';
 import { extendMoment } from 'moment-range';
+import { ProviderFactories } from 'src/app/ui/models/provider.model';
  
 
 interface hours {
@@ -22,9 +22,9 @@ interface hours {
   styleUrls: ['./provider-factories-edit.component.scss']
 })
 export class ProviderFactoriesEditComponent implements OnInit {
-  @Input() customerBuildingEdit!: CustomerBuildings;
+  @Input() ProviderFactoriesEdit!: ProviderFactories;
   @Input() viewMode: boolean = false;
-  formGroupCustomerBuildings!: FormGroup;
+  formGroupProviderFactories!: FormGroup;
   depts: Depts[] = [];
   cities: Cities[] = [];
   zones: params[] = [];
@@ -33,7 +33,7 @@ export class ProviderFactoriesEditComponent implements OnInit {
   hoursList :hours[] = []
   deliveryConfirmations: params[] = [];
   allowedVehicleTypes: params[] = [];
-  submittedCustomerBuilding: boolean = false;
+  submittedProviderFactories: boolean = false;
   isEdit: boolean = false;
   scheduleDialog: boolean = false;
   formSchedules!: FormArray;
@@ -48,10 +48,10 @@ export class ProviderFactoriesEditComponent implements OnInit {
     ) { }
   
   getControls(){
-    return (<FormArray>this.formGroupCustomerBuildings.get('days')).controls;
+    return (<FormArray>this.formGroupProviderFactories.get('days')).controls;
   }
   get days() : FormArray {
-    return this.formGroupCustomerBuildings.get('days') as FormArray
+    return this.formGroupProviderFactories.get('days') as FormArray
   }
   val: any[] = [];
   changeAllowed(event: any){
@@ -60,7 +60,7 @@ export class ProviderFactoriesEditComponent implements OnInit {
 
   onchangeReceive(e: any, index: number)
   {
-    let days = this.formGroupCustomerBuildings.controls.days as FormArray;
+    let days = this.formGroupProviderFactories.controls.days as FormArray;
     if(e.checked){
       days.controls[index].get('times')?.setValidators(Validators.required);
       days.controls[index].get('times')?.updateValueAndValidity();
@@ -84,12 +84,9 @@ export class ProviderFactoriesEditComponent implements OnInit {
 
   ngOnInit() {
     this.getDepts();
-    this.getDeliveryConfirmations();
-    this.getAllowedVehicleTypes();
     this.getZones();
-    this.getWights();
-    if (Object.keys(this.customerBuildingEdit).length === 0){
-        this.formGroupCustomerBuildings = this.formBuilder.group({
+    if (Object.keys(this.ProviderFactoriesEdit).length === 0){
+        this.formGroupProviderFactories = this.formBuilder.group({
         name: ['', [Validators.required]],
         phone: ['', [Validators.required]],
         contactName: ['', [Validators.required]],
@@ -98,18 +95,10 @@ export class ProviderFactoriesEditComponent implements OnInit {
         zoneSelected:['',[Validators.required]],
         address:['', [Validators.required]],
         email : ['', [Validators.email]],
-        scaleSelected: ['', []],
         latitude: ['', []],
         length: ['', []],
-        manageSoto13: ['', []],
-        tolerancePercentage: ['', [Validators.required]],
-        intermediationPercentage: ['', [Validators.required]],
-        allCost: [false, []],
-        deliveryConfirmationSelected: ['', [Validators.required]],
-        allowedVehicleTypesSelected : [<params[] | null>(null), [Validators.required]],
-        profitability : [0, [Validators.required]],
-        roadCondition : [0, [Validators.required]],
-        unloadingAgility: [0, [Validators.required]],
+        haveSoto13: [false, []],
+        enterDoc: [false, []],
         stateSelected:[true]
       });   
       this.scheduleService.getSchedules().then((data:schedule[]) => (this.schedules = data));
@@ -117,31 +106,22 @@ export class ProviderFactoriesEditComponent implements OnInit {
     else
     {
       this.isEdit = true;
-      this.formGroupCustomerBuildings = this.formBuilder.group({
-        name: [{value:this.customerBuildingEdit.name, disabled: this.viewMode}, [Validators.required]],
-        phone: [{value:this.customerBuildingEdit.phone, disabled: this.viewMode}, [Validators.required]],
-        contactName: [{value:this.customerBuildingEdit.contactName, disabled: this.viewMode}, [Validators.required]],
-        deptSelected:[{value:this.customerBuildingEdit.dept, disabled: this.viewMode},[Validators.required]],
-        citySelected:[{value:this.customerBuildingEdit.city, disabled: this.viewMode},[Validators.required]],
-        zoneSelected:[{value:this.customerBuildingEdit.zone, disabled: this.viewMode},[Validators.required]],
-        address:[{value:this.customerBuildingEdit.address, disabled: this.viewMode}, [Validators.required]],
-        email : [{value:this.customerBuildingEdit.email, disabled: this.viewMode}, [Validators.email]],
-        scaleSelected: [{value:this.customerBuildingEdit.scale, disabled: this.viewMode}, []],
-        latitude: [{value:this.customerBuildingEdit.latitude, disabled: this.viewMode}, []],
-        length: [{value:this.customerBuildingEdit.length, disabled: this.viewMode}, []],
-        manageSoto13: [{value:this.customerBuildingEdit.isAdminBySoto13, disabled: this.viewMode}, []],
-        allCost: [{value:this.customerBuildingEdit.allCost, disabled: this.viewMode}, []],
-        tolerancePercentage: [{value:this.customerBuildingEdit.tolerancePercentage, disabled: this.viewMode}, [Validators.required]],
-        intermediationPercentage: [{value:this.customerBuildingEdit.intermediationPercentage, disabled: this.viewMode}, [Validators.required]],
-        deliveryConfirmationSelected: [{value:this.customerBuildingEdit.deliveryConfirmation, disabled: this.viewMode}, [Validators.required]],
-        allowedVehicleTypesSelected : [{value:this.customerBuildingEdit.allowedVehicleTypes?.split(','), disabled: this.viewMode}, [Validators.required]],
-        profitability : [{value:this.customerBuildingEdit.profitability, disabled: this.viewMode}, [Validators.required]],
-        roadCondition : [{value:this.customerBuildingEdit.roadCondition, disabled: this.viewMode}, [Validators.required]],
-        unloadingAgility: [{value:this.customerBuildingEdit.unloadingAgility, disabled: this.viewMode}, [Validators.required]],
-        stateSelected:[{value: this.customerBuildingEdit.state === 'Activo' ? true: false, disabled: this.viewMode}],
+      this.formGroupProviderFactories = this.formBuilder.group({
+        name: [{value:this.ProviderFactoriesEdit.name, disabled: this.viewMode}, [Validators.required]],
+        phone: [{value:this.ProviderFactoriesEdit.phone, disabled: this.viewMode}, [Validators.required]],
+        contactName: [{value:this.ProviderFactoriesEdit.contactName, disabled: this.viewMode}, [Validators.required]],
+        deptSelected:[{value:this.ProviderFactoriesEdit.dept, disabled: this.viewMode},[Validators.required]],
+        citySelected:[{value:this.ProviderFactoriesEdit.city, disabled: this.viewMode},[Validators.required]],
+        zoneSelected:[{value:this.ProviderFactoriesEdit.zone, disabled: this.viewMode},[Validators.required]],
+        address:[{value:this.ProviderFactoriesEdit.address, disabled: this.viewMode}, [Validators.required]],
+        email : [{value:this.ProviderFactoriesEdit.email, disabled: this.viewMode}, [Validators.email]],
+        latitude: [{value:this.ProviderFactoriesEdit.latitude, disabled: this.viewMode}, []],
+        length: [{value:this.ProviderFactoriesEdit.length, disabled: this.viewMode}, []],
+        haveSoto13: [{value:this.ProviderFactoriesEdit.haveSoto13System, disabled: this.viewMode}, []],
+        enterDoc: [{value:this.ProviderFactoriesEdit.enterDoc, disabled: this.viewMode}, []],
+        stateSelected:[{value: this.ProviderFactoriesEdit.state === 'Activo' ? true: false, disabled: this.viewMode}],
       });
-      this.weightedRating = this.customerBuildingEdit?.weightedRating;
-      let recTimes = this.customerBuildingEdit.receptionTimes?.split(';');
+      let recTimes = this.ProviderFactoriesEdit.workTimes?.split(';');
       recTimes?.forEach((element: any, index: number) => {
          let item = element?.split('-')[0];
          let itemD = item.split('=');
@@ -159,7 +139,7 @@ export class ProviderFactoriesEditComponent implements OnInit {
       }); 
     }
   }
-  get f() { return this.formGroupCustomerBuildings?.controls; }
+  get f() { return this.formGroupProviderFactories?.controls; }
   
   changeDept(event: any)
   {
@@ -172,10 +152,10 @@ export class ProviderFactoriesEditComponent implements OnInit {
             .subscribe({
                 next: (data:any) => {
                   this.depts = data;
-                  if (Object.keys(this.customerBuildingEdit).length !== 0){
-                    let deptId = this.depts.find(x=>x.name === this.customerBuildingEdit.dept)?.id as string;
+                  if (Object.keys(this.ProviderFactoriesEdit).length !== 0){
+                    let deptId = this.depts.find(x=>x.name === this.ProviderFactoriesEdit.dept)?.id as string;
                     this.getCities(deptId);
-                    this.f["citySelected"].setValue(this.customerBuildingEdit.city);
+                    this.f["citySelected"].setValue(this.ProviderFactoriesEdit.city);
                   }
                 },
                 error: error => {
@@ -196,30 +176,6 @@ export class ProviderFactoriesEditComponent implements OnInit {
           console.log(error);
         }
     });
-  }
-
-  getDeliveryConfirmations(){
-    this.paramService.getParamByType('Confirmación de entrega')
-            .subscribe({
-                next: (data:any) => {
-                  this.deliveryConfirmations = data;
-                },
-                error: error => {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });                  
-                }
-            });
-  }
-
-  getAllowedVehicleTypes(){
-    this.paramService.getParamByType('Tipos de vehículos permitidos')
-            .subscribe({
-                next: (data:any) => {
-                  this.allowedVehicleTypes = data;
-                },
-                error: error => {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });                  
-                }
-            });
   }
 
   getZones(){
@@ -391,15 +347,15 @@ export class ProviderFactoriesEditComponent implements OnInit {
     return index;
 }
 
-  addNewCycle(){
+ /* addNewCycle(){
     const stH:hours = {name : "00:00", value: 0}
       const enH:hours = {name : "00:00", value: 0}
     this.cycles.push(this.newCycle(this.cycles.length,stH,enH));
-  }
+  }*/
 
-  removeNewCycle(index: number){
+ /* removeNewCycle(index: number){
     this.cycles.removeAt(index);
-  }
+  }*/
 
   getHours(){
     const start = new Date();
@@ -426,39 +382,6 @@ export class ProviderFactoriesEditComponent implements OnInit {
   changeEndHour(value: any,index: any){
     console.log(value);
     console.log(this.cycles);
-  }
-  profitabilityWieght = 1;
-  aglityWieght = 1;
-  roadStateyWieght = 1;
-  weightedRating: number | undefined = 0;
-
-  getWights(){
-    this.paramService.getParamByType('Pesos Calificación Ponderada')
-            .subscribe({
-                next: (data:any) => {
-                  const existProfitabilityWieght= data.find((x: any)=> x.name.trim().toLowerCase().includes('rentabilidad'));
-                  if (existProfitabilityWieght !== undefined){
-                    this.profitabilityWieght = parseInt(existProfitabilityWieght.value1);
-                  }
-                  const existroadStateyWieght= data.find((x: any)=> x.name.trim().toLowerCase().includes('estado'));
-                   if (existroadStateyWieght !== undefined ){
-                    this.roadStateyWieght = parseInt(existroadStateyWieght.value1);
-                  }
-                  const existAglityWieght= data.find((x: any)=> x.name.trim().toLowerCase().includes('agilidad'));
-                  if (existAglityWieght !== undefined){
-                    this.aglityWieght = parseInt(existAglityWieght.value1);
-                  }
-                },
-                error: error => {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });                  
-                }
-            });
-  }
-
-  getweightedRating()
-  {
-    this.weightedRating = ((this.f.profitability.value * this.profitabilityWieght) + (this.f.roadCondition.value * this.roadStateyWieght)	 + (this.f.unloadingAgility.value * this.roadStateyWieght))
-    / (this.profitabilityWieght + this.roadStateyWieght + this.roadStateyWieght);
   }
  
 }

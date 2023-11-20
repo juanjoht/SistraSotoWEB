@@ -14,6 +14,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th style="width:40%" pSortableColumn="name">Ruta <p-sortIcon field="name"></p-sortIcon></th>
+            <th style="width:20%" pSortableColumn="runningTime">Tiempo Recorrido (min) <p-sortIcon field="runningTime"></p-sortIcon></th>
             <th style="width:20%" pSortableColumn="origin">Origen <p-sortIcon field="origin"></p-sortIcon></th>
             <th style="width:20%" pSortableColumn="destination">Destino <p-sortIcon field="destination"></p-sortIcon></th>
             <th style="width:20%" pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
@@ -25,6 +26,10 @@
             <td>
                 <span class="p-column-title">name</span>
                 {{Route.name}}
+            </td>
+            <td>
+                <span class="p-column-title">runningTime</span>
+                {{Route.runningTime}}
             </td>
             <td>
                 <span class="p-column-title">origin</span>
@@ -47,7 +52,7 @@
         </tr>
     </ng-template>
 </p-table>
-<p-dialog [(visible)]="RouteDialog" (onHide)="getGridData()" [draggable]="false" [style]="{width: '800px',height: '1000px'}" [maximizable]="true" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-customer">
+<p-dialog [contentStyle]="{'overflow': 'visible'}"  [(visible)]="RouteDialog" (onHide)="getGridData()" [draggable]="false" [style]="{width: '800px',height: '1000px'}" [maximizable]="true" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-customer">
     <ng-template pTemplate="header">
         <span class="text-xl font-bold text-center">Crear/Editar Ruta</span>
     </ng-template>

@@ -2,10 +2,16 @@
     <div class="formgrid grid">
         <div class="field col-12 sm:col-4">
             <label for="thirdPartySelect" class="font-bold">Tercero*</label>
-            <p-dropdown id="thirdPartySelect"  placeholder="Seleccione un Tercero" 
-            formControlName="thirdPartySelected" [options]="thirdParties" optionValue="name"  optionLabel="name" 
+            <p-dropdown id="thirdPartySelect" class="p-dropdown-third"  placeholder="Seleccione un Tercero" 
+            formControlName="thirdPartySelected" (onChange)="changeClient($event,false)" [options]="thirdParties" optionValue="name"  optionLabel="name" 
             [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.thirdPartySelected.errors }"  >
-            </p-dropdown>
+            <ng-template let-third pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span class="type">{{third.type}}</span>
+                    <div>{{ third.name }}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
             <small class="ng-dirty ng-invalid" 
             *ngIf="submittedBasic && f?.thirdPartySelected?.errors?.required">
             Tercero es requerido
@@ -16,6 +22,11 @@
             <input #docNum id="userNameInput" type="text" pInputText  formControlName="userName" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.userName.errors }" >
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.userName?.errors?.required">Usuario es requerido.</small>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.userName?.errors?.pattern">Usuario no puede contener espacios en blanco.</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="docNumberInput" class="font-bold">Número Documento*</label>
+            <input #docNum id="docNumberInput" type="text" pInputText formControlName="docNumber" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.docNumber.errors }" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.docNumber?.errors?.required">Número Documento es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="nameInput" class="font-bold">Nombre*</label>
@@ -34,18 +45,26 @@
             <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.email?.errors?.required">Correo Electrónico Requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
-            <label for="stateYesorNot" class="font-bold">Estado</label>
-            <div class="flex align-items-center h-3rem">
-                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
-            </div>
-        </div>
-        <div class="field col-12 sm:col-4">
             <label for="profileSelect" class="font-bold">Perfil de Usuario*</label>
             <p-dropdown id="profileSelect" scrollHeight="200px" [options]="profiles" placeholder="Seleccione un Perfil de Usuario"  optionValue="name" 
             formControlName="profileSelected" optionLabel="name"  
             [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.profileSelected.errors }" >
             </p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.profileSelected?.errors?.required">Perfil de Usuario es requerido</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="factorySelect" class="font-bold">Planta*</label>
+            <p-dropdown id="factorySelect" scrollHeight="200px" [options]="providerFactories" placeholder="Seleccione una Planta"  optionValue="id" 
+            formControlName="factorySelected" optionLabel="name"  
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.factorySelected.errors }" >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.factorySelected?.errors?.required">Planta es requerida</small>
+        </div>
+        <div class="field col-12 sm:col-4">
+            <label for="stateYesorNot" class="font-bold">Estado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
+            </div>
         </div>
     </div>
     </form>

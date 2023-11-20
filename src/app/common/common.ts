@@ -4,6 +4,7 @@ export class Common {
     private static token: string | null;
     private static userName: string | null;
     private static userId: string | null;
+    private static factoryId: string | null;
     private static moduleStr: string | null;
     private static modules: any[];
 
@@ -41,6 +42,18 @@ export class Common {
     public static set UserId(userId: string) {
         localStorage.setItem('userId', userId);
         this.userId = userId;
+    }
+
+    public static get FactoryId(): any {
+        if (this.factoryId === undefined && localStorage.getItem('factoryId') !== undefined) {
+                this.factoryId = localStorage.getItem('factoryId');
+        }
+        return this.factoryId;
+    }
+
+    public static set FactoryId(factoryId: string) {
+        localStorage.setItem('factoryId', factoryId);
+        this.factoryId = factoryId;
     }
 
 

@@ -17,6 +17,11 @@ export interface Vehicle{
     state?: string;
 }
 
+export interface VehiclePlate{
+    id?: number;
+    name?:string;
+}
+
 export interface allowedMaterial{
     id?: number;
     name?:string;

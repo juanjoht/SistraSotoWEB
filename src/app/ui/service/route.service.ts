@@ -17,12 +17,13 @@ export class RouteService {
                  return newData =  {
                     id: item.id,
                     name: item.nombre,
+                    runningTime: item.tiempoRecorrido,
                     originType: item.tipoOrigen,
-                    originClient: item.clienteOrigen,
-                    origin: item.origen,
+                    originClient: item.clienteDepartamentoOrigen,
+                    origin: item.obraMunicipioOrigen,
                     destinationType:item.tipoDestino,
-                    destinationClient: item.clienteDestino,
-                    destination: item.destino,
+                    destinationClient: item.clienteDepartamentoDestino,
+                    destination: item.obraMunicipioDestino,
                     state: item.estado
                 }
             })
@@ -47,12 +48,13 @@ export class RouteService {
         {
             ruta: {
                 nombre : request.name,
+                tiempoRecorrido: request.runningTime,
                 tipoOrigen: request.originType,
-                clienteOrigen: request.originClient,
-                origen: request.origin,
+                clienteDepartamentoOrigen: request.originClient,
+                obraMunicipioOrigen: request.origin,
                 tipoDestino: request.destinationType,
-                clienteDestino: request.destinationClient,
-                destino: request.destination,
+                clienteDepartamentoDestino: request.destinationClient,
+                obraMunicipioDestino: request.destination,
                 estado: request.state
             }
           })
@@ -69,12 +71,13 @@ export class RouteService {
             ruta: {
                 id: request.id,
                 nombre: request.name,
+                tiempoRecorrido: request.runningTime,
                 tipoOrigen: request.originType,
-                clienteOrigen: request.originClient,
-                origen: request.origin,
+                clienteDepartamentoOrigen: request.originClient,
+                obraMunicipioOrigen: request.origin,
                 tipoDestino: request.destinationType,
-                clienteDestino: request.destinationClient,
-                destino: request.destination,
+                clienteDepartamentoDestino: request.destinationClient,
+                obraMunicipioDestino: request.destination,
                 estado: request.state
             }
           })

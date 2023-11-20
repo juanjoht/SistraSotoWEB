@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CustomerShipping } from 'src/app/ui/models/customer.model';
 import { params } from 'src/app/ui/models/param.model';
+import { route } from 'src/app/ui/models/route.model';
 import { ParamService } from 'src/app/ui/service/param.service';
+import { RouteService } from 'src/app/ui/service/route.service';
 
 @Component({
   selector: 'app-customer-shipping-edit',
@@ -16,24 +18,21 @@ export class CustomerShippingEditComponent implements OnInit {
   @Input() unitMeasure: string = '';
   formGroupShippingRate!: FormGroup;
   submittedShippingRate: boolean = false;
-  origins: params[] = [];
-  destinations: params[] = [];
+  routes: params[] = [];
   materials: params[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private paramService: ParamService,
+    private RouteService: RouteService,
     private messageService: MessageService) { }
 
   ngOnInit() {
-     this.getOriginsParams();
-     this.getDestinationsParams();
      this.getMaterialsParams();
-     
+     this.getRouteList();
      if (Object.keys(this.customerShippingEdit).length === 0){
      this.formGroupShippingRate = this.formBuilder.group({
-      originSelected: ['',[Validators.required]],
-      destinationSelected: ['', [Validators.required]],
+      routeSelected: ['',[Validators.required]],
       materialSelected: ['', [Validators.required]],
       measureUnit: [{value:this.unitMeasure, disabled: true}],
       shippingValue: ['', [Validators.required]],
@@ -44,8 +43,7 @@ export class CustomerShippingEditComponent implements OnInit {
     }else
     {
       this.formGroupShippingRate = this.formBuilder.group({
-        originSelected: [this.customerShippingEdit.origin,[Validators.required]],
-        destinationSelected: [this.customerShippingEdit.destination, [Validators.required]],
+        routeSelected: [this.customerShippingEdit.routeId,[Validators.required]],
         materialSelected: [this.customerShippingEdit.material, [Validators.required]],
         measureUnit: [{value:this.customerShippingEdit.measureUnit, disabled: true}],
         shippingValue: [this.customerShippingEdit.shippingValue, [Validators.required]],
@@ -67,35 +65,21 @@ export class CustomerShippingEditComponent implements OnInit {
       this.f["shippingValue"].removeValidators(Validators.required);
       this.formGroupShippingRate.get("shippingValue")?.updateValueAndValidity();
      }
-
-
   }
 
-  getOriginsParams(){
-    this.paramService.getParamByType('Origen')
-            .subscribe({
-                next: (data:any) => {
-                  this.origins = data;
-                },
-                error: error => {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
-                  console.log(error);
-                }
-            });
+  getRouteList(){
+    this.RouteService.getRoutesList()
+    .subscribe({
+        next: (data:any) => {
+          this.routes = data;
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          console.log(error);
+        }
+    });
   }
 
-  getDestinationsParams(){
-    this.paramService.getParamByType('Destino')
-            .subscribe({
-                next: (data:any) => {
-                  this.destinations = data;
-                },
-                error: error => {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
-                  console.log(error);
-                }
-            });
-  }
 
   getMaterialsParams(){
     this.paramService.getParamByType('Material')

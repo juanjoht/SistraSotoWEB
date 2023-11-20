@@ -24,6 +24,8 @@ import { RateTransportService } from './ui/service/rate-transport.service';
 import { OrderService } from './ui/service/order.service';
 import { PreassignmentService } from './ui/service/preassignment.service';
 import { ScheduleService } from './ui/service/schedule.service';
+import { FactoryService } from './ui/service/factory.service';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,7 @@ import { ScheduleService } from './ui/service/schedule.service';
       useClass: JwtInterceptor,
       multi: true
      },
-     CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService,UserService, ProfileService, ProviderService, MaterialService, RouteService,RateTransportService, OrderService,PreassignmentService, ScheduleService],
+     CustomerService,ParamStaticService, ParamService, TransporterService, VehicleService, DriverService,UserService, ProfileService, ProviderService, MaterialService, RouteService,RateTransportService, OrderService,PreassignmentService, ScheduleService,FactoryService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

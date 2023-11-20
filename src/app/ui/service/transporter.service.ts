@@ -42,8 +42,8 @@ export class TransporterService {
             return data?.tarifaFletes?.map((item: any) =>{
                  return newInfo =  {
                     id: item.id,
-                    origin: item.origen,
-                    destination: item.destino,
+                    routeId: item.rutaId,
+                    route: item.ruta,
                     material: item.material,
                     measureUnit: item.unidadMedida,
                     shippingValue: item.valorFlete,
@@ -62,8 +62,7 @@ export class TransporterService {
             return data?.rutas?.map((item: any) =>{
                  return newData =  {
                     id: item.id,
-                    origin: item.origen,
-                    destination: item.destino,
+                    route: item.origen,
                     state: item.estado,
                     routeName: `${item.origen} - ${item.destino}`
                 }
@@ -190,8 +189,7 @@ postTransporterShipping(requestCustmerShipping: CustomerShipping){
     {
         tarifaFleteTransportador: {
             transportadorId: requestCustmerShipping.customerId,
-            origen: requestCustmerShipping.origin,
-            destino: requestCustmerShipping.destination,
+            rutaId: requestCustmerShipping.routeId,
             material: requestCustmerShipping.material,
             valorMetroCubico: requestCustmerShipping.m3Value,
             valorTonelada: requestCustmerShipping.tonValue,
@@ -213,8 +211,7 @@ putTransporterShipping(requestCustmerShipping: CustomerShipping, transporterId: 
             estado: requestCustmerShipping.state,
             tarifaFlete:{
                 id: requestCustmerShipping.id,
-                origen: requestCustmerShipping.origin,
-                destino: requestCustmerShipping.destination,
+                rutaId: requestCustmerShipping.routeId,
                 material: requestCustmerShipping.material,
                 valorMetroCubico: requestCustmerShipping.m3Value,
                 valorTonelada: requestCustmerShipping.tonValue,
@@ -237,11 +234,7 @@ postTransporterRoute(requestTransporterRoute: TransporterRoutes){
         rutaTransportador: {
             transportadorId: requestTransporterRoute.transporterId,
             estado: "Activo",
-            ruta: {
-                origen: requestTransporterRoute.origin,
-                destino: requestTransporterRoute.destination,
-                estado: "Activo"
-              }
+            rutaId: requestTransporterRoute.routeId,
         }
       })
         .pipe(map(client => {

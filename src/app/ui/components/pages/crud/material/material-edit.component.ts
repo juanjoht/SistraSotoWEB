@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { material } from 'src/app/ui/models/material.model';
+import { params } from 'src/app/ui/models/param.model';
+import { ParamService } from 'src/app/ui/service/param.service';
 
 @Component({
   selector: 'app-material-edit',
@@ -14,15 +16,19 @@ export class MaterialEditComponent implements OnInit {
 
   formGroupBasic!: FormGroup;
   submittedBasic: boolean = false;
-  
+  materialTypes: params[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
+    private paramService: ParamService,
     private messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.getMaterialTypes();
     if (Object.keys(this.materialEdit).length === 0){
     this.formGroupBasic = this.formBuilder.group({
       material: ['',[Validators.required]],
+      materialTypeSelected: ['', [Validators.required]],
       unitMass: ['', [Validators.required]],
       valuem3: [0, [Validators.required]],
       valueton: [0, [Validators.required]],
@@ -40,6 +46,7 @@ export class MaterialEditComponent implements OnInit {
     {
       this.formGroupBasic = this.formBuilder.group({
         material: [{value: this.materialEdit.name , disabled: this.viewMode},[Validators.required]],
+        materialTypeSelected: [{value: this.materialEdit.materialTypeId , disabled: this.viewMode},[Validators.required]],
         unitMass: [{value:this.materialEdit.unitMass, disabled: this.viewMode}, [Validators.required]],
         valuem3: [{value:this.materialEdit.valueM3, disabled: this.viewMode}, [Validators.required]],
         valueton: [{value:this.materialEdit.valueTon, disabled: this.viewMode}, [Validators.required]],
@@ -54,6 +61,18 @@ export class MaterialEditComponent implements OnInit {
        }
        );
     }
+  }
+
+  getMaterialTypes(){
+    this.paramService.getParamByType('Materiales para transporte')
+            .subscribe({
+                next: (data:any) => {
+                  this.materialTypes = data;
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });                  
+                }
+            });
   }
 
   maxMin(valueM3: any, min: any, max: any){

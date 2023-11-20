@@ -46,6 +46,7 @@ login(username: string, password: string) {
             Common.UserName = user.usuario?.nombre;
             Common.UserId = username;
             Common.Modules = user.usuario?.modulosPerfil;
+            Common.FactoryId = user.usuario?.plantaId;
             this.router.navigate([Constants.pathHome]);
           }
       }));

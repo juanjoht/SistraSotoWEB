@@ -94,7 +94,7 @@ export class ProviderPricesComponent implements OnInit {
     this.providerPrice  = providerPrice;
     this.providerPriceId = providerPrice.id as number;
     this.formProviderPrice = this.formBuilder.group({
-      materialSelected: [this.providerPrice.material,[Validators.required]],
+      materialSelected: [this.providerPrice.materialId,[Validators.required]],
       valueM3: [this.providerPrice.valueM3, [Validators.required]],
       valueTon: [this.providerPrice.valueTon, [Validators.required]],
       stateSelected:[this.providerPrice.state === 'Activo' ? true: false]
@@ -111,7 +111,7 @@ export class ProviderPricesComponent implements OnInit {
      let formValues  = this.f;
      let objProviderPrice: ProviderPrices = {
        providerId: this.providerId,
-       material: formValues.materialSelected.value,
+       materialId: formValues.materialSelected.value,
        valueM3: formValues.valueM3.value,
        valueTon: formValues.valueTon.value,
        state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'

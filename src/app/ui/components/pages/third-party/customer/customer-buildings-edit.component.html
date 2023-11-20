@@ -62,12 +62,12 @@
         </div>
         <div class="field col-12 sm:col-4">
             <label for="tolerancePercentageInput" class="font-bold" cellphone >% de tolerancia*</label>
-            <p-inputNumber id="tolerancePercentageInput" [step]="0.1" [min]="0" [max]="100" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
+            <p-inputNumber id="tolerancePercentageInput" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" [step]="0.1" [min]="0" [max]="100" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.tolerancePercentage?.errors?.required">Porcentaje de tolerancia es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="intermediationPercentageInput" class="font-bold">% de intermediación*</label>
-            <p-inputNumber id="intermediationPercentageInput" mode="decimal" [step]="0.1" [min]="0" [max]="100" inputId="percent"  formControlName="intermediationPercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.intermediationPercentage.errors}" > </p-inputNumber>
+            <p-inputNumber id="intermediationPercentageInput" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" [step]="0.1" [min]="0" [max]="100" inputId="percent"  formControlName="intermediationPercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.intermediationPercentage.errors}" > </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.intermediationPercentage?.errors?.required">Porcentaje de intermediación es requerido.</small>
         </div>
         <div class="field col-12 sm:col-2">
@@ -170,7 +170,7 @@
       
 
     </form>
-    <p-dialog [(visible)]="scheduleDialog" class="myClass" [style]="{ width: '650px', height: '800px' }" header="Ingresar/Editar Horario" [modal]="true"  styleClass="p-fluid">
+    <p-dialog [contentStyle]="{'overflow': 'visible'}"  [(visible)]="scheduleDialog" class="myClass" [style]="{ width: '650px', height: '800px' }" header="Ingresar/Editar Horario" [modal]="true"  styleClass="p-fluid">
         <ng-template pTemplate="content">
             <div class="field">
                 <label>Ingreso de horario de recepción para el dia: </label><label class="ml-2 font-bold"> {{schedule.day}} </label>

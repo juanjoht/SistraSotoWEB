@@ -40,6 +40,7 @@ export class ProviderService {
                  return newData =  {
                     id: item.id,
                     providerId: item.proveedorId,
+                    materialId: item.materialId,
                     material: item.material,
                     valueM3: item.valorMetroCubico,
                     valueTon: item.valorTonelada,
@@ -71,7 +72,7 @@ export class ProviderService {
         let newData: ProviderFactories = {};
         return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiProviderFactories}?ProveedorId=${providerId}`)
         .pipe(map(data => {
-            return data?.tiemposCargueProveedor?.map((item: any) =>{
+            return data?.plantas?.map((item: any) =>{
                  return newData =  {
                     id: item.id,
                     providerId: item.proveedorId,
@@ -86,6 +87,7 @@ export class ProviderService {
                     latitude: item.latitud,
                     length: item.longitud,
                     haveSoto13System: item.tieneSistemaSotoTrece === 'Si' ? true: false,
+                    enterDoc: item.ingresaDocumento === 'Si' ? true: false,
                     workTimes : item.horariosDespacho,
                     state : item.estado
                 }
@@ -149,7 +151,7 @@ postProviderPrice(requestProveedorPrice: ProviderPrices){
     {
         precioMaterialProveedor: {
             proveedorId: requestProveedorPrice.providerId,
-            material: requestProveedorPrice.material,
+            materialId: requestProveedorPrice.materialId,
             valorMetroCubico: requestProveedorPrice.valueM3,
             valorTonelada: requestProveedorPrice.valueTon,
             estado: requestProveedorPrice.state
@@ -168,7 +170,7 @@ return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiProviderPrice
     precioMaterialProveedor: {
       id: requestProveedorPrice.id,
       proveedorId: requestProveedorPrice.providerId,
-      material: requestProveedorPrice.material,
+      materialId: requestProveedorPrice.materialId,
       valorMetroCubico: requestProveedorPrice.valueM3,
       valorTonelada: requestProveedorPrice.valueTon,
       estado: requestProveedorPrice.state
@@ -218,6 +220,63 @@ return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiProviderTimes
             return user.tiempoCargueProveedor; 
         }
     }));
+}
+
+postProviderFactory(requestProviderFactory: ProviderFactories){
+    return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiFactories}`,
+    {
+        planta: {
+            proveedorId: requestProviderFactory.providerId,
+            nombre: requestProviderFactory.name,
+            telefono: requestProviderFactory.phone,
+            nombreContacto: requestProviderFactory.contactName,
+            departamento: requestProviderFactory.dept,
+            municipio: requestProviderFactory.city,
+            zona: requestProviderFactory.zone,
+            direccion: requestProviderFactory.address,
+            correoElectronico: requestProviderFactory.email,
+            latitud: requestProviderFactory.latitude,
+            longitud: requestProviderFactory.length,
+            tieneSistemaSotoTrece: requestProviderFactory.haveSoto13System,
+            ingresaDocumento:  requestProviderFactory.enterDoc,
+            horariosDespacho: requestProviderFactory.workTimes,
+            estado: requestProviderFactory.state     
+        }
+      })
+        .pipe(map(client => {
+            if (client.planta?.id !== 0 && client.planta?.id != null) {
+                return client.planta; 
+            }
+        }));
+}
+
+putProviderFactory(requestProviderFactory: ProviderFactories){
+    return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiFactories}`,
+    {
+        planta: {
+            id: requestProviderFactory.id,
+            proveedorId: requestProviderFactory.providerId,
+            nombre: requestProviderFactory.name,
+            telefono: requestProviderFactory.phone,
+            nombreContacto: requestProviderFactory.contactName,
+            departamento: requestProviderFactory.dept,
+            municipio: requestProviderFactory.city,
+            zona: requestProviderFactory.zone,
+            direccion: requestProviderFactory.address,
+            correoElectronico: requestProviderFactory.email,
+            latitud: requestProviderFactory.latitude,
+            longitud: requestProviderFactory.length,
+            tieneSistemaSotoTrece: requestProviderFactory.haveSoto13System,
+            ingresaDocumento:  requestProviderFactory.enterDoc,
+            horariosDespacho: requestProviderFactory.workTimes,
+            estado: requestProviderFactory.state     
+        }
+      })
+        .pipe(map(client => {
+            if (client.planta?.id !== 0 && client.planta?.id != null) {
+                return client.planta; 
+            }
+        }));
 }
 
 }

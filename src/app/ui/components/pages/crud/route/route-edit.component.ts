@@ -2,8 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CustomerBasicInfo, CustomerBuildings } from 'src/app/ui/models/customer.model';
+import { Cities, Depts } from 'src/app/ui/models/param-static.model';
 import { route, routeType } from 'src/app/ui/models/route.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
+import { ParamStaticService } from 'src/app/ui/service/param-static.service';
 import { ParamService } from 'src/app/ui/service/param.service';
 import { RouteService } from 'src/app/ui/service/route.service';
 
@@ -16,17 +18,20 @@ export class RouteEditComponent implements OnInit {
   @Input() routelEdit!: route;
   @Input() viewMode: boolean = false;
 
-  customers: CustomerBasicInfo[] = []
+  customersOrigin: any[] = [];
+  customersDestination: any[] = []
   customersBuildingsOrigin: any[] = [];
   customersBuildingsDestination: any[] = [];
   formGroupBasic!: FormGroup;
   submittedBasic: boolean = false;
   locations: CustomerBasicInfo[] = []
+  depts: Depts[] = [];
+  cities: Cities[] = [];
   clientID : number = 0;
   clientIDSelected: number = 0;
   constructor(private formBuilder: FormBuilder,
       private paramService: ParamService,
-      private RouteService: RouteService,
+      private paramStaticService: ParamStaticService,
       private customerService: CustomerService, 
       private messageService: MessageService) { }
 
@@ -42,10 +47,11 @@ export class RouteEditComponent implements OnInit {
   ]
 
   ngOnInit(): void {
-    this.getCustomerList();
+   // this.getCustomerList();
     if (Object.keys(this.routelEdit).length === 0){
     this.formGroupBasic = this.formBuilder.group({
       name: ['',[Validators.required]],
+      runningTime:[0,[Validators.required]],
       originTypeSelected: ['', [Validators.required]],
       originClientSelected: ['', [Validators.required]],
       originSelected: ['', [Validators.required]],
@@ -58,6 +64,7 @@ export class RouteEditComponent implements OnInit {
     {
       this.formGroupBasic = this.formBuilder.group({
         name: [{value: this.routelEdit.name , disabled: this.viewMode},[Validators.required]],
+        runningTime:[{value:this.routelEdit.runningTime, disabled: this.viewMode},[Validators.required]],
         originTypeSelected: [{value:this.routelEdit.originType, disabled: this.viewMode}, [Validators.required]],
         originClientSelected: [{value:'', disabled: this.viewMode}, [Validators.required]],
         originSelected: [{value:this.routelEdit.origin, disabled: this.viewMode}, [Validators.required]],
@@ -66,25 +73,80 @@ export class RouteEditComponent implements OnInit {
         destinationSelected:[{value: this.routelEdit.destination, disabled: this.viewMode},[Validators.required]],
         stateSelected:[{value: this.routelEdit.state === 'Activo' ? true: false, disabled: this.viewMode}]
        });
+       this.changeType('origin');
+       this.changeType('destination');
     }
   }
 
-  getCustomerList(){
+  getCustomerList(type: string){
     this.customerService.getCustomerBasic()
     .subscribe({
         next: (data:any) => {
-          this.customers = data;
+          if(type === 'origin'){
+            this.customersOrigin = data;
+          }else{
+            this.customersDestination = data;
+          }
           if (Object.keys(this.routelEdit).length !== 0){
-            let clientIDOriginSelected = this.getClientId(this.customers, this.routelEdit.originClient?.toString()) as number
+            let clientIDOriginSelected = this.getClientId(this.customersOrigin, this.routelEdit.originClient?.toString()) as number
             this.f.originClientSelected.setValue(clientIDOriginSelected);
             if(this.routelEdit.originType === 'Obra'){
                this.getBuildingsByClient(clientIDOriginSelected,'origin');
             }
-            let clientIDDestinationSelected = this.getClientId(this.customers, this.routelEdit.originClient?.toString()) as number
+            let clientIDDestinationSelected = this.getClientId(this.customersDestination, this.routelEdit.destinationClient?.toString()) as number
             this.f.destinationClientSelected.setValue(clientIDDestinationSelected);
             if(this.routelEdit.destinationType === 'Obra'){
               this.getBuildingsByClient(clientIDDestinationSelected,'destination');
+              this.f["destinationSelected"].setValue(this.routelEdit.destination);
+
             }
+          }
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          console.log(error);
+        }
+    });
+  }
+
+  getDepts(type: string){
+    this.paramStaticService.getDepts()
+            .subscribe({
+                next: (data:any) => {
+                  if(type === 'origin'){
+                    this.customersOrigin = data;
+                  }else{
+                    this.customersDestination = data;
+                  }
+                  if (Object.keys(this.routelEdit).length !== 0){
+                    if(type === 'origin'){
+                      let deptId = this.customersOrigin.find(x=>x.name === this.routelEdit.originClient)?.id as string;
+                      this.getCities(deptId,type);
+                      this.f["originClientSelected"].setValue(deptId);
+                      this.f["originSelected"].setValue(this.routelEdit.origin);
+                    }else{
+                      let deptId = this.customersDestination.find(x=>x.name === this.routelEdit.destinationClient)?.id as string;
+                      this.getCities(deptId,type);
+                      this.f["destinationClientSelected"].setValue(deptId);
+                      this.f["destinationSelected"].setValue(this.routelEdit.destination);
+                    }
+                  }
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+                  console.log(error);
+                }
+            });
+  }
+
+  getCities(id: string, type:string){
+    this.paramStaticService.getCitiesByDept(id)
+    .subscribe({
+        next: (data:any) => {
+          if(type === 'origin'){
+            this.customersBuildingsOrigin = data;
+          }else{
+            this.customersBuildingsDestination = data;
           }
         },
         error: error => {
@@ -104,9 +166,16 @@ export class RouteEditComponent implements OnInit {
         next: (data:any) => {
           if(type === 'origin'){
             this.customersBuildingsOrigin = data;
+            if (Object.keys(this.routelEdit).length !== 0){
+              this.f["originSelected"].setValue(this.routelEdit.origin);
+            }
           }else{
             this.customersBuildingsDestination = data;
+            if (Object.keys(this.routelEdit).length !== 0){
+              this.f["destinationSelected"].setValue(this.routelEdit.destination);
+            }
           }
+
         },
         error: error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
@@ -136,32 +205,38 @@ export class RouteEditComponent implements OnInit {
     if(type === 'origin'){
       if(this.f?.originTypeSelected.value === 'Obra'){
         this.getBuildingsByClient(this.clientID,type);
+      }else
+      {
+        this.getCities(event.value,type);
       }
     }else
     {
       if(this.f?.destinationTypeSelected.value === 'Obra'){
         this.getBuildingsByClient(this.clientID,type);
+      }else
+      {
+        this.getCities(event.value,type);
       }
     }
    
   }
 
-  changeType(event: any,type: string)
+  changeType(type: string)
   {
     if(type === 'origin'){
       if(this.f?.originTypeSelected.value === 'Obra'){
-        this.getBuildingsByClient(this.clientID,type);
+        this.getCustomerList(type);
       }else
       {
-        this.getLocations(type);
+        this.getDepts(type);  
       }
     }else
     {
       if(this.f?.destinationTypeSelected.value === 'Obra'){
-        this.getBuildingsByClient(this.clientID,type);
+        this.getCustomerList(type);
       }else
       {
-        this.getLocations(type);
+        this.getDepts(type);  
       }
     }
   }

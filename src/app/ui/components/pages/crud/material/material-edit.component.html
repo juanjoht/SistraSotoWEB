@@ -6,6 +6,17 @@
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.material?.errors?.required">Material es requerido.</small>
         </div>
         <div class="field col-12 sm:col-3">
+            <label for="materialTypeSelect" class="font-bold">Tipo Material*</label>
+            <p-dropdown id="materialTypeSelect"  placeholder="Seleccione un Tipo Material" 
+            formControlName="materialTypeSelected" [options]="materialTypes" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialTypeSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" 
+            *ngIf="submittedBasic && f?.materialTypeSelected?.errors?.required">
+            Tipo Vehículo es requerido
+            </small>
+        </div>
+        <div class="field col-12 sm:col-3">
             <label for="unitMassInput" class="font-bold">Masa Unitaria*</label>
             <p-inputNumber id="unitMassInput" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" inputId="minmax" inputId="minmax" [min]="0" formControlName="unitMass" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.unitMass.errors}"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.unitMass?.errors?.required">Masa Unitaria es requerido.</small>

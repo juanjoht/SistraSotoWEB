@@ -25,6 +25,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PasswordModule } from 'primeng/password';
 import { ImageModule } from 'primeng/image';
+import { CardModule } from 'primeng/card';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CustomerBasicEditComponent } from './third-party/customer/customer-basic-edit.component';
 import { CustomerCommercialEditComponent } from './third-party/customer/customer-commercial-edit.component';
 import { CustomerBuildingsListComponent } from './third-party/customer/customer-buildings-list.component';
@@ -67,6 +69,8 @@ import { ProviderOrderEditComponent } from './programming/provider-order/provide
 import { PreassignmentListComponent } from './programming/preassignment/preassignment-list.component';
 import { PreassignmentEditComponent } from './programming/preassignment/preassignment-edit.component';
 import { ProviderFactoriesComponent } from './third-party/provider/provider-factories.component';
+import { ProviderFactoriesEditComponent } from './third-party/provider/provider-factories-edit.component';
+import { PlantLoadComponent } from './plant/plant-load/plant-load.component';
 
 
 @NgModule({
@@ -98,6 +102,7 @@ import { ProviderFactoriesComponent } from './third-party/provider/provider-fact
         ProviderPricesComponent,
         ProviderTimesComponent,
         ProviderFactoriesComponent,
+        ProviderFactoriesEditComponent,
         VehicleListComponent,
         VehicleBasicEditComponent,
         VehicleMaterialComponent,
@@ -115,7 +120,8 @@ import { ProviderFactoriesComponent } from './third-party/provider/provider-fact
         ProviderOrderListComponent,
         ProviderOrderEditComponent,
         PreassignmentListComponent,
-        PreassignmentEditComponent
+        PreassignmentEditComponent,
+        PlantLoadComponent
     ],
     imports: [
         CommonModule,
@@ -148,7 +154,9 @@ import { ProviderFactoriesComponent } from './third-party/provider/provider-fact
         CalendarModule,
         OverlayPanelModule,
         PasswordModule,
-        ImageModule
+        ImageModule,
+        CardModule,
+        AutoCompleteModule
     ]
 })
 export class PagesModule { }

@@ -1,44 +1,44 @@
-<form [formGroup]="formGroupCustomerBuildings" >
+<form [formGroup]="formGroupProviderFactories" >
     <div class="formgrid grid">
         <div class="field col-12 sm:col-4">
             <label for="nameInput" class="font-bold">Nombre*</label>
-            <input id="nameInput" type="text" pInputText formControlName="name"  [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.name.errors}" >
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.name?.errors?.required">Nombre es requerido.</small>
+            <input id="nameInput" type="text" pInputText formControlName="name"  [ngClass]="{'ng-invalid ng-dirty' : submittedProviderFactories && f.name.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.name?.errors?.required">Nombre es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="phoneInput" class="font-bold">Teléfono*</label>
-            <p-inputMask mask="(999) 999-9999" formControlName="phone" placeholder="(999) 999-9999" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.phone.errors}"></p-inputMask>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.phone?.errors?.required">Teléfono es requerido.</small>
+            <p-inputMask mask="(999) 999-9999" formControlName="phone" placeholder="(999) 999-9999" [ngClass]="{'ng-invalid ng-dirty' : submittedProviderFactories && f.phone.errors}"></p-inputMask>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.phone?.errors?.required">Teléfono es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="contactNameInput" class="font-bold">Nombre Contacto*</label>
-            <input id="contactNameInput" type="text" pInputText formControlName="contactName"  [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.contactName.errors}" >
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.contactName?.errors?.required">Nombre Contacto es requerido.</small>
+            <input id="contactNameInput" type="text" pInputText formControlName="contactName"  [ngClass]="{'ng-invalid ng-dirty' : submittedProviderFactories && f.contactName.errors}" >
+            <small class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.contactName?.errors?.required">Nombre Contacto es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="DeptSelect" class="font-bold">Departamento*</label>
-            <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" (onChange)="changeDept($event)" formControlName="deptSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.deptSelected.errors }" ></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.deptSelected?.errors?.required">Departamento es requerido</small>
+            <p-dropdown id="DeptSelect" [options]="depts" placeholder="Seleccione un Departamento" (onChange)="changeDept($event)" formControlName="deptSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedProviderFactories && f.deptSelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.deptSelected?.errors?.required">Departamento es requerido</small>
         </div>
         <div class="field col-12 sm:col-2">
             <label for="CitySelect" class="font-bold">Municipio*</label>
-            <p-dropdown id="CitySelect" [options]="cities" placeholder="Seleccione un Municipio" formControlName="citySelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.citySelected.errors }"></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.citySelected?.errors?.required">Municipio es requerido</small>
+            <p-dropdown id="CitySelect" [options]="cities" placeholder="Seleccione un Municipio" formControlName="citySelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedProviderFactories && f.citySelected.errors }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.citySelected?.errors?.required">Municipio es requerido</small>
         </div>
         <div class="field col-12 sm:col-2">
             <label for="ZoneSelect" class="font-bold">Zona*</label>
-            <p-dropdown id="ZoneSelect" [options]="zones" placeholder="Seleccione una zona" formControlName="zoneSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.zoneSelected.errors }"></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.zoneSelected?.errors?.required">Zona es requerido</small>
+            <p-dropdown id="ZoneSelect" [options]="zones" placeholder="Seleccione una zona" formControlName="zoneSelected" optionValue="name" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedProviderFactories && f.zoneSelected.errors }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.zoneSelected?.errors?.required">Zona es requerido</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="addressInput" class="font-bold">Dirección*</label>
-            <input id="addressInput" type="text" pInputText formControlName="address" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.address.errors}">
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.address?.errors?.required">Dirección es requerido.</small>
+            <input id="addressInput" type="text" pInputText formControlName="address" [ngClass]="{'ng-invalid ng-dirty' : submittedProviderFactories && f.address.errors}">
+            <small class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.address?.errors?.required">Dirección es requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="emailInput" class="font-bold">Correo Electrónico</label>
-            <input id="emailInput" type="email" pInputText formControlName="email" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.email.errors}" >
-            <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.email?.errors?.email">Correo Electrónico Invalido.</small>
+            <input id="emailInput" type="email" pInputText formControlName="email" [ngClass]="{'ng-invalid ng-dirty' : submittedProviderFactories && f.email.errors}" >
+            <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedProviderFactories && f?.email?.errors?.email">Correo Electrónico Invalido.</small>
         </div>
         <div class="field col-12 sm:col-2">
             <label for="latitudeInput" class="font-bold">Latitud</label>
@@ -48,32 +48,16 @@
             <label for="lengthInput" class="font-bold">Longitud</label>
             <input id="lengthInput" type="text" pInputText formControlName="length"  >
         </div>
-        <div class="field col-12 sm:col-2">
-            <label for="ScaleYesorNot" class="font-bold">Bascula</label>
-            <div class="flex align-items-center h-3rem">
-                <p-checkbox formControlName="scaleSelected" [binary]="true" inputId="ScaleYesorNot"></p-checkbox>
-            </div>
-        </div>
-        <div class="field col-12 sm:col-2">
-            <label for="YesorNot" class="font-bold" >Administra Soto 13</label>
-            <div class="flex align-items-center h-3rem">
-                <p-checkbox formControlName="manageSoto13" [binary]="true" inputId="YesorNot"></p-checkbox>
-            </div>
-        </div>
         <div class="field col-12 sm:col-4">
-            <label for="tolerancePercentageInput" class="font-bold" cellphone >% de tolerancia*</label>
-            <p-inputNumber id="tolerancePercentageInput" [step]="0.1" [min]="0" [max]="100" inputId="percent"  formControlName="tolerancePercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.tolerancePercentage.errors}" > </p-inputNumber>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.tolerancePercentage?.errors?.required">Porcentaje de tolerancia es requerido.</small>
-        </div>
-        <div class="field col-12 sm:col-4">
-            <label for="intermediationPercentageInput" class="font-bold">% de intermediación*</label>
-            <p-inputNumber id="intermediationPercentageInput" mode="decimal" [step]="0.1" [min]="0" [max]="100" inputId="percent"  formControlName="intermediationPercentage" suffix=" %" [ngClass]="{'ng-invalid ng-dirty' : submittedCustomerBuilding && f.intermediationPercentage.errors}" > </p-inputNumber>
-            <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.intermediationPercentage?.errors?.required">Porcentaje de intermediación es requerido.</small>
-        </div>
-        <div class="field col-12 sm:col-2">
-            <label for="YesorNot" class="font-bold" >Todo Costo</label>
+            <label for="YesorNot" class="font-bold" >Tiene sistema Soto 13</label>
             <div class="flex align-items-center h-3rem">
-                <p-checkbox formControlName="allCost" [binary]="true" inputId="YesorNot"></p-checkbox>
+                <p-checkbox formControlName="haveSoto13" [binary]="true" inputId="YesorNot"></p-checkbox>
+            </div>
+        </div> 
+        <div class="field col-12 sm:col-2">
+            <label for="YesorNotDoc" class="font-bold" >Ingresa Documento</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="enterDoc" [binary]="true" inputId="YesorNotDoc"></p-checkbox>
             </div>
         </div>
         <div class="field col-12 sm:col-2">
@@ -82,7 +66,8 @@
                 <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
             </div>
         </div>
-        <div class="formgrid grid">
+        <div class="field col-12 sm:col-8">
+        </div>
             <div class="field col-12 sm:col-6">
                 <p-table
                 #dt
@@ -92,7 +77,7 @@
             >
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-center justify-content-between">
-                        <h5 class="m-0">Horarios de Recepción</h5>
+                        <h5 class="m-0">Horarios de despacho</h5>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -114,102 +99,41 @@
                     </tr>
                 </ng-template>
             </p-table>
-            </div>
-            <div class="field col-12 sm:col-6">
-                <div class="formgrid grid">
-                    <div class="field col-12 sm:col-6">
-                        <label for="deliveryConfirmationSelect" class="font-bold">Confirmación de entrega*</label>
-                        <p-dropdown id="deliveryConfirmationSelect" optionValue="name" [options]="deliveryConfirmations" placeholder="Seleccione una confirmación de entrega" formControlName="deliveryConfirmationSelected" optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.deliveryConfirmationSelected.errors }"></p-dropdown>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.deliveryConfirmationSelected?.errors?.required">Confirmación de entrega es requerido</small>
-                    </div>
-                    <div class="field col-12 sm:col-6">
-                        <label for="allowedVehicleTypesSelect" class="font-bold">Tipo de Vehículo permitidos*</label>
-                        <p-multiSelect (onChange)="changeAllowed($event)" id="allowedVehicleTypesSelect" optionValue="name" optionLabel="name" [options]="allowedVehicleTypes" placeholder="Seleccione un Tipo de Vehículo permitidos" formControlName="allowedVehicleTypesSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedCustomerBuilding && f.allowedVehicleTypesSelected.errors }"></p-multiSelect>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.allowedVehicleTypesSelected?.errors?.required">Tipo de Vehículo permitidos es requerido</small>
-                    </div>
-                    <div class="field col-12 sm:col-12">
-                        <p-fieldset legend="Calificación">
-                            <div class="grid">
-                                <div class="field col-12 sm:col-6">
-                                    <label>Rentabilidad: </label>
-                                </div>
-                                <div class="field col-12 sm:col-6">
-                                    <p-inputNumber id="profitabilityInput" [min]="0" [max]="10" inputId="integeronly" (onInput)="getweightedRating()" formControlName="profitability"> </p-inputNumber>
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.profitability?.errors?.required">Rentabilidad es requerida</small>
-                                </div>
-                                <div class="field col-12 sm:col-6">
-                                    <label>Estado de la vía: </label>
-                                </div>
-                                <div class="field col-12 sm:col-6">
-                                    <p-inputNumber id="roadConditionInput" [min]="0" [max]="10" inputId="integeronly" (onInput)="getweightedRating()"  formControlName="roadCondition"> </p-inputNumber>
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.roadCondition?.errors?.required">Estado de la vía es requerido</small>
-                                </div>
-                                <div class="field col-12 sm:col-6">
-                                    <label>Agilidad en el descargue: </label>
-                                </div>
-                                <div class="field col-12 sm:col-6">
-                                    <p-inputNumber id="unloadingAgilityInput" [min]="0" [max]="10" inputId="integeronly" (onInput)="getweightedRating()"  formControlName="unloadingAgility"> </p-inputNumber>
-                                    <small class="ng-dirty ng-invalid" *ngIf="submittedCustomerBuilding && f?.unloadingAgility?.errors?.required">Agilidad en el descargue es requerido</small>
-                                </div>
-                                <div class="field col-12 sm:col-6">
-                                    <label class="font-bold">Calificación ponderada: </label>
-                                </div>
-                                <div class="field col-12 sm:col-6">
-                                    <label class="font-bold">{{weightedRating | number : '1.0-2' }}</label>
-                                </div>
-                            </div>
-                            
-                            
-
-                        </p-fieldset>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-      
-
     </form>
-    <p-dialog [(visible)]="scheduleDialog" class="myClass" [style]="{ width: '650px', height: '800px' }" header="Ingresar/Editar Horario" [modal]="true"  styleClass="p-fluid">
+    <p-dialog [contentStyle]="{'overflow': 'visible'}"  [(visible)]="scheduleDialog" class="myClass" [style]="{ width: '650px', height: '300px' }" header="Ingresar/Editar Horario" [modal]="true"  styleClass="p-fluid">
         <ng-template pTemplate="content">
             <div class="field">
                 <label>Ingreso de horario de recepción para el dia: </label><label class="ml-2 font-bold"> {{schedule.day}} </label>
             </div>
             <div [formGroup]="formGroupSchedules">
                 <div class="formgrid grid" formArrayName="cycles">
-                    <div class="field col-12 sm:col-3">
+                    <div class="field col-12 sm:col-4">
                         <label  class="font-bold">Ciclo Carga</label>
                     </div>
-                    <div class="field col-12 sm:col-3">
+                    <div class="field col-12 sm:col-4">
                         <label  class="font-bold">Hora Inicio</label>
                     </div>
-                    <div class="field col-12 sm:col-3">
+                    <div class="field col-12 sm:col-4">
                         <label  class="font-bold">Hora Fin</label>
-                    </div>
-                    <div class="field col-12 sm:col-3">
-                        <p-button label="Adicionar Ciclo" styleClass="p-button-link" (click)="addNewCycle()" ></p-button>
                     </div>
                     <div class="field col-12 sm:col-12" *ngFor="let item of getControlsCycles(); let i = index">
                         <div class="grid" [formGroupName]="i">
-                            <div class="field flex justify-content-center align-items-end col-12 sm:col-3">
+                            <div class="field flex justify-content-center align-items-end col-12 sm:col-2">
                                 <label class="font-bold"> {{i + 1}} </label>                                
                             </div>
-                            <div class="field col-12 sm:col-3">
+                            <div class="field col-12 sm:col-5">
                                 <p-dropdown formControlName="startHour" (onChange)="changeStartHour($event,i)" [filter]="true" filterBy="name" [options]="hoursList" optionLabel="name"></p-dropdown>
                             </div>
-                            <div class="field col-12 sm:col-3">
+                            <div class="field col-12 sm:col-5">
                                 <p-dropdown formControlName="endHour" (onChange)="changeEndHour($event,i)" [filter]="true" filterBy="name" [options]="hoursList" optionLabel="name"></p-dropdown>
                             </div>
-                            <div class="field col-12 sm:col-3">
-                                <p-button label="Eliminar Ciclo" styleClass="p-button-link" (click)="removeNewCycle(i)"></p-button>
+                            <div class="field col-12 sm:col-2">
                             </div>
-                            <div class="field col-12 sm:col-3">
-                            </div>
-                            <div class="field col-12 sm:col-6">
+                            <div class="field col-12 sm:col-10">
                                 <small class="ng-dirty ng-invalid" *ngIf="submittedShedule && item?.get('endHour')?.errors?.matchValidator">Hora Inicio no puede ser igual o superior a la hora Fin</small>
                                 <small class="ng-dirty ng-invalid" *ngIf="submittedShedule && item?.get('endHour')?.errors?.rangeValidator">La hora Inicio y hora Fin se solapan con otro horario para este día</small>
-                            </div>
-                            <div class="field col-12 sm:col-3">
                             </div>
                         </div>
                     </div>

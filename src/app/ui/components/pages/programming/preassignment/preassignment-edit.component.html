@@ -65,6 +65,11 @@
             <p-dropdown id="driverSelect" scrollHeight="200px" formControlName="driverSelected"  [options]="allDrivers" placeholder="Seleccione un conductor" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.driverSelected.errors }" ></p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.driverSelected?.errors?.required">Conductor es requerido</small>
         </div>
+        <div class="field col-12 sm:col-3">
+            <label for="factorySelect" class="font-bold">Planta*</label>
+            <p-dropdown id="factorySelect" scrollHeight="200px" formControlName="factorySelected"  [options]="allFactories" placeholder="Seleccione una planta" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.factorySelected.errors }" ></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.factorySelected?.errors?.required">Planta es requerida</small>
+        </div>
         <div *ngIf="action === 'Rechazar'" class="field col-12 sm:col-12">
             <label for="float-input" class="font-bold">Motivo Rechazo*</label>
             <div>

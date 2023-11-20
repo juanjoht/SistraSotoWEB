@@ -17,6 +17,8 @@ export class MaterialService {
                  return newData =  {
                     id: item.id,
                     name: item.nombre,
+                    materialTypeId: item.tipoMaterialId,
+                    materialType: item.tipoMaterial,
                     unitMass: item.masaUnitaria,
                     valueM3: item.valorMetroCubico,
                     valueMinM3: item.valorMinimoMetroCubico,
@@ -35,6 +37,7 @@ export class MaterialService {
         {
             material: {
                 nombre: request.name,
+                tipoMaterialId: request.materialTypeId,
                 masaUnitaria: request.unitMass,
                 valorMetroCubico: request.valueM3,
                 valorMinimoMetroCubico: request.valueMinM3,
@@ -58,6 +61,7 @@ export class MaterialService {
             material: {
                 id: request.id,
                 nombre: request.name,
+                tipoMaterialId: request.materialTypeId,
                 masaUnitaria: request.unitMass,
                 valorMetroCubico: request.valueM3,
                 valorMinimoMetroCubico: request.valueMinM3,

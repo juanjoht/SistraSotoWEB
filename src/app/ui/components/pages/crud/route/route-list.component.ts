@@ -82,10 +82,11 @@ export class RouteListComponent implements OnInit {
       return;
     }
     let formValues  = this.editBasic.f;
-    let clientNameOrigin  = this.editBasic.customers.find(x=> x.id === formValues.originClientSelected.value)?.name
-    let clientNameDestination  = this.editBasic.customers.find(x=> x.id === formValues.destinationClientSelected.value)?.name
+    let clientNameOrigin  = this.editBasic.customersOrigin.find(x=> x.id === formValues.originClientSelected.value)?.name
+    let clientNameDestination  = this.editBasic.customersDestination.find(x=> x.id === formValues.destinationClientSelected.value)?.name
     let objBasic: route = {
       name: formValues.name.value,
+      runningTime: formValues.runningTime.value,
       originType: formValues.originTypeSelected.value,
       originClient: clientNameOrigin,
       origin: formValues.originSelected.value,

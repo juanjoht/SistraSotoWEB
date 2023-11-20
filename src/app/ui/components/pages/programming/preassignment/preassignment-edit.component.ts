@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CustomerBasicInfo, CustomerCommercialInfo, CustomerLicensePlate } from 'src/app/ui/models/customer.model';
 import { DriverGeneralInfo } from 'src/app/ui/models/driver.model';
+import { factory } from 'src/app/ui/models/factory.model';
 import { material } from 'src/app/ui/models/material.model';
 import { preassignment } from 'src/app/ui/models/preassignment.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
 import { DriverService } from 'src/app/ui/service/driver.service';
+import { FactoryService } from 'src/app/ui/service/factory.service';
 import { MaterialService } from 'src/app/ui/service/material.service';
 
 @Component({
@@ -22,6 +24,7 @@ export class PreassignmentEditComponent implements OnInit{
     materials: material[] = [];
     customerPlates : CustomerLicensePlate[] = [];
     allDrivers: DriverGeneralInfo[] = [];
+    allFactories: factory[] = [];
     customerCommercialInfo : CustomerCommercialInfo = {};
     formGroupBasic!: FormGroup;
     submittedBasic: boolean = false;
@@ -38,6 +41,7 @@ export class PreassignmentEditComponent implements OnInit{
         private materialService: MaterialService,
         private customerService: CustomerService, 
         private driverService: DriverService,
+        private factoryService: FactoryService,
         private messageService: MessageService) { 
         }
   
@@ -45,6 +49,7 @@ export class PreassignmentEditComponent implements OnInit{
       this.getCustomerList();
       this.getMaterials();
       this.getAllDrivers();
+      this.getAllFactories();
       if (Object.keys(this.preassignmentEdit).length === 0){
       this.isEdit = false;
       this.formGroupBasic = this.formBuilder.group({
@@ -56,6 +61,7 @@ export class PreassignmentEditComponent implements OnInit{
         unitMeasure: [{value : '', disabled : this.disableUnitMeasureControl }],
         amount: [,[Validators.required]],
         driverSelected: ['',[Validators.required]],
+        factorySelected: ['',[Validators.required]],
         reasonReject: [''],
         state: [],
       });
@@ -72,6 +78,7 @@ export class PreassignmentEditComponent implements OnInit{
         unitMeasure: [{value : this.preassignmentEdit.measureUnit, disabled : this.disableControl }],
         amount: [{value: this.preassignmentEdit.amount, disabled: this.disableControl},  [Validators.required]],
         driverSelected: [{value: this.preassignmentEdit.driverId, disabled: this.disableControl},[Validators.required]],
+        factorySelected: [{value: this.preassignmentEdit.factoryId, disabled: this.disableControl},[Validators.required]],
         reasonReject: [''],
         state: [{value: this.preassignmentEdit.state, disabled: false}],
         });
@@ -168,6 +175,18 @@ export class PreassignmentEditComponent implements OnInit{
             this.f.unitMeasure.setValue(this.customerCommercialInfo.measureUnit as string);
           },
           error: error => {
+          }
+      });
+    }
+
+    getAllFactories(){
+      this.factoryService.getFactory()
+      .subscribe({
+          next: (data:any) => {
+            this.allFactories = data;
+          },
+          error: (error: { message: any; }) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
           }
       });
     }

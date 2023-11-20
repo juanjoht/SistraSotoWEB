@@ -53,6 +53,7 @@ export class PreassignmentListComponent implements OnInit {
         { field: 'materialName', header: 'Material' },
         { field: 'measureUnit', header: 'Unidad de Medida' },
         { field: 'amount', header: 'Cantidad' },
+        { field: 'factoryName', header: 'Planta' },
         { field: 'state', header: 'Estado' }
     ];
   }
@@ -124,6 +125,7 @@ export class PreassignmentListComponent implements OnInit {
     this.preassignment = {};
     this.showOptions = true;
     this.action = 'Crear';
+    this.saveLabel = 'Guardar'
   }
 
   edit(preassignment: any, action: string) {
@@ -157,13 +159,14 @@ export class PreassignmentListComponent implements OnInit {
       }
       let formValues  = this.editBasic.f;
       let objBasic: preassignment= {
-        serviceDate: formValues.dateSelected.value,
+        serviceDate: new Date(formValues.dateSelected.value.getTime() - formValues.dateSelected.value.getTimezoneOffset()*60*1000),
         buildingId: formValues.buildingSelected.value,  
         materialId: formValues.materialSelected.value,
         measureUnit: formValues.unitMeasure.value,
         amount: formValues.amount.value,
         vehicleId:  formValues.plateSelected.value,
         driverId: formValues.driverSelected.value,
+        factoryId: formValues.factorySelected.value,
         state : formValues.state.value
       }
       switch (this.action) {

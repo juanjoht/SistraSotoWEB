@@ -14,7 +14,11 @@ export interface preassignment {
     vehiclePlate?: String,
     driverId?: number,
     driverName?: String,
+    factoryId?: number,
+    factoryName?:string,
     rejectionReason?: string,
+    factoryEnterDoc?: boolean,
+    buildingAllCost?: boolean,
     state?: string
 }
 

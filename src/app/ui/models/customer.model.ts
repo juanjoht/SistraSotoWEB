@@ -82,8 +82,8 @@ export interface CustomerTransport{
 export interface CustomerShipping{
     customerId?: number;
     id?: number;
-    origin?: string;
-    destination?: string;
+    route?: string;
+    routeId?: number;
     material?: string;
     measureUnit?: string;
     shippingValue?: number;

@@ -1,9 +1,14 @@
 <form [formGroup]="formGroupBasic" >
     <div class="formgrid grid">
-        <div class="field col-12 sm:col-11">
+        <div class="field col-12 sm:col-6">
             <label for="nameInput" class="font-bold">Nombre Ruta*</label>
             <input id="nameInput" type="text" pInputText  formControlName="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.name.errors }" >
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.name?.errors?.required">Nombre Ruta es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-5">
+            <label for="tolerancePercentageInput" class="font-bold" cellphone >Tiempo Recorrido (min)*</label>
+            <p-inputNumber id="runningTime"  inputId="integeronly"  formControlName="runningTime" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.runningTime.errors}" > </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.runningTime?.errors?.required">Tiempo Recorrido (min) es requerido.</small>
         </div>
         <div class="field col-12 sm:col-1">
             <label for="stateYesorNot" class="font-bold">Estado</label>
@@ -14,60 +19,59 @@
         <div class="col-12 mb-2">
         <p-fieldset legend="Origen">
             <div class="formgrid grid">
-                <div class="field col-12 sm:col-4">
+                <div class="field col-12 sm:col-3">
                     <label for="originType" class="font-bold">Tipo - Origen*</label>
-                    <p-dropdown id="originType" (onChange)="changeType($event,'origin')"  placeholder="Seleccione un Tipo - Origen" 
+                    <p-dropdown id="originType" (onChange)="changeType('origin')"  placeholder="Seleccione un Tipo - Origen" 
                     formControlName="originTypeSelected" [options]="types" optionValue="name"  optionLabel="name" 
                     [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.originTypeSelected.errors }"  >
                     </p-dropdown>
                     <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.originTypeSelected?.errors?.required">Tipo - Origen es requerido.</small>
                 </div>
-                <div class="field col-12 sm:col-4">
-                    <label for="originClient" class="font-bold">Cliente - Origen*</label>
-                    <p-dropdown id="originClient" [filter]="true" filterBy="name" (onChange)="changeClient($event,'origin')" placeholder="Seleccione un Cliente - Origen" 
-                    formControlName="originClientSelected" [options]="customers" optionValue="id"  optionLabel="name" 
+                <div class="field col-12 sm:col-5">
+                    <label for="originClient" class="font-bold">Cliente/Departamento - Origen*</label>
+                    <p-dropdown id="originClient" [filter]="true" filterBy="name" (onChange)="changeClient($event,'origin')" placeholder="Seleccione un Cliente/Departamento - Origen" 
+                    formControlName="originClientSelected" [options]="customersOrigin" optionValue="id"  optionLabel="name" 
                     [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.originClientSelected.errors }"  >
                     </p-dropdown>
-                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.originClientSelected?.errors?.required">Cliente - Origen es requerido.</small>
+                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.originClientSelected?.errors?.required">Cliente/Departamento - Origen es requerido.</small>
                 </div>
                 <div class="field col-12 sm:col-4">
-                    <label for="origin" class="font-bold">Origen*</label>
-                    <p-dropdown id="origin"  placeholder="Seleccione un Origen" 
+                    <label for="origin" class="font-bold">Obra/Municipio - Origen*</label>
+                    <p-dropdown id="origin"  placeholder="Seleccione un Obra/Municipio" 
                     formControlName="originSelected" [options]="customersBuildingsOrigin" optionValue="name"  optionLabel="name" 
                     [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.originSelected.errors }"  >
                     </p-dropdown>
-                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.originSelected?.errors?.required">Origen es requerido.</small>
+                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.originSelected?.errors?.required">Obra/Municipio es requerido.</small>
                 </div>
-                
             </div>
         </p-fieldset>
         </div>
-        <div class="col-12 mb-8">
+        <div class="col-12 mb-2">
             <p-fieldset legend="Destino">
                 <div class="formgrid grid">
-                    <div class="field col-12 sm:col-4">
+                    <div class="field col-12 sm:col-3">
                         <label for="destinationType" class="font-bold">Tipo - Destino*</label>
-                        <p-dropdown id="destinationType" (onChange)="changeType($event,'destination')"  placeholder="Seleccione un Tipo - Destino" 
+                        <p-dropdown id="destinationType" (onChange)="changeType('destination')"  placeholder="Seleccione un Tipo - Destino" 
                         formControlName="destinationTypeSelected" [options]="types" optionValue="name"  optionLabel="name" 
                         [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.destinationTypeSelected.errors }"  >
                         </p-dropdown>
                         <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.destinationTypeSelected?.errors?.required">Tipo - Destino es requerido.</small>
                     </div>
-                    <div class="field col-12 sm:col-4">
-                        <label for="destinationClient" class="font-bold">Cliente - Destino*</label>
-                        <p-dropdown id="destinationClient" [filter]="true" filterBy="name" (onChange)="changeClient($event,'destination')" placeholder="Seleccione un Cliente - Destino" 
-                        formControlName="destinationClientSelected" [options]="customers" optionValue="id"  optionLabel="name" 
+                    <div class="field col-12 sm:col-5">
+                        <label for="destinationClient" class="font-bold">Cliente/Departamento - Destino*</label>
+                        <p-dropdown id="destinationClient" [filter]="true" filterBy="name" (onChange)="changeClient($event,'destination')" placeholder="Seleccione un Cliente/Departamento - Destino" 
+                        formControlName="destinationClientSelected" [options]="customersDestination" optionValue="id"  optionLabel="name" 
                         [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.destinationClientSelected.errors }"  >
                         </p-dropdown>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.destinationClientSelected?.errors?.required">Cliente - Destino es requerido.</small>
+                        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.destinationClientSelected?.errors?.required">Cliente/Departamento - Destino es requerido.</small>
                     </div>
                     <div class="field col-12 sm:col-4">
-                        <label for="destination" class="font-bold">Destino*</label>
-                        <p-dropdown  styleClass="showAbove" id="destination"    placeholder="Seleccione un Destino" 
+                        <label for="destination" class="font-bold">Obra/Municipio - Destino*</label>
+                        <p-dropdown  styleClass="showAbove" id="destination"    placeholder="Seleccione un Obra/Municipio - Destino" 
                         formControlName="destinationSelected" [options]="customersBuildingsDestination" optionValue="name"  optionLabel="name" 
                         [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.destinationSelected.errors }"  >
                         </p-dropdown>
-                        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.destinationSelected?.errors?.required">Destino es requerido.</small>
+                        <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.destinationSelected?.errors?.required">Obra/Municipio - Destino es requerido.</small>
                     </div>
                 </div>
             </p-fieldset>

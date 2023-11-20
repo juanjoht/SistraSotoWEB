@@ -26,6 +26,8 @@ export class UserService {
                     phone:item.telefono,
                     email: item.email,
                     profile: item.perfil,
+                    factoryId: item.plantaId,
+                    docNumber: item.numeroDocumento,
                     state: item.estado
                 }
             })
@@ -58,7 +60,9 @@ export class UserService {
                 telefono: requestBasic.phone,
                 email: requestBasic.email,
                 perfil: requestBasic.profile,
+                plantaId: requestBasic.factoryId,
                 codigoVerificacion: requestBasic.verificationCode,
+                numeroDocumento: requestBasic.docNumber,
                 estado: requestBasic.state
             }
           })
@@ -81,7 +85,9 @@ putUser(requestBasic: User){
             telefono: requestBasic.phone,
             email: requestBasic.email,
             perfil: requestBasic.profile,
+            plantaId: requestBasic.factoryId,
             codigoVerificacion: requestBasic.verificationCode,
+            numeroDocumento: requestBasic.docNumber,
             estado: requestBasic.state
         }
       })

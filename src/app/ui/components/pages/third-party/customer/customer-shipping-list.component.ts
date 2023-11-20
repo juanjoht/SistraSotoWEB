@@ -40,8 +40,7 @@ export class CustomerShippingListComponent implements OnInit {
    
 
     this.cols = [
-        { field: 'origin', header: 'Origen' },
-        { field: 'destination', header: 'Destino' },
+        { field: 'route', header: 'Ruta' },
         { field: 'material', header: 'Material' },
         { field: 'measureUnit', header: 'm3/ton' },
         { field: 'shippingValue', header: 'Valor Flete' },
@@ -115,8 +114,7 @@ export class CustomerShippingListComponent implements OnInit {
     let formValues  = this.editShipping.f;
     let objShipping: CustomerShipping = {
       customerId: this.clientId,
-      origin: formValues.originSelected.value,
-      destination: formValues.destinationSelected.value,
+      routeId: formValues.routeSelected.value,
       material: formValues.materialSelected.value,
       measureUnit: formValues.measureUnit.value,
       shippingValue: formValues.shippingValue.value,
@@ -167,8 +165,7 @@ export class CustomerShippingListComponent implements OnInit {
     let formValues  = this.editShipping.f;
     let objShipping: CustomerShipping = {
       customerId: this.clientId,
-      origin: formValues.originSelected.value,
-      destination: formValues.destinationSelected.value,
+      routeId: formValues.routeSelected.value,
       material: formValues.materialSelected.value,
       state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }

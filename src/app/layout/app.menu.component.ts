@@ -16,7 +16,10 @@ export class AppMenuComponent implements OnInit {
     checkPermissions(itemMenu: string) {
         let modules = Common.Modules;
         let module = modules.find(x => x.modulo === itemMenu);
-        return module.permiso ? 'show-item' : 'hide-item';
+        if (module){
+            return module.permiso ? 'show-item' : 'hide-item';
+        }else
+        return 'hide-item'
     }
 
     ngOnInit() {
@@ -96,30 +99,31 @@ export class AppMenuComponent implements OnInit {
                     },
                     {
                         label: 'Programación',
+                        class: this.checkPermissions('Programacion'),
                         icon: 'pi pi-fw pi-calendar',
                         routerLink: ['/pages/timeline'],
                         items: [
                             {
                                 label: 'Pedidos del cliente',
-                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                class: this.checkPermissions('Programacion-PedidosCliente'),
                                 icon: 'pi pi-fw pi-hashtag',
                                 routerLink: ['/pages/order']
                             },
                             {
                                 label: 'Pedidos del cliente - Aprobación',
-                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                class: this.checkPermissions('Programacion-PedidosClienteAprobacion'),
                                 icon: 'pi pi-fw pi-hashtag',
                                 routerLink: ['/pages/order-approve']
                             },
                             {
                                 label: 'Pedidos Proveedores',
-                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                class: this.checkPermissions('Programacion-PedidosProveedor'),
                                 icon: 'pi pi-fw pi-calendar-plus',
                                 routerLink: ['/pages/provider-order']
                             },
                             {
                                 label: 'Preasignaciones',
-                                //class: this.checkPermissions('Maestros-Vehiculos'),
+                                class: this.checkPermissions('Programacion-Preasignaciones'),
                                 icon: 'pi pi-fw pi-calendar',
                                 routerLink: ['/pages/preasignment']
                             }
@@ -127,11 +131,13 @@ export class AppMenuComponent implements OnInit {
                     },
                     {
                         label: 'Administrativo',
+                        class: this.checkPermissions('Administrativo'),
                         icon: 'pi pi-fw pi-exclamation-circle',
                         routerLink: ['/notfound']
                     },
                     {
                         label: 'Reportes',
+                        class: this.checkPermissions('Reportes'),
                         icon: 'pi pi-fw pi-table',
                         routerLink: ['/pages/empty']
                     },
@@ -157,6 +163,19 @@ export class AppMenuComponent implements OnInit {
                                 class: this.checkPermissions('Seguridad-Parametros'),
                                 icon: 'pi pi-fw pi-table',
                                 routerLink: ['/pages/parameter']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Carga',
+                        class: this.checkPermissions('Carga'),
+                        icon: 'pi pi-fw pi-info-circle',
+                        items: [
+                            {
+                                label: 'Carga en Planta',
+                                class: this.checkPermissions('Carga-Planta'),
+                                icon: 'pi pi-fw pi-eject',
+                                routerLink: ['/pages/load-plant']
                             }
                         ]
                     }

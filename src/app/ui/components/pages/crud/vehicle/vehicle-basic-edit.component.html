@@ -43,11 +43,11 @@
         </div>
         <div class="field col-12 sm:col-4">
             <label for="capacityM3Input" class="font-bold">Capacidad m3</label>
-            <p-inputNumber id="capacityM3Input" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityM3"> </p-inputNumber>
+            <p-inputNumber id="capacityM3Input" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityM3"> </p-inputNumber>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="capacityTonInput" class="font-bold">Capacidad ton*</label>
-            <p-inputNumber id="capacityTonInput" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityTon" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.capacityTon.errors}"> </p-inputNumber>
+            <p-inputNumber id="capacityTonInput" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityTon" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.capacityTon.errors}"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.capacityTon?.errors?.required">Capacidad ton es requerido</small>
         </div>
         <div class="field col-12 sm:col-4">
@@ -65,6 +65,9 @@
             <label for="kmToInspectionInput" class="font-bold">Km para inspección*</label>
             <p-inputNumber id="kmToInspectionInput" inputId="minmax" inputId="minmax" [min]="1" formControlName="kmToInspection" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.kmToInspection.errors}"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.kmToInspection?.errors?.required">Km para inspección es requerido</small>
+            <small class="ng-dirty ng-invalid"  *ngIf="f?.kmToInspection?.errors?.maxKmError">
+                El valor Km para inspección no debe ser superior a Km última inspección
+            </small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="kmLastInspectionInput" class="font-bold">Km última inspección*</label>

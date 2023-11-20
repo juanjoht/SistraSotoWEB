@@ -101,7 +101,7 @@ export class CustomerBuildingsEditComponent implements OnInit {
         scaleSelected: ['', []],
         latitude: ['', []],
         length: ['', []],
-        manageSoto13: ['', []],
+        manageSoto13: [false, []],
         tolerancePercentage: ['', [Validators.required]],
         intermediationPercentage: ['', [Validators.required]],
         allCost: [false, []],
