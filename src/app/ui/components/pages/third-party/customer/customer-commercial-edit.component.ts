@@ -43,7 +43,6 @@ export class CustomerCommercialEditComponent implements OnInit {
      this.getMeasureUnits();
 
      this.assignedQuotaDisabled = this.viewMode;
-     if (Object.keys(this.customerCommercialEdit).length === 0){
      this.formGroupCommercial = this.formBuilder.group({
       priorityGroupSelected: [{value:'',disabled: this.viewMode},[Validators.required]],
       clientTypeSelected:[{value:'',disabled: this.viewMode},[Validators.required]],
@@ -58,7 +57,6 @@ export class CustomerCommercialEditComponent implements OnInit {
       creditBalance:[{value: '',disabled: true},[]],
       exclusiveTransport: [{value: false,disabled: this.viewMode},[]]
      });
-    }
     if(!this.editMode){
       this.getMaturityDaysDefault();
       this.getIvaDefault();

@@ -14,12 +14,10 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width:20%" pSortableColumn="origin">Ruta <p-sortIcon field="route"></p-sortIcon></th>
+                        <th style="width:20%" pSortableColumn="route">Ruta <p-sortIcon field="route"></p-sortIcon></th>
                         <th style="width:20%" pSortableColumn="material">Material <p-sortIcon field="material"></p-sortIcon></th>
-                        <th style="width:15%" *ngIf="feature === 'Cliente'" pSortableColumn="measureUnit">m3/ton <p-sortIcon field="measureUnit"></p-sortIcon></th>
-                        <th style="width:15%" *ngIf="feature === 'Cliente'" pSortableColumn="shippingValue">Valor Flete<p-sortIcon field="shippingValue"></p-sortIcon></th>
-                        <th style="width:15%" *ngIf="feature === 'Transportador'" pSortableColumn="m3Value">Valor m3 <p-sortIcon field="m3Value"></p-sortIcon></th>
-                        <th style="width:15%" *ngIf="feature === 'Transportador'" pSortableColumn="tonValue">Valor Ton<p-sortIcon field="tonValue"></p-sortIcon></th>
+                        <th style="width:15%" pSortableColumn="m3Value">Valor m3 <p-sortIcon field="m3Value"></p-sortIcon></th>
+                        <th style="width:15%" pSortableColumn="tonValue">Valor Ton<p-sortIcon field="tonValue"></p-sortIcon></th>
                         <th style="width:0%" *ngIf="!viewMode"></th>
                     </tr>
                 </ng-template>
@@ -33,19 +31,11 @@
                             <span class="p-column-title">material</span>
                             {{ShippingRate.material}}
                         </td>
-                        <td *ngIf="feature === 'Cliente'" >
-                            <span class="p-column-title">measureUnit</span>
-                            {{ShippingRate.measureUnit}}
-                        </td>
-                        <td *ngIf="feature === 'Cliente'">
-                            <span class="p-column-title">shippingValue</span>
-                            {{ShippingRate.shippingValue}}
-                        </td>
-                        <td *ngIf="feature === 'Transportador'" >
+                        <td>
                             <span class="p-column-title">m3Value</span>
                             {{ShippingRate.m3Value}}
                         </td>
-                        <td *ngIf="feature === 'Transportador'">
+                        <td>
                             <span class="p-column-title">tonValue</span>
                             {{ShippingRate.tonValue}}
                         </td>

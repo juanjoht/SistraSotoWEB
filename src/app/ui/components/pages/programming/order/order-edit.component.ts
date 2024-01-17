@@ -2,10 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CustomerBasicInfo } from 'src/app/ui/models/customer.model';
+import { factory } from 'src/app/ui/models/factory.model';
 import { material } from 'src/app/ui/models/material.model';
 import { order } from 'src/app/ui/models/order.model';
+import { params } from 'src/app/ui/models/param.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
+import { FactoryService } from 'src/app/ui/service/factory.service';
 import { MaterialService } from 'src/app/ui/service/material.service';
+import { ParamService } from 'src/app/ui/service/param.service';
 
 @Component({
   selector: 'app-order-edit',
@@ -15,10 +19,12 @@ import { MaterialService } from 'src/app/ui/service/material.service';
 export class OrderEditComponent implements OnInit {
   @Input() orderEdit!: order;
   @Input() feature!: string;
+  @Input() isEditAprove!: boolean;
   @Output() disableSaveParent = new EventEmitter<{ disabledSave: boolean }>();
   customers: CustomerBasicInfo[] = []
   customersBuildings: any[] = [];
   materials: material[] = [];
+  measureUnits: params[] = [];
   formGroupBasic!: FormGroup;
   submittedBasic: boolean = false;
   clientID : number = 0;
@@ -29,9 +35,13 @@ export class OrderEditComponent implements OnInit {
   totalAmountDisabled: boolean = true
   total = 0;
   isEdit: boolean = false;
+  allFactories: factory[] = [];
+  measureUnit: string = '';
   constructor(private formBuilder: FormBuilder,
       private materialService: MaterialService,
-      private customerService: CustomerService, 
+      private customerService: CustomerService,
+      private factoryService:FactoryService,
+      private paramService: ParamService, 
       private messageService: MessageService) { 
       }
 
@@ -49,14 +59,18 @@ export class OrderEditComponent implements OnInit {
   ngOnInit(): void {
     this.getCustomerList();
     this.getMaterials();
-  
+    this.getAllFactories();
+    this.getMeasureUnits();
     if (Object.keys(this.orderEdit).length === 0){
     this.isEdit = false;
     this.formGroupBasic = this.formBuilder.group({
+      factorySelected:['',[Validators.required]],
       clientSelected: ['',[Validators.required]],
       startDateSelected: [this.defaultMonday, [Validators.required]],
       buildingSelected: ['', [Validators.required]],
       materialSelected: ['', [Validators.required]],
+      measureUnitSelected:[{value:'',disabled : true}],
+      automatic: [false],
       monday: [0],
       tuesday: [0],
       wednesday: [0],
@@ -68,17 +82,26 @@ export class OrderEditComponent implements OnInit {
     });
     }else
     {
-      let disableControl: boolean = false;
-      if (this.feature === 'approve'){
-        disableControl = true;
-        this.totalAmountDisabled = true;
+      let disableControl: boolean = true;
+      let disableControlEdit: boolean = true;
+      let disableApproveAmount: boolean = true;
+      if(this.orderEdit.deliveredAmount !== undefined && this.orderEdit.deliveredAmount !== 0)
+      {
+        disableControlEdit = false;
+      }
+       
+      if (this.isEditAprove){
+        disableApproveAmount = false;
       }
       this.isEdit = true;
       this.formGroupBasic = this.formBuilder.group({
+      factorySelected: [{value : this.orderEdit.factoryId, disabled : disableControl }],
       clientSelected: [{value : '', disabled : disableControl }],
       startDateSelected: [{value : new Date(this.orderEdit.startDate as Date), disabled : disableControl }, [Validators.required]],
       buildingSelected: [{value : this.orderEdit.buildingId, disabled : disableControl}],
-      materialSelected: [{value:  this.orderEdit.materialId, disabled : disableControl}],
+      materialSelected: [{value:  this.orderEdit.materialId, disabled : false}],
+      measureUnitSelected: [{value:  this.orderEdit.UnitMeasure, disabled : disableControl}],
+      automatic: [{value:  this.orderEdit.automatic, disabled : disableControl}],
       monday: [{value :this.orderEdit.monday, disabled : disableControl}],
       tuesday: [{value :this.orderEdit.tuesday, disabled : disableControl}],
       wednesday: [{value :this.orderEdit.wednesday, disabled : disableControl}],
@@ -86,11 +109,68 @@ export class OrderEditComponent implements OnInit {
       friday: [{value :this.orderEdit.friday, disabled : disableControl}],
       saturday: [{value :this.orderEdit.saturday, disabled : disableControl}],
       sunday: [{value :this.orderEdit.sunday, disabled : disableControl}],
-      totalAmount: [{value: this.orderEdit.totalAmount, disabled: this.totalAmountDisabled},  [Validators.required]],
-      amountApprove: [{value: this.orderEdit.totalAmount, disabled: false},[Validators.required]],
+      totalAmount: [{value: this.orderEdit.requestAmount, disabled: false},  [Validators.required]],
+      amountApprove: [{value: this.orderEdit.aprobeAmount, disabled: disableApproveAmount},[Validators.required]],
+      deliverApprove: [{value: this.orderEdit.deliveredAmount, disabled: false},[Validators.required]],
       state: [{value: this.orderEdit.state, disabled: false}],
       });
     }
+  }
+  changeAmount()
+  {
+    if (this.isEdit){
+      if(this.f.totalAmount.value < this.f.deliverApprove.value){
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La cantidad ingresada no puede ser menor a la cantidad despachada', life: 5000 });
+        this.f.materialSelected.disable();
+        return;
+      }else
+      {
+        this.f.materialSelected.enable();
+      }
+    }
+    
+  }
+
+  
+  getMeasureUnits(){
+    this.paramService.getParamByType('Unidad de medida')
+            .subscribe({
+                next: (data:any) => {
+                  this.measureUnits = data;
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+                  console.log(error);
+                }
+            });
+  }
+
+  getDefaultFactory(){
+    this.paramService.getParamByType('Planta por Defecto')
+            .subscribe({
+                next: (data:any) => {
+                  this.f.factorySelected.setValue(parseInt(data[0].name));
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+                  console.log(error);
+                }
+            });
+  }
+
+  getAllFactories(){
+    this.factoryService.getFactory()
+    .subscribe({
+        next: (data:any) => {
+          this.allFactories = data;
+          if(!this.isEdit){
+            this.getDefaultFactory();
+          }
+        },
+        error: (error: { message: any; }) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+        }
+    });
   }
 
   getCustomerList(){
@@ -129,9 +209,23 @@ export class OrderEditComponent implements OnInit {
     });
   }
 
+  getCommercialInfoByClient(clientId : number){
+    this.customerService.getCommercialInfoByClient(clientId)
+    .subscribe({
+        next: (data:any) => {
+          this.measureUnit = data.measureUnit as string;
+          this.f.measureUnitSelected.setValue(this.measureUnit);
+        },
+        error: error => {
+          //this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+        }
+    });
+  }
+
   changeClient(event: any){
     this.clientID = event.value as number;
-    this.getBuildingsByClient(this.clientID);  
+    this.getBuildingsByClient(this.clientID); 
+    this.getCommercialInfoByClient(this.clientID); 
   }
 
   getMaterials(){

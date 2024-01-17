@@ -65,7 +65,7 @@ export class VehicleService {
                 cubicado: requestBasic.cubed,
                 capacidadTonelada: requestBasic.capacityTon,
                 capacidadMetroCubico: requestBasic.capacityM3,
-                transportador: requestBasic.transporter,
+               //transportador: requestBasic.transporter,
                 //transportadorId:requestBasic.transporter,
                 kilometroParaInspeccion:requestBasic.kilometerToInspection,
                 kilometroUltimaInspeccion:requestBasic.kilometerLastInspection,
@@ -290,7 +290,7 @@ export class VehicleService {
         return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiLinkRestrictedDestinationVehicle}`,
         {
             destinoRestringidoRelacionVehiculo: {
-                destinoRestringidoId: request.restrictedDestinationId,
+                obraId: request.restrictedDestinationId,
                 vehiculoId: request.vehicleId
             }
           })
@@ -302,7 +302,7 @@ export class VehicleService {
     }
 
     deleteRestrictedDestinationVehicle(restrictedDestinationId: number, vehicleId: number){
-        return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiRestrictedDestinationByVehicle}?DestinoRestringidoId=${restrictedDestinationId}&VehiculoId=${vehicleId}`)
+        return this.http.delete<any>(`${environment.urlBaseApi}${Constants.apiRestrictedDestinationByVehicle}?ObraId=${restrictedDestinationId}&VehiculoId=${vehicleId}`)
             .pipe(map(client => {
                     return (client?.destinoRestringidoVehiculoEliminado !== null || client?.destinoRestringidoVehiculoEliminado !== undefined) ? client?.destinoRestringidoVehiculoEliminado: false;
             }));

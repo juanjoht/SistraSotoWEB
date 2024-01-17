@@ -37,17 +37,28 @@
                 </ng-template>
             </p-table>
         </div>
-<p-dialog [(visible)]="restrictedDestinationDialog" [style]="{width: '500px',height: '300px'}" [breakpoints]="{ '960px': '75vw' }" [draggable]="false" [maximizable]="true"  [modal]="true" class="p-fluid">
+<p-dialog [contentStyle]="{'overflow': 'visible'}" [(visible)]="restrictedDestinationDialog" [style]="{width: '800px',height: '300px'}" [breakpoints]="{ '960px': '75vw' }" [draggable]="false" [maximizable]="true"  [modal]="true" class="p-fluid">
     <ng-template pTemplate="header">
         <span   class="text-xl font-bold text-center">Adicionar Destino Restringido</span>
     </ng-template>
     <ng-template pTemplate="content">
         <form [formGroup]="formRestrictedDestination" >
          <div class="formgrid grid mb-10">
-            <div class="field col-12 sm:col-7">
-                <label for="destinationSelect" class="font-bold">Destino*</label>
-                <p-dropdown id="destinationSelect" scrollHeight="200px" formControlName="destinationSelect"  [options]="allRestrictedDestinations" placeholder="Seleccione el Destino" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedDestination && f.destinationSelect.errors }" ></p-dropdown>
-                <small class="ng-dirty ng-invalid" *ngIf="submittedDestination && f?.destinationSelect?.errors?.required">Destino es requerido</small>
+            <div class="field col-12 sm:col-4">
+                <label for="clientSelect" class="font-bold">Cliente*</label>
+                <p-dropdown id="clientSelect" [filter]="true" filterBy="name" (onChange)="changeClient($event)" placeholder="Seleccione un Cliente" 
+                formControlName="clientSelected" [options]="customers" optionValue="id"  optionLabel="name" 
+                [ngClass]="{ 'is-invalid ng-dirty': submittedDestination && f.clientSelected.errors }"  >
+                </p-dropdown>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedDestination && f?.clientSelected?.errors?.required">Cliente es requerido.</small>
+            </div>
+            <div class="field col-12 sm:col-4">
+                <label for="buildingSelect" class="font-bold">Obra*</label>
+                <p-dropdown id="buildingSelect"  placeholder="Seleccione una Obra" 
+                formControlName="buildingSelected" [options]="customersBuildings" optionValue="id"  optionLabel="name" 
+                [ngClass]="{ 'is-invalid ng-dirty': submittedDestination && f.buildingSelected.errors }"  >
+                </p-dropdown>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedDestination && f?.buildingSelected?.errors?.required">Obra es requerida.</small>
             </div>
             <div class="field col-12 sm:col-1">
                 <label for="stateYesorNot" class="font-bold">Estado</label>
@@ -55,7 +66,7 @@
                     <p-checkbox formControlName="stateSelected" [binary]="true" inputId="stateYesorNot"></p-checkbox>
                 </div>
             </div>
-            <div class="field col-12 sm:col-4 align-self-end">
+            <div class="field col-12 sm:col-3 align-self-end">
                     <button pButton pRipple label="Aceptar" icon="pi pi-check" class="p-button-text" (click)="save()" ></button>    
              </div>
         </div>

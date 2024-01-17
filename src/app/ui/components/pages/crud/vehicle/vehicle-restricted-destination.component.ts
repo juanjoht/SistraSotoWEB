@@ -2,8 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Common } from 'src/app/common/common';
+import { CustomerBasicInfo } from 'src/app/ui/models/customer.model';
 import { RestrictedDestination } from 'src/app/ui/models/route.model';
 import { VehicleRestrictedDestination } from 'src/app/ui/models/vehicles.model';
+import { CustomerService } from 'src/app/ui/service/customer.service';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
 
 @Component({
@@ -25,12 +27,16 @@ export class VehicleRestrictedDestinationComponent implements OnInit {
   editMode: boolean = false;
   destinationId: number = 0;
   cols: any[] = [];
+  customers: CustomerBasicInfo[] = [];
+  customersBuildings: any[] = [];
   canRead: boolean = true;
   canCreate: boolean = true;
   canEdit: boolean = true;
+  clientID : number = 0;
   constructor(
     private vehicleService: VehicleService,
     private formBuilder: FormBuilder,
+    private customerService: CustomerService,
     private messageService: MessageService
     ) { }
 
@@ -39,13 +45,16 @@ export class VehicleRestrictedDestinationComponent implements OnInit {
       this.canCreate = Common.checkPermissions('Maestros-Vehiculos', 'Crear');
       this.canEdit = Common.checkPermissions('Maestros-Vehiculos', 'Editar');
       this.getGridData();
+      this.getCustomerList();
       this.getAllRestrictedDestination();
       this.cols = [
         { field: 'name', header: 'Conductor' },
         { field: 'state', header: 'Estado' }
     ];
       this.formRestrictedDestination = this.formBuilder.group({
-        destinationSelect: ['',[Validators.required]],
+        clientSelected: ['',[Validators.required]],
+        buildingSelected: ['', [Validators.required]],
+        //destinationSelect: ['',[Validators.required]],
         stateSelected: [true]
        });
        //this.canRead = Common.checkPermissions('Terceros-Proveedores', 'Consultar');
@@ -64,6 +73,44 @@ export class VehicleRestrictedDestinationComponent implements OnInit {
         }
     });
   }
+
+  getCustomerList(){
+    this.customerService.getCustomerBasic()
+    .subscribe({
+        next: (data:any) => {
+          this.customers = data;
+          /*if (Object.keys(this.orderEdit).length !== 0){
+            let idClient = this.getClientId(this.customers, this.orderEdit.clientName) as number;
+            this.f.clientSelected.setValue(idClient);
+            this.getBuildingsByClient(idClient);
+          }*/
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+        }
+    });
+  }
+
+  changeClient(event: any){
+    this.clientID = event.value as number;
+    this.getBuildingsByClient(this.clientID);  
+  }
+
+  getBuildingsByClient(clientId: number){
+    this.customerService.getBuildingsByClient(clientId)
+    .subscribe({
+        next: (data:any) => {
+          this.customersBuildings = data;
+          /*if (Object.keys(this.orderEdit).length !== 0){
+            this.f.buildingSelected.setValue(this.orderEdit.buildingId);
+          }*/
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        }
+    });
+  }
+
 
   getAllRestrictedDestination(){
     this.vehicleService.getRestrictedDestination()
@@ -98,7 +145,7 @@ export class VehicleRestrictedDestinationComponent implements OnInit {
    }
      let obj: VehicleRestrictedDestination = {
        vehicleId: this.vehicleId,
-       restrictedDestinationId: this.f?.destinationSelect.value as number
+       restrictedDestinationId: this.f?.buildingSelected.value as number
      }
      this.vehicleService.postRestrictedDestinationVehicle(obj)
      .subscribe({

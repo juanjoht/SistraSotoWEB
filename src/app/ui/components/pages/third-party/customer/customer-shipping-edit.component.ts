@@ -28,14 +28,14 @@ export class CustomerShippingEditComponent implements OnInit {
     private messageService: MessageService) { }
 
   ngOnInit() {
-     this.getMaterialsParams();
+    this.getMaterialsParams('Materiales para transporte');
      this.getRouteList();
      if (Object.keys(this.customerShippingEdit).length === 0){
      this.formGroupShippingRate = this.formBuilder.group({
       routeSelected: ['',[Validators.required]],
       materialSelected: ['', [Validators.required]],
       measureUnit: [{value:this.unitMeasure, disabled: true}],
-      shippingValue: ['', [Validators.required]],
+      //shippingValue: ['', [Validators.required]],
       m3Value: ['',],
       tonValue: ['', ],
       stateSelected:[true]
@@ -44,16 +44,16 @@ export class CustomerShippingEditComponent implements OnInit {
     {
       this.formGroupShippingRate = this.formBuilder.group({
         routeSelected: [this.customerShippingEdit.routeId,[Validators.required]],
-        materialSelected: [this.customerShippingEdit.material, [Validators.required]],
+        materialSelected: [this.customerShippingEdit.materialId, [Validators.required]],
         measureUnit: [{value:this.customerShippingEdit.measureUnit, disabled: true}],
-        shippingValue: [this.customerShippingEdit.shippingValue, [Validators.required]],
+        //shippingValue: [this.customerShippingEdit.shippingValue, [Validators.required]],
         m3Value: ['',],
         tonValue: ['', ],
         stateSelected:[this.customerShippingEdit.state === 'Activo' ? true: false]
        });
     }
-     if(this.isTransporter)
-     {
+    // if(this.isTransporter)
+     //{
       if (Object.keys(this.customerShippingEdit).length !== 0){
         this.f["m3Value"].setValue(this.customerShippingEdit.m3Value);
         this.f["tonValue"].setValue(this.customerShippingEdit.tonValue);
@@ -62,9 +62,9 @@ export class CustomerShippingEditComponent implements OnInit {
       this.formGroupShippingRate.get("m3Value")?.updateValueAndValidity();
       this.f["tonValue"].setValidators(Validators.required);
       this.formGroupShippingRate.get("tonValue")?.updateValueAndValidity();
-      this.f["shippingValue"].removeValidators(Validators.required);
-      this.formGroupShippingRate.get("shippingValue")?.updateValueAndValidity();
-     }
+      //this.f["shippingValue"].removeValidators(Validators.required);
+      //this.formGroupShippingRate.get("shippingValue")?.updateValueAndValidity();
+    // }
   }
 
   getRouteList(){
@@ -81,8 +81,8 @@ export class CustomerShippingEditComponent implements OnInit {
   }
 
 
-  getMaterialsParams(){
-    this.paramService.getParamByType('Material')
+  getMaterialsParams(type: string = 'Material'){
+    this.paramService.getParamByType(type)
             .subscribe({
                 next: (data:any) => {
                   this.materials = data;

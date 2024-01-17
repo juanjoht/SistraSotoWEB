@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { order, providerOrder } from '../models/order.model';
+import { order, paginationInfo, providerOrder } from '../models/order.model';
 import { preassignment } from '../models/preassignment.model';
 
 @Injectable()
@@ -31,11 +31,12 @@ export class PreassignmentService {
       }
 
 
-    getPreassignment() {
+    getPreassignment(pageNumber:number, pageSize:number,sortField: any = 'Id',sortOrderAsc: any = false, filters: string) {
+        let pageInf: paginationInfo = {};
         let newData: preassignment = {};
-        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiPreassignment}`)
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiPreassignment}?PageNumber=${pageNumber}&PageSize=${pageSize}&sortBy=${sortField}&sortOrderAsc=${sortOrderAsc}${filters}`)
         .pipe(map(data => {
-            return data?.preasignaciones?.map((item: any) =>{
+            let preassignments =  data?.preasignaciones?.map((item: any) =>{
                  return newData =  {
                     id: item.id,
                     serviceDate: this.removeTime(new Date(item.fechaServicio)),
@@ -58,6 +59,16 @@ export class PreassignmentService {
                     state: item.estado
                 }
             })
+            pageInf =  {
+                currentPage: data?.paginationInfo?.currentPage,
+                itemsPerPage: data?.paginationInfo?.itemsPerPage,
+                totalItems: data?.paginationInfo?.totalItems,
+                totalPages: data?.paginationInfo?.totalPages
+         };
+        return {
+            preassignments,
+            pageInf
+           }
         }));
     }
 

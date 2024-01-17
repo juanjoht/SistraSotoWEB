@@ -1,5 +1,21 @@
 <form [formGroup]="formGroupBasic" >
     <div class="formgrid grid">
+        <div  class="calendar-div" class="field col-12 sm:col-3">
+            <label for="startDateInput" class="font-bold">Fecha Inicial*</label>    
+            <p-calendar (onSelect)="selectStartDate($event)" [minDate]="defaultMonday"  [showClear]="true" [disabledDays]="[0,2,3,4,5,6]" [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="startDateSelected" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.startDateSelected.errors }">></p-calendar>
+            <small class="ng-dirty ng-invalid"
+                *ngIf="submittedBasic && f?.startDateSelected?.errors?.required">Fecha Inicial es
+                requerido</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="factorySelect" class="font-bold">Planta*</label>
+            <p-dropdown id="factorySelect" [filter]="true" filterBy="name"  placeholder="Seleccione una planta" 
+            formControlName="factorySelected" [options]="allFactories" optionValue="id"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.clientSelected.errors }"  >
+            </p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.clientSelected?.errors?.required">Cliente es requerido.</small>
+        </div>
         <div class="field col-12 sm:col-3">
             <label for="clientSelect" class="font-bold">Cliente*</label>
             <p-dropdown id="clientSelect" [filter]="true" filterBy="name" (onChange)="changeClient($event)" placeholder="Seleccione un Cliente" 
@@ -8,13 +24,11 @@
             </p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.clientSelected?.errors?.required">Cliente es requerido.</small>
         </div>
-        <div  class="calendar-div" class="field col-12 sm:col-3">
-            <label for="startDateInput" class="font-bold">Fecha Inicial*</label>    
-            <p-calendar (onSelect)="selectStartDate($event)" [showClear]="true" [disabledDays]="[0,2,3,4,5,6]" [showIcon]="true" class="calendar" [style]="{width:'300px'}"  [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '250px'}" formControlName="startDateSelected" 
-            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.startDateSelected.errors }">></p-calendar>
-            <small class="ng-dirty ng-invalid"
-                *ngIf="submittedBasic && f?.startDateSelected?.errors?.required">Fecha Inicial es
-                requerido</small>
+        <div class="field col-12 sm:col-2">
+            <label for="YesorNot" class="font-bold" >Automatico</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="automatic" [binary]="true" inputId="YesorNot"></p-checkbox>
+            </div>
         </div>
         <div class="field col-12 sm:col-3">
             <label for="buildingSelect" class="font-bold">Obra*</label>
@@ -25,47 +39,58 @@
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.buildingSelected?.errors?.required">Obra es requerida.</small>
         </div>
         <div class="field col-12 sm:col-3">
+            <label for="measureUnitSelect" class="font-bold">Unidad de medida</label>
+            <input id="measureUnitSelect" type="text" pInputText formControlName="measureUnitSelected" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f?.measureUnitSelected?.errors?.required}">
+        </div>
+        <div class="field col-12 sm:col-3">
             <label for="materialSelect" class="font-bold">Material*</label>
             <p-dropdown id="materialSelect" scrollHeight="200px" formControlName="materialSelected"  [options]="materials" placeholder="Seleccione un Material" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" ></p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.materialSelected?.errors?.required">Material es requerido</small>
         </div>
-                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
+        <div class="field col-12 sm:col-3" *ngIf="!isEdit && feature === ''">
+        </div>
+                <div class="field col-12 sm:col-1 days" *ngIf="!isEdit && feature === ''">
                     <label for="unitMassInput" class="font-bold">Lunes</label>
                     <p-inputNumber id="mondayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="monday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
+                <div class="field col-12 sm:col-1 days" *ngIf="!isEdit && feature === ''">
                     <label for="TuesdayInput" class="font-bold">Martes</label>
                     <p-inputNumber id="TuesdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="tuesday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
+                <div class="field col-12 sm:col-1 days" *ngIf="!isEdit && feature === ''">
                     <label for="wednesdayInput" class="font-bold">Miercoles</label>
                     <p-inputNumber id="wednesdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="wednesday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
+                <div class="field col-12 sm:col-1 days" *ngIf="!isEdit && feature === ''">
                     <label for="thursdayInput" class="font-bold">Jueves</label>
                     <p-inputNumber id="thursdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="thursday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''" >
+                <div class="field col-12 sm:col-1 days" *ngIf="!isEdit && feature === ''" >
                     <label for="fridayInput" class="font-bold">Viernes</label>
                     <p-inputNumber id="fridayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="friday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
+                <div class="field col-12 sm:col-1 days" *ngIf="!isEdit && feature === ''">
                     <label for="saturdayInput" class="font-bold">Sabado</label>
                     <p-inputNumber id="saturdayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="saturday" > </p-inputNumber>
                 </div>
-                <div class="field col-12 sm:col-1 days" *ngIf="feature === ''">
+                <div class="field col-12 sm:col-1 days" *ngIf="!isEdit && feature === ''">
                     <label for="sundayInput" class="font-bold">Domingo</label>
                     <p-inputNumber id="sundayInput" inputId="minmax" inputId="minmax" (onBlur)="sumAmountDays()" formControlName="sunday" > </p-inputNumber>
                 </div>           
                 <div class="field col-12 sm:col-3">
-                    <label for="totalAmountInput" class="font-bold">Cantidad Total*</label>
-                    <p-inputNumber id="totalAmountInput" inputId="minmax" inputId="minmax"  formControlName="totalAmount" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.totalAmount.errors}"> </p-inputNumber>
+                    <label for="totalAmountInput" class="font-bold">Cantidad <span *ngIf="feature === 'approve'">Solicitada</span>*</label>
+                    <p-inputNumber id="totalAmountInput" (onBlur)="changeAmount()" inputId="minmax" inputId="minmax"  formControlName="totalAmount" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.totalAmount.errors}"> </p-inputNumber>
                     <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.totalAmount?.errors?.required">Cantidad total es requerido.</small>
                 </div>
                 <div class="field col-12 sm:col-3" *ngIf="feature === 'approve'">
                     <label for="AmountApproveInput" class="font-bold">Cantidad Aprobada*</label>
                     <p-inputNumber id="AmountApproveInput" inputId="minmax" inputId="minmax"  formControlName="amountApprove" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.amountApprove.errors}"> </p-inputNumber>
                     <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.amountApprove?.errors?.required">Cantidad Aprobada es requerida.</small>
+                </div>
+                <div class="field col-12 sm:col-3" *ngIf="feature === 'approve' && !isEditAprove && isEdit">
+                    <label for="AmountDeliverInput" class="font-bold">Cantidad Despachada*</label>
+                    <p-inputNumber id="AmountDeliverInput" inputId="minmax" inputId="minmax"  formControlName="deliverApprove" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.deliverApprove.errors}"> </p-inputNumber>
+                    <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.deliverApprove?.errors?.required">Cantidad Despachada es requerida.</small>
                 </div>
     </div>
     </form>

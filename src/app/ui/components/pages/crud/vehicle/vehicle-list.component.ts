@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Vehicle } from 'src/app/ui/models/vehicles.model';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
@@ -15,7 +15,6 @@ import { Common } from 'src/app/common/common';
 export class VehicleListComponent implements OnInit {
   @ViewChild(VehicleBasicEditComponent)editBasic!: VehicleBasicEditComponent;
   @ViewChild(VehicleMaterialComponent)vehicleMaterial!: VehicleMaterialComponent;
-
   vehicles: Vehicle[] = [];
   vehicle : Vehicle = {};
   cols: any[] = [];
@@ -87,7 +86,6 @@ export class VehicleListComponent implements OnInit {
     this.showOptions = !isviewMode;
   }
 
-  reloadGridAfterSave(){}
 
   onChangeTab(event: any){
     this.tabIndex = event.index;

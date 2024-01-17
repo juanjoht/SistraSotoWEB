@@ -6,7 +6,7 @@ export interface Vehicle{
     color?: string;
     chassisNumber?: string;
     grossWeight?:number;
-    cubed?:string;
+    cubed?:boolean;
     kilometerToInspection?:number;
     kilometerLastInspection?:number;
     dateLastInspection?: string;

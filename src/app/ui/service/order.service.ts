@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { map } from 'rxjs';
-import { order, providerOrder } from '../models/order.model';
+import { order, paginationInfo, providerOrder } from '../models/order.model';
 
 @Injectable()
 export class OrderService {
@@ -19,31 +19,40 @@ export class OrderService {
       }
 
 
-    getOrders() {
+    getOrders(pageNumber:number, pageSize:number,sortField: any = 'Id',sortOrderAsc: any = false, filters: string) {
         let newData: order = {};
-        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiOrder}`)
+        let pageInf: paginationInfo = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiOrder}?PageNumber=${pageNumber}&PageSize=${pageSize}&sortBy=${sortField}&sortOrderAsc=${sortOrderAsc}${filters}`)
         .pipe(map(data => {
-            return data?.pedidos?.map((item: any) =>{
+            let orders =  data?.pedidos?.map((item: any) =>{
                  return newData =  {
                     id: item.id,
-                    startDate: this.removeTime(new Date(item.fechaInicial)),
-                    buildingName: item.obraNombre,
-                    materialName: item.materialNombre,
-                    clientName: item.clienteNombre,
+                    startDate: this.removeTime(new Date(item.fecha)),
+                    factoryId: item.plantaId,
+                    factoryName: item.plantaNombre,
                     buildingId: item.obraId,
+                    buildingName: item.obraNombre,
+                    clientName: item.clienteNombre,
                     materialId: item.materialId,
-                    monday: item.lunes,
-                    tuesday:item.martes,
-                    wednesday: item.miercoles,
-                    thursday: item.jueves,
-                    friday: item.viernes,
-                    sunday:item.sabado,
-                    saturday: item.domingo,
-                    totalAmount: item.cantidadTotal,
+                    materialName: item.materialNombre,
+                    aut: item.automatico ? 'Si': 'No',
+                    UnitMeasure: item.unidadMedida,
+                    requestAmount: item.cantidadPedida,
                     aprobeAmount : item.cantidadAprobada,
+                    deliveredAmount: item.cantidadDespachada,
                     state: item.estado
                 }
-            })
+            });
+            pageInf =  {
+                    currentPage: data?.paginationInfo?.currentPage,
+                    itemsPerPage: data?.paginationInfo?.itemsPerPage,
+                    totalItems: data?.paginationInfo?.totalItems,
+                    totalPages: data?.paginationInfo?.totalPages
+             };
+            return {
+                orders,
+                pageInf
+               }
         }));
     }
 
@@ -51,18 +60,22 @@ export class OrderService {
         return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiOrder}`,
         {
             pedido: {
-                fechaInicial : request.startDate,
-                obraId: request.buildingId,
-                materialId: request.materialId,
-                lunes: request.monday,
-                martes: request.tuesday,
-                miercoles: request.wednesday,
-                jueves: request.thursday,
-                viernes: request.friday,
-                sabado: request.saturday,
-                domingo: request.sunday,
-                cantidadTotal: request.totalAmount,
-                cantidadAprobada: request.aprobeAmount,
+                Fecha : request.startDate,
+                PlantaId: request.factoryId,
+                ObraId: request.buildingId,
+                MaterialId: request.materialId,
+                Automatico: request.automatic,
+                UnidadMedida: request.UnitMeasure,
+                Dias:{
+                    Lunes: request.monday,
+                    Martes: request.tuesday,
+                    Miercoles: request.wednesday,
+                    Jueves: request.thursday,
+                    Viernes: request.friday,
+                    Sabado: request.saturday,
+                    Domingo: request.sunday
+                },
+                CantidadTotal: request.totalAmount,
                 estado: request.state
             }
           })
@@ -78,18 +91,15 @@ export class OrderService {
         {
             pedido: {
                 id: request.id,
-                fechaInicial: request.startDate,
+                fecha: request.startDate,
+                plantaId:request.factoryId,
                 obraId: request.buildingId,
                 materialId: request.materialId,
-                lunes: request.monday,
-                martes: request.tuesday,
-                miercoles: request.wednesday,
-                jueves: request.thursday,
-                viernes: request.friday,
-                sabado: request.saturday,
-                domingo: request.sunday,
-                cantidadTotal: request.totalAmount,
+                automatico: request.automatic,
+                unidadMedida: request.UnitMeasure,
+                cantidadPedida: request.totalAmount,
                 cantidadAprobada: request.aprobeAmount,
+                cantidadDespachada: request.deliveredAmount,
                 estado: request.state
             }
           })
@@ -104,9 +114,9 @@ export class OrderService {
         return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiOrderApprove}`,
         {
             aprobarPedido: {
-                id: requestIds
-            },
-            cantidadAprobada: amountApprove
+                id: requestIds,
+                cantidadAprobada: amountApprove
+            }   
           })
             .pipe(map(user => {
                 if (user?.pedidoAprobado !== null && user?.pedidoAprobado !== undefined) {

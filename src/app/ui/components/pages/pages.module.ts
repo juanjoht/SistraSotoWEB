@@ -27,6 +27,7 @@ import { PasswordModule } from 'primeng/password';
 import { ImageModule } from 'primeng/image';
 import { CardModule } from 'primeng/card';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { PaginatorModule } from 'primeng/paginator';
 import { CustomerBasicEditComponent } from './third-party/customer/customer-basic-edit.component';
 import { CustomerCommercialEditComponent } from './third-party/customer/customer-commercial-edit.component';
 import { CustomerBuildingsListComponent } from './third-party/customer/customer-buildings-list.component';
@@ -156,7 +157,8 @@ import { PlantLoadComponent } from './plant/plant-load/plant-load.component';
         PasswordModule,
         ImageModule,
         CardModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        PaginatorModule
     ]
 })
 export class PagesModule { }

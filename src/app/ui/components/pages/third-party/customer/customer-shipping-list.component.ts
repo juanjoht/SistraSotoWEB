@@ -42,8 +42,6 @@ export class CustomerShippingListComponent implements OnInit {
     this.cols = [
         { field: 'route', header: 'Ruta' },
         { field: 'material', header: 'Material' },
-        { field: 'measureUnit', header: 'm3/ton' },
-        { field: 'shippingValue', header: 'Valor Flete' },
         { field: 'm3Value', header: 'Valor m3' },
         { field: 'tonValue', header: 'Valor ton' }
     ];
@@ -87,8 +85,10 @@ export class CustomerShippingListComponent implements OnInit {
           this.customersShippingRate = data;
         },
         error: error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
-          console.log(error);
+          if (error.error.title !== 'TransportadorTarifaFlete no encontrado')
+          {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+          }
         }
     });
   }
@@ -112,14 +112,17 @@ export class CustomerShippingListComponent implements OnInit {
       return;
     }
     let formValues  = this.editShipping.f;
+
     let objShipping: CustomerShipping = {
       customerId: this.clientId,
       routeId: formValues.routeSelected.value,
-      material: formValues.materialSelected.value,
-      measureUnit: formValues.measureUnit.value,
-      shippingValue: formValues.shippingValue.value,
+      materialId: formValues.materialSelected.value,
+      m3Value: formValues.m3Value.value,
+      tonValue : formValues.tonValue.value,
       state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
+      
+    
     if (this.editMode){
       objShipping.id = this.shippingId;
       this.customerService.putCustomerShipping(objShipping, this.clientId)
@@ -166,7 +169,7 @@ export class CustomerShippingListComponent implements OnInit {
     let objShipping: CustomerShipping = {
       customerId: this.clientId,
       routeId: formValues.routeSelected.value,
-      material: formValues.materialSelected.value,
+      materialId: formValues.materialSelected.value,
       state : (formValues.stateSelected.value) ? 'Activo' : 'Inactivo'
     }
     if(this.feature.toLowerCase() === 'transportador'){

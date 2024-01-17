@@ -2,12 +2,17 @@ export interface order {
     id?: number,
     startDate?: Date,
     startDateFormat?: string,
+    factoryId? : number,
+    factoryName?: string,
     buildingId?: number,
     buildingName?: string,
     materialId?: number,
     materialName?: number,
     clientId?: number,
     clientName?: string,
+    aut?: string,
+    automatic? : boolean,
+    UnitMeasure?: string,
     monday?: number,
     tuesday?: number,
     wednesday?: number,
@@ -15,10 +20,20 @@ export interface order {
     friday?: number,
     saturday?: number,
     sunday?: number,
-    totalAmount?: number,
+    requestAmount?: number,
+    deliveredAmount?:number,
     aprobeAmount?: number,
-    state?: string
+    totalAmount?: number,
+    state?: string,
+
 }
+
+export interface paginationInfo {
+    currentPage?: number,
+    itemsPerPage?: number,
+    totalItems?: number,
+    totalPages?: number
+  }
 
 export interface providerOrder {
     id?: number,

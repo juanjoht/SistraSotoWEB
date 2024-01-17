@@ -84,6 +84,7 @@ export interface CustomerShipping{
     id?: number;
     route?: string;
     routeId?: number;
+    materialId?: number;
     material?: string;
     measureUnit?: string;
     shippingValue?: number;

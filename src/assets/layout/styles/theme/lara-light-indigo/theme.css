@@ -4439,7 +4439,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-dialog .p-dialog-content {
   background: #ffffff;
   color: #495057;
-  padding: 0 1.5rem 2rem 1.5rem;
+  padding: 0 1.5rem 0rem 1.5rem;
 }
 .p-dialog .p-dialog-content:last-of-type {
   border-bottom-right-radius: 6px;

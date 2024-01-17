@@ -2,10 +2,23 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
-<p-table #dt [value]="orders" [globalFilterFields]="['startDateFormat', 'clientName']"  *ngIf="canRead" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+<p-table #dt 
+[value]="orders" 
+[globalFilterFields]="['startDateFormat', 'clientName']"  
+*ngIf="canRead" 
+styleClass="p-datatable-gridlines" 
+[tableStyle]="{'min-width': '50rem'}" 
+[columns]="cols" 
+responsiveLayout="scroll" 
+[rowHover]="true"
+dataKey="id"
+[lazy]="true"
+(onLazyLoad)="customSort($event)"
+[resizableColumns]="true"
+>
     <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 class="m-0">Pedidos del Cliente <span *ngIf="feature === 'approve'" > - Aprobación</span></h5>
+            <h5 class="m-0">Administración de Pedidos <span *ngIf="feature === 'approve'" > - Aprobación</span></h5>
             <span class="block mt-2 md:mt-0">
                 <button pButton *ngIf="feature === 'approve' && allowApproveAll" pRipple title="Aprobar Todos los pedidos" icon="pi pi-check" class="p-button-danger mr-2" (click)="approveAll()"></button>                            
                 <button pButton *ngIf="canCreate" pRipple title="Adicionar Nuevo Pedido" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>                            
@@ -14,39 +27,64 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="startDate">Fecha Inicial <p-sortIcon field="startDate"></p-sortIcon></th>
+            <th pSortableColumn="id">Nro Ped <p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="startDate">Fecha <p-sortIcon field="startDate"></p-sortIcon></th>
+            <th pSortableColumn="aut">Aut <p-sortIcon field="aut"></p-sortIcon></th>
+            <th pSortableColumn="factoryName">Planta <p-sortIcon field="factoryName"></p-sortIcon></th>
             <th pSortableColumn="clientName">Cliente <p-sortIcon field="clientName"></p-sortIcon></th>
             <th pSortableColumn="buildingName">Obra <p-sortIcon field="buildingName"></p-sortIcon></th>
             <th pSortableColumn="materialName">Material <p-sortIcon field="materialName"></p-sortIcon></th>
-            <th pSortableColumn="totalAmount">Cantidad Total<p-sortIcon field="totalAmount"></p-sortIcon></th>
+            <th pSortableColumn="UnitMeasure">Unidad Medida <p-sortIcon field="UnitMeasure"></p-sortIcon></th>
+            <th pSortableColumn="requestAmount">Cantidad Pedida<p-sortIcon field="requestAmount"></p-sortIcon></th>
             <th pSortableColumn="aprobeAmount">Cantidad Aprobada <p-sortIcon field="aprobeAmount"></p-sortIcon></th>
-            <th pSortableColumn="monday">Lunes <p-sortIcon field="monday"></p-sortIcon></th>
-            <th pSortableColumn="tuesday">Martes<p-sortIcon field="tuesday"></p-sortIcon></th>
-            <th pSortableColumn="wednesday">Miércoles<p-sortIcon field="wednesday"></p-sortIcon></th>
-            <th pSortableColumn="thursday">Jueves<p-sortIcon field="thursday"></p-sortIcon></th>
-            <th pSortableColumn="friday">Viernes<p-sortIcon field="friday"></p-sortIcon></th>
-            <th pSortableColumn="saturday">Sábado<p-sortIcon field="saturday"></p-sortIcon></th>
-            <th pSortableColumn="sunday">Domingo<p-sortIcon field="sunday"></p-sortIcon></th>
+            <th pSortableColumn="deliveredAmount">Cantidad Despachada <p-sortIcon field="deliveredAmount"></p-sortIcon></th>
             <th pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
             <th></th>
         </tr>
         <tr>
+            <th></th>
             <th>
                 <p-columnFilter type="date"  matchMode="equals"  field="startDate"  [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                      <p-calendar [showClear]="true" [disabledDays]="[0,2,3,4,5,6]" [showIcon]="true" [style]="{width:'200px'}" appendTo="body" [panelStyle]="{'overflow': 'scroll',height: '280px', 'z-index': '10000',width: '280px'}" 
+                      <p-calendar [showButtonBar]="true" [readonlyInput]="true" [showIcon]="true" [style]="{width:'200px'}" appendTo="body" [panelStyle]="{'overflow': 'scroll',height: '280px', 'z-index': '10000',width: '280px'}" 
                         #fd [ngModel]="value" 
                         dataType="date" 
                         dateFormat="dd/mm/yy" 
-                        (onSelect)="filter(fd.value)">
+                        (onClearClick)="filterQuery(fd.value, 'fecha')"
+                        (onSelect)="filterQuery(fd.value, 'fecha')">
                     </p-calendar>
                     </ng-template>
                    </p-columnFilter>
             </th>
+            <th></th>
+            <th>
+                <p-columnFilter field="factoryName" matchMode="equals" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown [ngModel]="value" appendTo="body" optionValue="id" optionName="name" optionLabel="name" [options]="allFactories" (onChange)="filterQuery($event.value, 'planta')" placeholder="Seleccione una planta" [showClear]="true">
+                        </p-dropdown>
+                    </ng-template>
+                </p-columnFilter>
+            </th>
             <th>
                 <p-columnFilter field="clientName" matchMode="equals" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                        <p-dropdown [ngModel]="value" appendTo="body" optionValue="name" optionName="name" optionLabel="name" [options]="customers" (onChange)="filter($event.value)" placeholder="Seleccione un cliente" [showClear]="true">
+                        <p-dropdown [ngModel]="value" appendTo="body" optionValue="id" optionName="name" optionLabel="name" [options]="customers" (onChange)="filterQuery($event.value,'cliente')" placeholder="Seleccione un cliente" [showClear]="true">
+                        </p-dropdown>
+                    </ng-template>
+                </p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter field="buildingName" matchMode="equals" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown [ngModel]="value" appendTo="body" optionValue="id" optionName="name" optionLabel="name" [options]="allBuildings" (onChange)="filterQuery($event.value,'obra')" placeholder="Seleccione una Obra" [showClear]="true">
+                        </p-dropdown>
+                    </ng-template>
+                </p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter field="materialName" matchMode="equals" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown [ngModel]="value" appendTo="body" optionValue="id" optionName="name" optionLabel="name" [options]="materials" (onChange)="filterQuery($event.value,'material')" placeholder="Seleccione un Material" [showClear]="true">
                         </p-dropdown>
                     </ng-template>
                 </p-columnFilter>
@@ -60,20 +98,12 @@
             <th>
             </th>
             <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-            <th>
+                <p-columnFilter field="state" matchMode="equals" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown [ngModel]="value" appendTo="body" optionValue="name" optionName="name" optionLabel="name" [options]="states" (onChange)="filterQuery($event.value,'estado')" placeholder="Seleccione un Estado" [showClear]="true">
+                        </p-dropdown>
+                    </ng-template>
+                </p-columnFilter>
             </th>
             <th>
             </th>
@@ -82,14 +112,26 @@
     <ng-template pTemplate="body" let-order>
         <tr>
             <td>
+                <span class="p-column-title">id</span>
+                {{ order.id }}
+            </td>
+            <td>
                 <span class="p-column-title">startDate</span>
                 {{ order.startDate | date: 'dd/MM/yyyy' }}
             </td>
             <td>
+                <span class="p-column-title">aut</span>
+                {{order.aut}}
+            </td>
+            <td width="150px">
+                <span class="p-column-title">factoryName</span>
+                {{order.factoryName}}
+            </td>
+            <td  >
                 <span class="p-column-title">clientName</span>
                 {{order.clientName}}
             </td>
-            <td>
+            <td width="100px" >
                 <span class="p-column-title">buildingName</span>
                 {{order.buildingName}}
             </td>
@@ -98,40 +140,20 @@
                 {{order.materialName}}
             </td>
             <td>
-                <span class="p-column-title">totalAmount</span>
-                {{order.totalAmount}}
+                <span class="p-column-title">UnitMeasure</span>
+                {{order.UnitMeasure}}
+            </td>
+            <td>
+                <span class="p-column-title">requestAmount</span>
+                {{order.requestAmount}}
             </td>
             <td>
                 <span class="p-column-title">aprobeAmount</span>
                 {{order.aprobeAmount}}
             </td>
             <td>
-                <span class="p-column-title">monday</span>
-                {{order.monday}}
-            </td>
-            <td>
-                <span class="p-column-title">tuesday</span>
-                {{order.tuesday}}
-            </td>
-            <td>
-                <span class="p-column-title">wednesday</span>
-                {{order.wednesday}}
-            </td>
-            <td>
-                <span class="p-column-title">thursday</span>
-                {{order.thursday}}
-            </td>
-            <td>
-                <span class="p-column-title">friday</span>
-                {{order.friday}}
-            </td>
-            <td>
-                <span class="p-column-title">saturday</span>
-                {{order.saturday}}
-            </td>
-            <td>
-                <span class="p-column-title">sunday</span>
-                {{order.sunday}}
+                <span class="p-column-title">deliveredAmount</span>
+                {{order.deliveredAmount}}
             </td>
             <td>
                 <span class="p-column-title">state</span>
@@ -139,20 +161,23 @@
             </td>
             <td>
                 <div class="flex">
-                    <button title="Editar" *ngIf="canEdit" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editOrder(order)"></button>
-                    <button title="Aprobar" *ngIf="feature === 'approve' && order.state === 'Pendiente'" pButton pRipple icon="pi pi-check" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editOrder(order)"></button>
+                    <button title="Editar" *ngIf="canEdit" pButton pRipple icon="pi pi-pencil" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editOrder(order, false)"></button>
+                    <button title="Aprobar" *ngIf="feature === 'approve' && order.state === 'Pendiente'" pButton pRipple icon="pi pi-check" styleClass="p-button-sm" class="p-button-rounded p-button-success mr-2" (click)="editOrder(order, true)"></button>
                     <button title="Rechazar" *ngIf="feature === 'approve' && order.state === 'Pendiente'" pButton pRipple icon="pi pi-times" styleClass="p-button-sm" class="p-button-rounded p-button-danger mr-2" (click)="reject(order)"></button>
                 </div>
             </td>
         </tr>
     </ng-template>
 </p-table>
+<p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+
+
 <p-dialog [(visible)]="orderDialog" (onHide)="getGridData()" [draggable]="false" [style]="{width: '1024px',height: '460px'}" [maximizable]="true" [breakpoints]="{ '960px': '75vw' }"  [modal]="true" class="p-fluid dialog-customer">
     <ng-template pTemplate="header">
         <span class="text-xl font-bold text-center">Crear/Editar Pedido</span>
     </ng-template>
     <ng-template pTemplate="content">
-        <app-order-edit [orderEdit]="order" [feature]="feature === 'approve' ? 'approve': ''"  (disableSaveParent)="reloadSave($event)"  ></app-order-edit>
+        <app-order-edit [orderEdit]="order" [isEditAprove]="editAproveMode" [feature]="feature === 'approve' ? 'approve': ''"  (disableSaveParent)="reloadSave($event)"  ></app-order-edit>
     </ng-template>
     
     <ng-template  pTemplate="footer">

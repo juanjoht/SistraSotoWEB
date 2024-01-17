@@ -22,7 +22,7 @@ export class VehicleBasicEditComponent implements OnInit {
   transporters: TransporterBasicInfo[] = [];
   maxModel: number =  new Date().getFullYear() - 1;
   maxDate: Date = new Date();
-  
+  isEdit: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private paramService: ParamService,
@@ -40,10 +40,10 @@ export class VehicleBasicEditComponent implements OnInit {
       color: ['', [Validators.required]],
       ChassisNumber: ['', [Validators.required]],
       grossWeight : ['', [Validators.required]],
-      cubed:[{value:'No', disabled: true}],
+      cubed:[false],
       capacityM3:[''],
       capacityTon:['', [Validators.required]],
-      transporterSelected : ['', [Validators.required]],
+      transporterSelected : [''],
       kmToInspection:['',[Validators.required]],
       kmLastInspection:['',[Validators.required]],
       dateLastInspection:['', [Validators.required]],
@@ -53,8 +53,10 @@ export class VehicleBasicEditComponent implements OnInit {
       validators: [this.kmMax('kmToInspection','kmLastInspection') ]
      }
      );
+     this.isEdit = false;
     }else
     {
+      this.isEdit = true;
       this.formGroupBasic = this.formBuilder.group({
         licensePlate: [{value: this.vehicleEdit.licensePlate , disabled: this.viewMode},[Validators.required,Validators.pattern(/^[A-Za-z]{3}[\d]{3}$/)]],
         vehicleTypeSelected: [{value:this.vehicleEdit.type, disabled: this.viewMode}, [Validators.required]],
@@ -65,7 +67,7 @@ export class VehicleBasicEditComponent implements OnInit {
         cubed:[{value: this.vehicleEdit.cubed, disabled: this.viewMode}],
         capacityM3:[{value: this.vehicleEdit.capacityM3, disabled: this.viewMode}],
         capacityTon:[{value: this.vehicleEdit.capacityTon, disabled: this.viewMode}, [Validators.required]],
-        transporterSelected:[{value: this.vehicleEdit.transporter, disabled: this.viewMode}, [Validators.required]],
+        transporterSelected:[{value: this.vehicleEdit.transporter, disabled: true}],
         kmToInspection:[{value: this.vehicleEdit.kilometerToInspection, disabled: this.viewMode},[Validators.required]],
         kmLastInspection:[{value: this.vehicleEdit.kilometerLastInspection, disabled: this.viewMode},[Validators.required]],
         dateLastInspection:[{value: new Date(this.vehicleEdit.dateLastInspection as string), disabled: this.viewMode},[Validators.required]],

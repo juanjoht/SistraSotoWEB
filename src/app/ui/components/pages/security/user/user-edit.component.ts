@@ -84,18 +84,29 @@ export class UserEditComponent implements OnInit{
 
 
     changeClient(value: any, isProv: boolean){
-      this.typeThird = isProv ? 'PROVEEDOR' : value.originalEvent.currentTarget.children.item(0).firstChild.innerHTML;
-      this.clientID = isProv ? value: value.value;
+      this.typeThird = isProv ? 'PROVEEDOR' :  value.originalEvent !== undefined? value.originalEvent?.currentTarget?.children?.item(0).firstChild?.innerHTML: value;
+      this.clientID = isProv ? value: value.value !== undefined? value.value : value;
       let isProvider  = this.providers.find(c => c.name === this.clientID)
       if (isProvider){
             let providerID = isProvider?.id;
             this.getFactoriesByProvider(providerID as number)
             this.f.factorySelected.enable();
-            this.f.factorySelected.addValidators(Validators.required);
+            this.f.factorySelected.setValidators(Validators.required);
+            this.formGroupBasic.get("factorySelected")?.updateValueAndValidity();
           }else
           {
+              if(this.typeThird === 'CONDUCTOR')
+              {
+                this.f["docNumber"].setValidators(Validators.required);
+                this.formGroupBasic.get("docNumber")?.updateValueAndValidity();
+              }else
+              {
+                this.f.docNumber.removeValidators(Validators.required);
+                this.formGroupBasic.get("docNumber")?.updateValueAndValidity();
+              }
             this.f.factorySelected.disable();
             this.f.factorySelected.removeValidators(Validators.required);
+            this.formGroupBasic.get("factorySelected")?.updateValueAndValidity();
           }
     }
 
@@ -129,7 +140,13 @@ export class UserEditComponent implements OnInit{
           next: (data:any) => {
             this.providers = data;
             if (Object.keys(this.userEdit).length !== 0){
-              this.changeClient(this.userEdit.thirdParty, true);
+              if(this.userEdit.thirdPartyType === 'PROVEEDOR'){
+                this.changeClient(this.userEdit.thirdParty, true);
+              }else
+              {
+                this.changeClient(this.userEdit.thirdPartyType, false);
+              }
+              
             }
           },
           error: (error) => {

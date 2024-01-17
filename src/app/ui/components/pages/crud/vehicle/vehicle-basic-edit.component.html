@@ -38,8 +38,10 @@
             <small id="email-help" class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.grossWeight?.errors?.required">Peso bruto(ton) es Requerido.</small>
         </div>
         <div class="field col-12 sm:col-4">
-            <label for="cubicadoInput" class="font-bold">Cubicado</label>
-            <input id="cubicadoInput" type="text" pInputText  formControlName="cubed" >
+            <label for="YesorNot" class="font-bold" >Cubicado</label>
+            <div class="flex align-items-center h-3rem">
+                <p-checkbox formControlName="cubed" [binary]="true" inputId="YesorNot"></p-checkbox>
+            </div>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="capacityM3Input" class="font-bold">Capacidad m3</label>
@@ -50,16 +52,11 @@
             <p-inputNumber id="capacityTonInput" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" inputId="minmax" inputId="minmax" [min]="0" formControlName="capacityTon" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.capacityTon.errors}"> </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.capacityTon?.errors?.required">Capacidad ton es requerido</small>
         </div>
-        <div class="field col-12 sm:col-4">
-            <label for="trnasporterSelect" class="font-bold">Transportador*</label>
+        <div class="field col-12 sm:col-4"  *ngIf="isEdit">
+            <label for="trnasporterSelect" class="font-bold">Transportador</label>
             <p-dropdown id="trnasporterSelect"  placeholder="Seleccione un Transportador" 
-            formControlName="transporterSelected" [options]="transporters" optionValue="name"  optionLabel="name" 
-            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.transporterSelected.errors }"  >
+            formControlName="transporterSelected" [options]="transporters" optionValue="name"  optionLabel="name"   >
             </p-dropdown>
-            <small class="ng-dirty ng-invalid" 
-            *ngIf="submittedBasic && f?.transporterSelected?.errors?.required">
-            Transportador es requerido
-            </small>
         </div>
         <div class="field col-12 sm:col-4">
             <label for="kmToInspectionInput" class="font-bold">Km para inspección*</label>

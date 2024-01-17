@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { CustomerBasicInfo, CustomerLicensePlate } from 'src/app/ui/models/customer.model';
 import { preassignment } from 'src/app/ui/models/preassignment.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
 import { PreassignmentService } from 'src/app/ui/service/preassignment.service';
 import { PreassignmentEditComponent } from './preassignment-edit.component';
 import * as FileSaver from 'file-saver';
+import { VehicleService } from 'src/app/ui/service/vehicle.service';
+import { VehiclePlate } from 'src/app/ui/models/vehicles.model';
 
 @Component({
   selector: 'app-preassignment-list',
@@ -18,6 +20,13 @@ export class PreassignmentListComponent implements OnInit {
 
   preassignments: preassignment[] = [];
   preassignment : preassignment = {};
+  page: number = 1;
+  first: number = 0;
+  rows: number = 10;
+  totalRecords: number = 0;
+  filter: string = '';
+  sort: string = '';
+  sortAsc: boolean = false;
   cols: any[] = [];
   preassignmentDialog = false;
   showOptions: boolean = true;
@@ -28,14 +37,13 @@ export class PreassignmentListComponent implements OnInit {
   disabledSave: boolean = false;
   customers: CustomerBasicInfo[] = [];
   customersBuildings: any[] = [];
-  customerPlates : CustomerLicensePlate[] = [];
-  clientID : number = 0;
+  vehicles: VehiclePlate[] = [];  clientID : number = 0;
   allowApproveAll: boolean = false;
   deleteDialog: boolean = false;
   preassignmentId: number= 0;
   saveLabel: string = 'Guardar';
   action: string = "Crear";
-  constructor(private preassignmentService: PreassignmentService, private customerService: CustomerService, private messageService: MessageService) { }
+  constructor(private preassignmentService: PreassignmentService, private vehicleService: VehicleService, private customerService: CustomerService, private messageService: MessageService) { }
 
   ngOnInit() {
     //this.canRead = Common.checkPermissions('Maestros-Materiales', 'Consultar');
@@ -43,6 +51,7 @@ export class PreassignmentListComponent implements OnInit {
     //this.canEdit = Common.checkPermissions('Maestros-Materiales', 'Editar');
     this.getCustomerList();
     this.getGridData();
+    this.getAllVehicles();
     this.cols = [
         { field: 'serviceDate', header: 'Fecha' },
         { field: 'serviceHour', header: 'Hora Cargue' },
@@ -83,40 +92,137 @@ export class PreassignmentListComponent implements OnInit {
   }
 
   
-  getLicensePlateByClient(clientId: number){
-    this.customerService.getLicensePlatesByClient(clientId)
+
+  
+  getAllVehicles(){
+    this.vehicleService.getVehiclePlate()
     .subscribe({
         next: (data:any) => {
-          this.customerPlates = data;
+          this.vehicles = data;
         },
-        error: error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        error: (error: { message: any; }) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
         }
     });
   }
 
 
   getClientId(data: CustomerBasicInfo[], name: any){
-    return data.find(x=> x.name === name)?.id
+    return data.find(x=> x.id === name)?.id
   }
 
   changeClient(event: any){
-    this.clientID = this.getClientId(this.customers, event.value) as number;
+    this.clientID = event.value as number;
     this.getBuildingsByClient(this.clientID);  
-    this.getLicensePlateByClient(this.clientID);
   }
 
+  sortM: any[] = []
+  customSort(e: LazyLoadEvent){
+    this.sortAsc = e.sortOrder === 1 ? false : true;
+    switch (e.sortField) {
+        case 'serviceDate':
+          this.sort = "FechaServicio" 
+        break;
+        case 'serviceHour':
+          this.sort = "Hora" 
+        break;
+        case 'clientName':
+          this.sort = "ClienteId" 
+        break;
+        case 'buildingName':
+          this.sort = "ObraId" 
+        break;
+        case 'vehiclePlate':
+          this.sort = "Placa" 
+        break;
+        case 'driverName':
+          this.sort = "ConductorId" 
+        break;
+        case 'materialName':
+          this.sort = "MaterialId" 
+        break;
+        case 'measureUnit':
+          this.sort = "UnidadMedida" 
+        break;
+        case 'amount':
+          this.sort = "Cantidad" 
+        break;
+        case 'factoryName':
+          this.sort = "PlantaId" 
+        break;
+        case 'state':
+          this.sort = "Estado" 
+          break;
+      default:
+        this.sort = 'Id'
+        break;
+    }
+    this.getGridData();
+  }
+
+  filterM: any[]= [];
+  filterQuery(values: any, type: string)
+  {
+    this.filter = '';
+    if(values !== null)
+    {
+      if(type === 'fechaServicio')
+      {
+        const yyyy = values.getFullYear();
+        let mm = values.getMonth() + 1; // Months start at 0!
+        let dd = values.getDate();
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm; 
+        values = mm + '/' + dd + '/' + yyyy;
+      }
+    }
+      
+      let curretFilter = `&filters[${type}]=${values}`
+      let existfilterType = this.filterM.length !==0 ? this.filterM.find(x =>x.type === type) : undefined;
+      if(existfilterType === undefined)
+      {
+        this.filterM.push({filter: curretFilter, type : type});
+      }else
+      {
+        if (values === null)
+        {
+          const index = this.filterM.indexOf(existfilterType);
+          if (index > -1) {
+            this.filterM.splice(index, 1);
+          }
+        }else
+          existfilterType.filter = curretFilter
+      }
+
+      for (var a = 0; a < this.filterM.length; a++) {
+        this.filter += this.filterM[a].filter;
+      }
+    
+    this.getGridData();
+  }
+
+  onPageChange(event:any) {
+    this.page = event.page + 1;
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getGridData();
+}
+
+
   getGridData(){
-    this.preassignmentService.getPreassignment()
+    setTimeout(() => {
+    this.preassignmentService.getPreassignment(this.page,this.rows, this.sort, this.sortAsc, this.filter)
     .subscribe({
         next: (data:any) => {
-          this.preassignments = data;
+          this.preassignments = data.preassignments;
+          this.totalRecords = data.pageInf.totalItems;;
         },
         error: error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
           console.log(error);
         }
     });
+  }, 1000);
   }
 
   openNew(){

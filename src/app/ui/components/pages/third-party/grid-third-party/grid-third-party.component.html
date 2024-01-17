@@ -63,9 +63,6 @@
                 <p-tabPanel *ngIf="feature === 'Cliente' || feature === 'Transportador'" header="Tarifas Fletes" [disabled]="shippingListTab">
                     <app-customer-shipping-list  [unit]="measureUnit" [feature]="feature" [clientName]="clientName" [viewMode]="isViewMode" [clientId]="clientId"></app-customer-shipping-list>
                 </p-tabPanel>
-                <p-tabPanel  *ngIf="feature === 'Transportador'" header="Rutas" [disabled]="routesListTab">
-                    <app-transporter-route-list [transporterName]="clientName" [viewMode]="isViewMode" [transporterId]="clientId"  ></app-transporter-route-list>
-                </p-tabPanel>
                 <p-tabPanel  *ngIf="feature === 'Conductor'" header="Información General" [disabled]="driversGeneralInfoTab">
                     <app-driver-general-info [driverGeneralEdit]="driverGeneralInfo" [driverId]="clientId" [viewMode]="isViewMode"></app-driver-general-info>
                  </p-tabPanel>

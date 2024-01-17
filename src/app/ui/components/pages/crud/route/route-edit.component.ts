@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CustomerBasicInfo, CustomerBuildings } from 'src/app/ui/models/customer.model';
 import { Cities, Depts } from 'src/app/ui/models/param-static.model';
+import { ProviderBasicInfo } from 'src/app/ui/models/provider.model';
 import { route, routeType } from 'src/app/ui/models/route.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
 import { ParamStaticService } from 'src/app/ui/service/param-static.service';
 import { ParamService } from 'src/app/ui/service/param.service';
+import { ProviderService } from 'src/app/ui/service/provider.service';
 import { RouteService } from 'src/app/ui/service/route.service';
 
 @Component({
@@ -18,6 +20,8 @@ export class RouteEditComponent implements OnInit {
   @Input() routelEdit!: route;
   @Input() viewMode: boolean = false;
 
+  providersOrigin: any[] = [];
+  providersDestination: any[] = [];
   customersOrigin: any[] = [];
   customersDestination: any[] = []
   customersBuildingsOrigin: any[] = [];
@@ -32,7 +36,8 @@ export class RouteEditComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
       private paramService: ParamService,
       private paramStaticService: ParamStaticService,
-      private customerService: CustomerService, 
+      private customerService: CustomerService,
+      private providerService: ProviderService,  
       private messageService: MessageService) { }
 
   types : routeType[] = [
@@ -43,11 +48,14 @@ export class RouteEditComponent implements OnInit {
     {
       id : 2,
       name : 'Ubicación'
+    },
+    {
+      id : 3,
+      name : 'Planta'
     }
   ]
 
   ngOnInit(): void {
-   // this.getCustomerList();
     if (Object.keys(this.routelEdit).length === 0){
     this.formGroupBasic = this.formBuilder.group({
       name: ['',[Validators.required]],
@@ -109,6 +117,41 @@ export class RouteEditComponent implements OnInit {
     });
   }
 
+  getProviderList(type: string){
+    this.providerService.getProvider()
+    .subscribe({
+        next: (data:any) => {
+          if(type === 'origin'){
+            this.customersOrigin = data;
+          }else{
+            this.customersDestination = data;
+          }
+          if (Object.keys(this.routelEdit).length !== 0){
+            let clientIDOriginSelected = this.getProviderId(this.customersOrigin, this.routelEdit.originClient?.toString()) as number
+            this.f.originClientSelected.setValue(clientIDOriginSelected);
+            if(this.routelEdit.originType === 'Obra'){
+               this.getBuildingsByClient(clientIDOriginSelected,'origin');
+            }else if (this.routelEdit.originType === 'Planta'){
+              this.getFactoriesByProvider(clientIDOriginSelected,'origin');
+            }
+
+            let clientIDDestinationSelected = this.getProviderId(this.customersDestination, this.routelEdit.destinationClient?.toString()) as number
+            this.f.destinationClientSelected.setValue(clientIDDestinationSelected);
+            if(this.routelEdit.destinationType === 'Obra'){
+              this.getBuildingsByClient(clientIDDestinationSelected,'destination');
+            } else if (this.routelEdit.originType === 'Planta'){
+              this.getFactoriesByProvider(clientIDDestinationSelected,'destination');
+            }
+            this.f["destinationSelected"].setValue(this.routelEdit.destination);
+          }
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          console.log(error);
+        }
+    });
+  }
+
   getDepts(type: string){
     this.paramStaticService.getDepts()
             .subscribe({
@@ -160,8 +203,35 @@ export class RouteEditComponent implements OnInit {
     return data.find(x=> x.name === name)?.id
   }
 
+  getProviderId(data: ProviderBasicInfo[], name: any){
+    return data.find(x=> x.name === name)?.id
+  }
+
   getBuildingsByClient(clientId: number,type: string){
     this.customerService.getBuildingsByClient(clientId)
+    .subscribe({
+        next: (data:any) => {
+          if(type === 'origin'){
+            this.customersBuildingsOrigin = data;
+            if (Object.keys(this.routelEdit).length !== 0){
+              this.f["originSelected"].setValue(this.routelEdit.origin);
+            }
+          }else{
+            this.customersBuildingsDestination = data;
+            if (Object.keys(this.routelEdit).length !== 0){
+              this.f["destinationSelected"].setValue(this.routelEdit.destination);
+            }
+          }
+
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        }
+    });
+  }
+
+  getFactoriesByProvider(clientId: number,type: string){
+    this.providerService.getProviderFactories(clientId)
     .subscribe({
         next: (data:any) => {
           if(type === 'origin'){
@@ -203,19 +273,29 @@ export class RouteEditComponent implements OnInit {
   {
     this.clientID = event.value as number;
     if(type === 'origin'){
-      if(this.f?.originTypeSelected.value === 'Obra'){
-        this.getBuildingsByClient(this.clientID,type);
-      }else
-      {
-        this.getCities(event.value,type);
+      switch (this.f?.originTypeSelected.value) {
+        case 'Obra':
+          this.getBuildingsByClient(this.clientID,type);
+          break;
+        case 'Planta':
+          this.getFactoriesByProvider(this.clientID,type);
+          break;
+        default:
+          this.getCities(event.value,type);
+          break;
       }
     }else
     {
-      if(this.f?.destinationTypeSelected.value === 'Obra'){
-        this.getBuildingsByClient(this.clientID,type);
-      }else
-      {
-        this.getCities(event.value,type);
+      switch (this.f?.destinationTypeSelected.value) {
+        case 'Obra':
+          this.getBuildingsByClient(this.clientID,type);
+          break;
+        case 'Planta':
+          this.getFactoriesByProvider(this.clientID,type);
+          break;
+        default:
+          this.getCities(event.value,type);
+          break;
       }
     }
    
@@ -224,19 +304,29 @@ export class RouteEditComponent implements OnInit {
   changeType(type: string)
   {
     if(type === 'origin'){
-      if(this.f?.originTypeSelected.value === 'Obra'){
-        this.getCustomerList(type);
-      }else
-      {
-        this.getDepts(type);  
+      switch (this.f?.originTypeSelected.value) {
+        case 'Obra':
+          this.getCustomerList(type);
+          break;
+        case 'Planta':
+          this.getProviderList(type);
+          break;
+        default:
+          this.getDepts(type);  
+          break;
       }
     }else
     {
-      if(this.f?.destinationTypeSelected.value === 'Obra'){
-        this.getCustomerList(type);
-      }else
-      {
-        this.getDepts(type);  
+      switch (this.f?.destinationTypeSelected.value) {
+        case 'Obra':
+          this.getCustomerList(type);
+          break;
+        case 'Planta':
+          this.getProviderList(type);
+          break;
+        default:
+          this.getDepts(type);  
+          break;
       }
     }
   }

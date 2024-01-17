@@ -104,22 +104,16 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/pages/timeline'],
                         items: [
                             {
-                                label: 'Pedidos del cliente',
+                                label: 'Pedidos',
                                 class: this.checkPermissions('Programacion-PedidosCliente'),
                                 icon: 'pi pi-fw pi-hashtag',
                                 routerLink: ['/pages/order']
                             },
                             {
-                                label: 'Pedidos del cliente - Aprobación',
+                                label: 'Pedidos - Aprobación',
                                 class: this.checkPermissions('Programacion-PedidosClienteAprobacion'),
                                 icon: 'pi pi-fw pi-hashtag',
                                 routerLink: ['/pages/order-approve']
-                            },
-                            {
-                                label: 'Pedidos Proveedores',
-                                class: this.checkPermissions('Programacion-PedidosProveedor'),
-                                icon: 'pi pi-fw pi-calendar-plus',
-                                routerLink: ['/pages/provider-order']
                             },
                             {
                                 label: 'Preasignaciones',

@@ -107,6 +107,42 @@ export class CustomerService {
         }));
     }
 
+    getBuildings() {
+        let newCommerciaInfo: CustomerBuildings; 
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiBuilding}`)
+        .pipe(map(data => {
+            return data?.obras?.map((item: any) =>{
+                 return newCommerciaInfo =  {
+                    id: item.id,
+                    customerId: item.clienteId,
+                    name: item.nombre,
+                    phone: item.telefono,
+                    contactName: item.nombreContacto,
+                    dept: item.departamento,
+                    city:item.municipio,
+                    address: item.direccion,
+                    zone: item.zona,
+                    email: item.correoElectronico,
+                    scale: item.bascula === 'Si' ? true: false,
+                    latitude: item.latitud,
+                    length: item.longitud,
+                    isAdminBySoto13: item.administraSotoTrece,
+                    tolerancePercentage: item.porcentajeTolerancia,
+                    intermediationPercentage: item.porcentajeIntermediacion,
+                    deliveryConfirmation: item.confirmacionEntrega,
+                    receptionTimes : item.horariosRecepcion,
+                    allowedVehicleTypes: item.tipoVehiculoPermitido,
+                    allCost: item.todoCosto,
+                    profitability : item.calificacionRentabilidad,
+                    roadCondition: item.calificacionEstadoVia,
+                    unloadingAgility: item.calificacionAgilidadDescargue,
+                    weightedRating: item.calificacionPonderada,                    
+                    state : item.estado
+                }
+            })
+        }));
+    }
+
     getTransportersByClient(clientId: number) {
         let newInfo: CustomerTransport; 
         return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiTransportersByClient}?ClienteId=${clientId}`)
@@ -123,16 +159,15 @@ export class CustomerService {
 
     getShippingRatesByThirdParty(clientId: number) {
         let newInfo: CustomerShipping; 
-        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiShippingRateByClient}?ClienteId=${clientId}`)
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiShippingRateByClient}/cliente?ClienteId=${clientId}`)
         .pipe(map(data => {
-            return data?.tarifaFletes?.map((item: any) =>{
+            return data?.clienteTarifaFletes?.map((item: any) =>{
                  return newInfo =  {
                     id: item.id,
                     routeId: item.rutaId,
-                    route: item.ruta,
-                    material: item.material,
-                    measureUnit: item.unidadMedida,
-                    shippingValue: item.valorFlete,
+                    route: item.rutaNombre,
+                    material: item.tipoMaterialNombre,
+                    materialId: item.tipoMaterialId,
                     m3Value: item.valorMetroCubico,
                     tonValue: item.valorTonelada,
                     state: item.estado
@@ -379,18 +414,18 @@ putCustomerBuilding(requestCustmerBuilding: CustomerBuildings){
 postCustomerShipping(requestCustmerShipping: CustomerShipping){
     return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiCustomerRateShipping}`,
     {
-        tarifaFleteCliente: {
+        clienteTarifaFlete: {
             clienteId: requestCustmerShipping.customerId,
             rutaId: requestCustmerShipping.routeId,
-            material: requestCustmerShipping.material,
-            unidadMedida: requestCustmerShipping.measureUnit,
-            valorFlete: requestCustmerShipping.shippingValue,
+            tipoMaterialId: requestCustmerShipping.materialId,
+            valorMetroCubico: requestCustmerShipping.m3Value,
+            valorTonelada: requestCustmerShipping.tonValue,
             estado : requestCustmerShipping.state
         }
       })
         .pipe(map(client => {
-            if (client.tarifaFlete?.id !== 0 && client.tarifaFlete?.id != null) {
-                return client.tarifaFlete; 
+            if (client.clienteTarifaFlete?.id !== 0 && client.clienteTarifaFlete?.id != null) {
+                return client.clienteTarifaFlete; 
             }
         }));
 }
@@ -398,23 +433,18 @@ postCustomerShipping(requestCustmerShipping: CustomerShipping){
 putCustomerShipping(requestCustmerShipping: CustomerShipping, clientId: number){
     return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiRateShipping}`,
     {
-        tarifaFleteCliente:{
-            clienteId: clientId,
-            estado: requestCustmerShipping.state,
-            tarifaFlete: {
+        clienteTarifaFlete: {
                 id: requestCustmerShipping.id,
+                clienteId: clientId,
                 rutaId: requestCustmerShipping.routeId,
-                material: requestCustmerShipping.material,
+                tipoMaterialId: requestCustmerShipping.materialId,
                 valorMetroCubico: requestCustmerShipping.m3Value,
                 valorTonelada: requestCustmerShipping.tonValue,
-                unidadMedida: requestCustmerShipping.measureUnit,
-                valorFlete: requestCustmerShipping.shippingValue,
                 estado : requestCustmerShipping.state
             }
-        }
       })
         .pipe(map(client => {
-                return (client.relacionTarifaFleteActualizado !== null && client.relacionTarifaFleteActualizado !== undefined) ? client.relacionTarifaFleteActualizado : false; 
+                return (client.clienteTarifaFlete !== null && client.clienteTarifaFlete !== undefined) ? client.clienteTarifaFlete : false; 
         }));
 }
 

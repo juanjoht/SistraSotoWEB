@@ -82,6 +82,7 @@ export interface transporterShipping{
     route?: string;
     routeId?: number;
     material?: string;
+    materialId?: number;
     measureUnit?: string;
     shippingValue?: number;
     tonValue?: number;

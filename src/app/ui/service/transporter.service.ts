@@ -36,15 +36,16 @@ export class TransporterService {
     }
 
     getShippingRatesByTransporter(TransporterId: number) {
-        let newInfo: transporterShipping; 
-        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiShippingRateByTransporter}?TransportadorId=${TransporterId}`)
+        let newInfo: CustomerShipping; 
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiShippingRateByTransporter}/transportador?TransportadorId=${TransporterId}`)
         .pipe(map(data => {
-            return data?.tarifaFletes?.map((item: any) =>{
+            return data?.transportadorTarifaFletes?.map((item: any) =>{
                  return newInfo =  {
                     id: item.id,
                     routeId: item.rutaId,
-                    route: item.ruta,
-                    material: item.material,
+                    route: item.rutaNombre,
+                    material: item.tipoMaterialNombre,
+                    materialId: item.tipoMaterialId,
                     measureUnit: item.unidadMedida,
                     shippingValue: item.valorFlete,
                     m3Value: item.valorMetroCubico,
@@ -187,18 +188,18 @@ export class TransporterService {
 postTransporterShipping(requestCustmerShipping: CustomerShipping){
     return this.http.post<any>(`${environment.urlBaseApi}${Constants.apiTransporterRateShipping}`,
     {
-        tarifaFleteTransportador: {
+        transportadorTarifaFlete: {
             transportadorId: requestCustmerShipping.customerId,
             rutaId: requestCustmerShipping.routeId,
-            material: requestCustmerShipping.material,
+            tipoMaterialId: requestCustmerShipping.materialId,
             valorMetroCubico: requestCustmerShipping.m3Value,
             valorTonelada: requestCustmerShipping.tonValue,
             estado: requestCustmerShipping.state
         }
       })
         .pipe(map(client => {
-            if (client.tarifaFlete?.id !== 0 && client.tarifaFlete?.id != null) {
-                return client.tarifaFlete; 
+            if (client.transportadorTarifaFlete?.id !== 0 && client.transportadorTarifaFlete?.id != null) {
+                return client.transportadorTarifaFlete; 
             }
         }));
 }
@@ -206,24 +207,19 @@ postTransporterShipping(requestCustmerShipping: CustomerShipping){
 putTransporterShipping(requestCustmerShipping: CustomerShipping, transporterId: number){
     return this.http.put<any>(`${environment.urlBaseApi}${Constants.apiTransporterRateShipping}`,
     {
-        tarifaFleteTransportador: {
+        transportadorTarifaFlete: {
+            id: requestCustmerShipping.id,
             transportadorId:transporterId,
-            estado: requestCustmerShipping.state,
-            tarifaFlete:{
-                id: requestCustmerShipping.id,
-                rutaId: requestCustmerShipping.routeId,
-                material: requestCustmerShipping.material,
-                valorMetroCubico: requestCustmerShipping.m3Value,
-                valorTonelada: requestCustmerShipping.tonValue,
-                unidadMedida: requestCustmerShipping.measureUnit,
-                valorFlete: requestCustmerShipping.shippingValue,
-                estado: requestCustmerShipping.state
-            }
+            rutaId: requestCustmerShipping.routeId,
+            tipoMaterialId: requestCustmerShipping.materialId,
+            valorMetroCubico: requestCustmerShipping.m3Value,
+            valorTonelada: requestCustmerShipping.tonValue,
+            estado: requestCustmerShipping.state
         }
       })
         .pipe(map(client => {
-            if (client.tarifaFlete?.id !== 0 && client.tarifaFlete?.id != null) {
-                return client.tarifaFlete; 
+            if (client.transportadorTarifaFlete?.id !== 0 && client.transportadorTarifaFlete?.id != null) {
+                return client.transportadorTarifaFlete; 
             }
         }));
 }

@@ -125,6 +125,7 @@ export class GridThirdPartyComponent implements OnInit {
     this.loadingTimeListTab = true;
     this.factoryListTab = true;
     this.tabIndex = 0;
+    this.clientId = 0;
   }
 
   hideDialog() {
@@ -396,6 +397,7 @@ export class GridThirdPartyComponent implements OnInit {
           next: (data) => {
             if(data !== null)
             {
+              this.clientId = data.id;
               this.clientName = data.nombre;
               this.shippingListTab = false;
               this.routesListTab = false;
