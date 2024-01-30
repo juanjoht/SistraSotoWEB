@@ -12,3 +12,8 @@ export interface material {
     valueMaxTon?: number;
     state?: string;
 }
+
+export interface materialOrder {
+    id?: number;
+    name?: string;
+}

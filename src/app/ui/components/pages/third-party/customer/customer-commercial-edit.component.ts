@@ -55,7 +55,8 @@ export class CustomerCommercialEditComponent implements OnInit {
       delayDays:[{value: '', disabled: true},[]],
       measureUnitSelected:[{value: 'm3',disabled: this.viewMode},[Validators.required]],
       creditBalance:[{value: '',disabled: true},[]],
-      exclusiveTransport: [{value: false,disabled: this.viewMode},[]]
+      exclusiveTransport: [{value: false,disabled: this.viewMode},[]],
+      allowChangesInLoadPlant: [{value: false,disabled: this.viewMode},[]],
      });
     if(!this.editMode){
       this.getMaturityDaysDefault();
@@ -91,7 +92,8 @@ export class CustomerCommercialEditComponent implements OnInit {
       delayDays:[{value: CustomerCommercialInfo.delayDays, disabled: true},[]],
       measureUnitSelected:[{value: CustomerCommercialInfo.measureUnit, disabled: this.viewMode},[Validators.required]],
       creditBalance:[{value: CustomerCommercialInfo.creditBalance, disabled: true},[]],
-      exclusiveTransport: [{value: CustomerCommercialInfo.exclusiveTransport,disabled: this.viewMode},[]]
+      exclusiveTransport: [{value: CustomerCommercialInfo.exclusiveTransport,disabled: this.viewMode},[]],
+      allowChangesInLoadPlant: [{value: CustomerCommercialInfo.allowsChangesLoadPlant,disabled: this.viewMode},[]]
      });
      if(CustomerCommercialInfo?.customerType?.toLocaleLowerCase() === "anticipo")
       {

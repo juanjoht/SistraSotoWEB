@@ -318,7 +318,8 @@ export class GridThirdPartyComponent implements OnInit {
     delayDays: formValues.delayDays.value === '' ? 0 : formValues.delayDays.value ,
     measureUnit: formValues.measureUnitSelected?.value,
     creditBalance: formValues.creditBalance.value === '' ? 0 : formValues.creditBalance.value,
-    exclusiveTransport : formValues.exclusiveTransport?.value
+    exclusiveTransport : formValues.exclusiveTransport?.value,
+    allowsChangesLoadPlant: formValues.allowChangesInLoadPlant?.value
     }
 
     if (Object.keys(this.customerCommercialInfo).length !== 0 && (this.customerCommercialInfo.id != 0 || this.customerCommercialInfo.id !== null)){

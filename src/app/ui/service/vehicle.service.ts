@@ -38,6 +38,32 @@ export class VehicleService {
         }));
     }
 
+    getVehicleById(id: number) {
+        let newData: Vehicle = {};
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiVehicle}/id?Id=${id}`)
+        .pipe(map(data => {
+            const item = data?.vehiculo;
+                 return newData =  {
+                    id: item.id,
+                    licensePlate: item.placa,
+                    type: item.tipo,
+                    model: item.modelo,
+                    color: item.color,
+                    chassisNumber: item.numeroChasis,
+                    grossWeight: item.pesoBruto,
+                    cubed: item.cubicado,
+                    capacityTon: item.capacidadTonelada,
+                    capacityM3: item.capacidadMetroCubico,
+                    transporter: item.transportador,
+                    kilometerToInspection: item.kilometroParaInspeccion,
+                    kilometerLastInspection: item.kilometroUltimaInspeccion,
+                    dateLastInspection: item.fechaUltimaInspeccion,
+                    AuthCode:item.codigoAutorizacion,
+                    state: item.estado
+                }
+        }));
+    }
+
 
     getVehiclePlate() {
         let newData: VehiclePlate = {};

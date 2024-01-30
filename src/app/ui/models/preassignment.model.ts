@@ -6,6 +6,7 @@ export interface preassignment {
     buildingId?: number,
     buildingName?: string,
     clientName?: string,
+    clientId?: number,
     materialId?: number,
     materialName?: number,
     measureUnit?: string,
@@ -19,6 +20,7 @@ export interface preassignment {
     rejectionReason?: string,
     factoryEnterDoc?: boolean,
     buildingAllCost?: boolean,
-    state?: string
+    state?: string,
+    allowChangesLoanPlant?: boolean
 }
 

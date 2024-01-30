@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from '../api/customer';
-import { CustomerBasicInfo, CustomerBuildings, CustomerCommercialInfo, CustomerLicensePlate, CustomerShipping, CustomerTransport } from '../models/customer.model';
+import { CustomerBasicInfo, CustomerBuildingOrder, CustomerBuildings, CustomerCommercialInfo, CustomerLicensePlate, CustomerShipping, CustomerTransport } from '../models/customer.model';
 import { environment } from 'src/environments/environment';
 import { Constants } from 'src/app/common/constants';
 import { BehaviorSubject, Observable, map } from 'rxjs';
@@ -66,7 +66,8 @@ export class CustomerService {
                     intermediationPercentage: item.informacionComercial.porcentajeIntermediacion,
                     measureUnit: item.informacionComercial.unidadMedida,
                     creditBalance: item.informacionComercial.saldoFavor,
-                    exclusiveTransport : item.informacionComercial.transporteExclusivo
+                    exclusiveTransport : item.informacionComercial.transporteExclusivo,
+                    allowsChangesLoadPlant: item.informacionComercial.permiteCambiosCarguePlanta
                 }
         }));
     }
@@ -138,6 +139,26 @@ export class CustomerService {
                     unloadingAgility: item.calificacionAgilidadDescargue,
                     weightedRating: item.calificacionPonderada,                    
                     state : item.estado
+                }
+            })
+        }));
+    }
+
+    getBuildingsByClientOrder(clientId: number) {
+        let newInfo: CustomerBuildingOrder; 
+        let now: any = new Date();
+        const yyyy = now.getFullYear();
+        let mm = now.getMonth() + 1;
+        let dd = now.getDate();
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm; 
+        const values = mm + '/' + dd + '/' + yyyy;
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiCustomerBuildingOrder}?ClienteId=${clientId}&Fecha=${values}`)
+        .pipe(map(data => {
+            return data?.obras?.map((item: any) =>{
+                 return newInfo =  {
+                    id: item.id,
+                    name: item.nombre
                 }
             })
         }));
@@ -302,7 +323,8 @@ putThirdParty(requestCustmerBasic: any){
               DiasMora: requestCustmerCommercial.delayDays,
               UnidadMedida: requestCustmerCommercial.measureUnit,
               saldoFavor: requestCustmerCommercial.creditBalance,
-              transporteExclusivo: requestCustmerCommercial.exclusiveTransport
+              transporteExclusivo: requestCustmerCommercial.exclusiveTransport,
+              permiteCambiosCarguePlanta: requestCustmerCommercial.allowsChangesLoadPlant
             }
           })
             .pipe(map(client => {
@@ -327,7 +349,8 @@ putCustomerCommercial(requestCustmerCommercial: CustomerCommercialInfo){
           diasAdicionales:requestCustmerCommercial.additionalDays,
           DiasMora: requestCustmerCommercial.delayDays,
           UnidadMedida: requestCustmerCommercial.measureUnit,
-          transporteExclusivo: requestCustmerCommercial.exclusiveTransport
+          transporteExclusivo: requestCustmerCommercial.exclusiveTransport,
+          permiteCambiosCarguePlanta: requestCustmerCommercial.allowsChangesLoadPlant
         }
       })
         .pipe(map(client => {

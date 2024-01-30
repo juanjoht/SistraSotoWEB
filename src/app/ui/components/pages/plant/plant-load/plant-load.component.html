@@ -3,7 +3,11 @@
     <form [formGroup]="formGroupBasic" >
         <p-toast></p-toast>
             <div class="formgrid grid">
-                <div class="field col-12 sm:col-12">
+                <div class="field col-12 sm:col-3  flex align-items-center">
+                    <label for="anticipatedYesorNot" class="font-bold mr-2">Cargue anticipado</label>
+                    <p-checkbox  [binary]="true" formControlName="anticipatedSelected"  inputId="anticipatedYesorNot"></p-checkbox>
+                </div>
+                <div class="field col-12 sm:col-9 flex align-items-center">
                     <label for="plateSelect" class="font-bold mr-2">Ingrese la Placa del Vehículo</label>
                     <p-autoComplete formControlName="plateSelected" [suggestions]="filteredPlates" (completeMethod)="filterByPlate($event)" (onSelect)="changePlate($event)" field="name" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.plateSelected.errors}"></p-autoComplete>
                     <small class="ml-2 ng-dirty ng-invalid" *ngIf="submittedBasic && f?.plateSelected?.errors?.required">Placa es requerida.</small>
@@ -14,13 +18,19 @@
                 </div>
                 <div class="field col-12 sm:col-4">
                     <label for="buildingSelect" class="flex font-bold">Obra</label>
-                    <input id="buildingSelect" type="text" class="p-inputtext-lg" pInputText  formControlName="buildingSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.buildingSelected.errors }" >
+                    <input *ngIf="!showOptionsEditable" class="p-inputtext-lg" id="buildingSelect" type="text"  pInputText  formControlName="buildingSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.buildingSelected.errors }" >
+                    <p-dropdown *ngIf="showOptionsEditable" (onChange)="changeBuildings($event)" class="p-inputtext-lg" id="buildingSelect"  placeholder=""  
+                        formControlName="buildingSelected" [options]="customersBuildings" optionValue="name"  optionLabel="name" 
+                        [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.buildingSelected.errors }"  >
+                    </p-dropdown>
+                    <small  class="ng-dirty ng-invalid" *ngIf="showOptionsEditable && submittedBasic && f?.buildingSelected?.errors?.required">Obra es requerida.</small>
                 </div>
                 <div class="field col-12 sm:col-4">
                     <label for="materialSelect" class="flex font-bold">Material</label>
-                    <input id="materialSelect" type="text"  class="p-inputtext-lg" pInputText  formControlName="materialSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" >
+                    <input *ngIf="!showOptionsEditable" id="materialSelect" type="text"  class="p-inputtext-lg" pInputText  formControlName="materialSelected" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" >
+                    <p-dropdown *ngIf="showOptionsEditable" (onChange)="getMaterialsData($event)" id="materialSelect" scrollHeight="200px" class="p-inputtext-lg" formControlName="materialSelected"  [options]="materialsBuilding" placeholder="Seleccione un Material" optionValue="name"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.materialSelected.errors }" ></p-dropdown>
+                    <small class="ng-dirty ng-invalid" *ngIf="showOptionsEditable && submittedBasic && f?.materialSelected?.errors?.required">Material es requerido</small>
                 </div>
-        
                 <div class="field col-12 sm:col-4">
                     <label for="unitMeasureInput" class="flex font-bold">Unidad de medida</label>
                     <input id="unitMeasureInput" type="text" class="p-inputtext-lg" pInputText  formControlName="unitMeasure" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.unitMeasure.errors }" >

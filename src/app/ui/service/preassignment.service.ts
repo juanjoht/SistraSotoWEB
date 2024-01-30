@@ -72,9 +72,9 @@ export class PreassignmentService {
         }));
     }
 
-    getPreassignmentByPlate(plate: string, factoryId: number) {
+    getPreassignmentByPlate(plate: string, factoryId: number,isAnticipated: boolean = false) {
         let newData: preassignment = {};
-        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiPreassignmentByPlate}?Placa=${plate}&PlantaId=${factoryId}`)
+        return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiPreassignmentByPlate}?Placa=${plate}&PlantaId=${factoryId}&EsCargaAnticipada=${isAnticipated}`)
         .pipe(map(data => {
             return data?.preasignaciones?.map((item: any) =>{
                  return newData =  {
@@ -85,6 +85,7 @@ export class PreassignmentService {
                     buildingId: item.obraId,
                     buildingName: item.obraNombre,
                     clientName: item.clienteNombre,
+                    clientId: item.clienteId,
                     materialId: item.materialId,
                     materialName: item.materialNombre,
                     measureUnit: item.unidadMedida,
@@ -97,7 +98,8 @@ export class PreassignmentService {
                     rejectionReason: item.motivoRechazo,
                     factoryEnterDoc: item.plantaIngresaDocumento,
                     buildingAllCost: item.obraTodoCosto,
-                    state: item.estado
+                    state: item.estado,
+                    allowChangesLoanPlant: item.permiteCambiosCarguePlanta
                 }
             })
         }));

@@ -32,6 +32,7 @@ export interface CustomerCommercialInfo {
     measureUnit?: string;
     creditBalance?:number;
     exclusiveTransport?: boolean;
+    allowsChangesLoadPlant?: boolean;
 }
 
 export interface CustomerBuildings{
@@ -62,6 +63,11 @@ export interface CustomerBuildings{
     unloadingAgility?: number;
     weightedRating?: number;
     state?:string;
+}
+
+export interface CustomerBuildingOrder{
+    id?: number;
+    name?: string;
 }
 
 export interface BuildingsReceptionTimes{

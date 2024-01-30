@@ -3,8 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Common } from 'src/app/common/common';
+import { CustomerBuildingOrder } from 'src/app/ui/models/customer.model';
 import { preassignment } from 'src/app/ui/models/preassignment.model';
 import { VehiclePlate } from 'src/app/ui/models/vehicles.model';
+import { CustomerService } from 'src/app/ui/service/customer.service';
+import { MaterialService } from 'src/app/ui/service/material.service';
 import { PreassignmentService } from 'src/app/ui/service/preassignment.service';
 import { VehicleService } from 'src/app/ui/service/vehicle.service';
 
@@ -29,9 +32,14 @@ export class PlantLoadComponent implements OnInit {
   labelState: string = 'Iniciar Cargue';
   labelDisabled: boolean = true;
   showOptions: boolean = false;
+  showOptionsEditable: boolean = false;
+  customersBuildings: CustomerBuildingOrder[] = [];
+  materialsBuilding: any[] = [];
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private preassignmentService:  PreassignmentService,
+              private customerService: CustomerService,
+              private materialService: MaterialService,
               private vehicleService: VehicleService,  
               private messageService: MessageService){}
   ngOnInit(): void {
@@ -39,6 +47,7 @@ export class PlantLoadComponent implements OnInit {
       this.disableControl = true;
       this.formGroupBasic = this.formBuilder.group({
       plateSelected: [{value : '',disabled: false},[Validators.required]],
+      anticipatedSelected : [{value : false,disabled: false}],
       clientSelected: [{value : '', disabled : this.disableControl }],
       buildingSelected: [{value : '', disabled : this.disableControl}],
       materialSelected: [{value:  '', disabled : this.disableControl}],
@@ -80,7 +89,7 @@ export class PlantLoadComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Debe diligenciar todos los campos obligatorios.', life: 5000 });
       return;
     }
-      this.preassignmentService.getPreassignmentByPlate(e.name, Common.FactoryId)
+      this.preassignmentService.getPreassignmentByPlate(e.name, Common.FactoryId, this.f.anticipatedSelected.value)
       .subscribe({
           next: (data:any) => {
             this.preassignments = data;
@@ -103,6 +112,22 @@ export class PlantLoadComponent implements OnInit {
                 if(dataFromServer.state === 'Aprobado'){
                   this.labelDisabled = false;
                   this.labelState = 'Inicio Cargue';
+                  if (dataFromServer.allowChangesLoanPlant)
+                  {
+                    this.showOptionsEditable = true;
+                    this.f.buildingSelected.enable();
+                    this.f.buildingSelected.addValidators(Validators.required);
+                    const clientID = dataFromServer.clientId || 0;
+                    this.getBuildingsByClient(clientID, dataFromServer.buildingName || "");
+                    this.f.materialSelected.enable();
+                    this.f.materialSelected.addValidators(Validators.required);
+                  }else
+                  {
+                    this.f.buildingSelected.disable();
+                    this.f.buildingSelected.removeValidators(Validators.required);
+                    this.f.materialSelected.disable();
+                    this.f.materialSelected.removeValidators(Validators.required);
+                  }
                 }else if (dataFromServer.state === 'Cargando')
                 {
                   if(dataFromServer.factoryEnterDoc && !dataFromServer.buildingAllCost){
@@ -170,6 +195,7 @@ export class PlantLoadComponent implements OnInit {
                   this.submittedBasic = false;
                   this.formGroupBasic.reset();
                   this.showOptions = false;
+                  this.showOptionsEditable = false;
                 }
               },
               error: error => {
@@ -181,6 +207,82 @@ export class PlantLoadComponent implements OnInit {
 
   cancel(){
     this.router.navigate(["/dashboard"])
+  }
+
+  getBuildingsByClient(clientId: number, buildingName: string){
+    this.customerService.getBuildingsByClientOrder(clientId)
+    .subscribe({
+        next: (data:any) => {
+          this.customersBuildings = data;
+          const buildingId = this.customersBuildings.find(x => x.name === buildingName)?.id;
+          if(buildingId !== undefined){
+            this.getMaterialsByBuilding(buildingId);
+          }
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        }
+    });
+  }
+
+  getMaterialsByBuilding(buildingId: number){
+    this.materialService.getMaterialOrder(buildingId)
+    .subscribe({
+        next: (data:any) => {
+          this.materialsBuilding = data;
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        }
+    });
+  }
+
+  changeBuildings(e: any){
+    const val = e.value;
+    const buildingId = this.customersBuildings.find(x => x.name === val)?.id;
+    if(buildingId !== undefined){
+      this.preassignments[0].buildingId = buildingId;
+      this.getMaterialsByBuilding(buildingId);
+    }
+  }
+
+  getMaterialsData(e: any)
+  {
+    const materialId = this.materialsBuilding.find(x => x.name === e.value)?.id;
+    this.preassignments[0].materialId = materialId;
+    if(this.preassignments[0].measureUnit?.toLowerCase() === 'toneladas')
+    {
+      this.materialService.getMaterialById(materialId).subscribe({
+        next: (data:any) => {
+          if(data !== undefined)
+          {
+              const unitMass = data.unitMass;
+              const vehicleID = this.preassignments[0].vehicleId;
+              this.vehicleService.getVehicleById(vehicleID || 0).subscribe({
+                next: (dataq:any) => {
+                    if(dataq !== undefined)
+                    {
+                      const capacity = dataq.capacityTon;
+                      this.preassignments[0].amount = this.roundToTwo(unitMass * capacity) || 0;
+                      this.f.amount.setValue(this.preassignments[0].amount);
+                    }
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+                }
+          })
+        }
+        },
+        error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.detail, life: 5000 });
+        }
+      });
+    }
+  }
+
+  roundToTwo(num: any) {
+    const n = Number(num + "e+2")
+    return +(Math.round(n)  + "e-2");
   }
 
   get f() { return this.formGroupBasic?.controls; }
