@@ -41,6 +41,7 @@ export class PreassignmentListComponent implements OnInit {
   allowApproveAll: boolean = false;
   deleteDialog: boolean = false;
   preassignmentId: number= 0;
+  orderId?: number;
   saveLabel: string = 'Guardar';
   action: string = "Crear";
   constructor(private preassignmentService: PreassignmentService, private vehicleService: VehicleService, private customerService: CustomerService, private messageService: MessageService) { }
@@ -237,6 +238,7 @@ export class PreassignmentListComponent implements OnInit {
   edit(preassignment: any, action: string) {
     this.editMode= true;
     this.preassignmentId = preassignment.id as number;
+    this.orderId = preassignment.orderId as number;
     this.preassignmentDialog = true;
     this.preassignment = preassignment;
     this.action = action;
@@ -273,7 +275,8 @@ export class PreassignmentListComponent implements OnInit {
         vehicleId:  formValues.plateSelected.value,
         driverId: formValues.driverSelected.value,
         factoryId: formValues.factorySelected.value,
-        state : formValues.state.value
+        state : formValues.state.value,
+        orderId:  this.orderId
       }
       switch (this.action) {
         case 'Crear':

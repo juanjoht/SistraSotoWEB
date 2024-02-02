@@ -56,6 +56,7 @@ export class PreassignmentService {
                     factoryId: item.plantaId,
                     factoryName: item.plantaNombre,
                     rejectionReason: item.motivoRechazo,
+                    orderId: item.pedidoId,
                     state: item.estado
                 }
             })
@@ -118,6 +119,7 @@ export class PreassignmentService {
                 conductorId: request.driverId,
                 plantaId: request.factoryId,
                 motivoRechazo: request.rejectionReason,
+                pedidoId: request.orderId,
                 estado: request.state
             }
           })
@@ -142,6 +144,7 @@ export class PreassignmentService {
                 conductorId: request.driverId,
                 plantaId: request.factoryId,
                 motivoRechazo: request.rejectionReason,
+                pedidoId: request.orderId,
                 estado: request.state
             }
           })

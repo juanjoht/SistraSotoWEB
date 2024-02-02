@@ -20,6 +20,7 @@ export interface preassignment {
     rejectionReason?: string,
     factoryEnterDoc?: boolean,
     buildingAllCost?: boolean,
+    orderId?:number,
     state?: string,
     allowChangesLoanPlant?: boolean
 }

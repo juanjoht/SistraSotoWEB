@@ -45,7 +45,11 @@ export class PlantLoadComponent implements OnInit {
   ngOnInit(): void {
       this.getAllVehicles()
       this.disableControl = true;
-      this.formGroupBasic = this.formBuilder.group({
+      this.setFormGroup();
+  }
+
+  setFormGroup(){
+    this.formGroupBasic = this.formBuilder.group({
       plateSelected: [{value : '',disabled: false},[Validators.required]],
       anticipatedSelected : [{value : false,disabled: false}],
       clientSelected: [{value : '', disabled : this.disableControl }],
@@ -193,7 +197,7 @@ export class PlantLoadComponent implements OnInit {
                 {
                   this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Preasignación Actualizada', life: 3000 });
                   this.submittedBasic = false;
-                  this.formGroupBasic.reset();
+                  this.setFormGroup();
                   this.showOptions = false;
                   this.showOptionsEditable = false;
                 }
