@@ -116,8 +116,8 @@ export class AppMenuComponent implements OnInit {
                                 routerLink: ['/pages/order-approve']
                             },
                             {
-                                label: 'Preasignaciones',
-                                class: this.checkPermissions('Programacion-Preasignaciones'),
+                                label: 'Solicitudes de viaje',
+                                class: this.checkPermissions('Programacion-SolicitudesViaje'),
                                 icon: 'pi pi-fw pi-calendar',
                                 routerLink: ['/pages/preasignment']
                             }

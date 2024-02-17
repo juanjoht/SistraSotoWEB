@@ -145,7 +145,10 @@ export class PreassignmentService {
                 plantaId: request.factoryId,
                 motivoRechazo: request.rejectionReason,
                 pedidoId: request.orderId,
-                estado: request.state
+                estado: request.state,
+                fechaDescargueEstimada: request.dateDownload,
+                fechaSiguienteDisponibilidad: request.dateNext,
+                observacion: request.observation
             }
           })
             .pipe(map(user => {

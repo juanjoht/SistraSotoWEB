@@ -1,14 +1,24 @@
 <form [formGroup]="formGroupBasic" >
     <div class="formgrid grid">
-        <div class="field col-12 sm:col-6">
+        <div class="field col-12 sm:col-3">
             <label for="nameInput" class="font-bold">Nombre Ruta*</label>
             <input id="nameInput" type="text" pInputText  formControlName="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.name.errors }" >
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.name?.errors?.required">Nombre Ruta es requerido.</small>
         </div>
-        <div class="field col-12 sm:col-5">
-            <label for="tolerancePercentageInput" class="font-bold" cellphone >Tiempo Recorrido (min)*</label>
+        <div class="field col-12 sm:col-3">
+            <label for="tolerancePercentageInput" class="font-bold label-nowrap" cellphone >Tiempo Recorrido (min)*</label>
             <p-inputNumber id="runningTime"  inputId="integeronly"  formControlName="runningTime" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.runningTime.errors}" > </p-inputNumber>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.runningTime?.errors?.required">Tiempo Recorrido (min) es requerido.</small>
+        </div>
+        <div class="field col-12 sm:col-2">
+            <label for="distanceKmInput" class="font-bold" cellphone >Distancia KM*</label>
+            <p-inputNumber id="distanceKmInput"  mode="decimal" [minFractionDigits]="2"  formControlName="distanceKm" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.distanceKm.errors}" > </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.distanceKm?.errors?.required">Distancia KM es requerida.</small>
+        </div>
+        <div class="field col-12 sm:col-3">
+            <label for="returnTimeInput" class="font-bold label-nowrap" cellphone >Tiempo de Retorno (min)*</label>
+            <p-inputNumber id="returnTimeInput"  inputId="integeronly"  formControlName="returnTime" [ngClass]="{'ng-invalid ng-dirty' : submittedBasic && f.returnTime.errors}" > </p-inputNumber>
+            <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.returnTime?.errors?.required">Tiempo de Retorno (min) es requerido.</small>
         </div>
         <div class="field col-12 sm:col-1">
             <label for="stateYesorNot" class="font-bold">Estado</label>

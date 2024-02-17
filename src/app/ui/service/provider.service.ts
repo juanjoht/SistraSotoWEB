@@ -54,7 +54,7 @@ export class ProviderService {
         let newData: ProviderTimes = {};
         return this.http.get<any>(`${environment.urlBaseApi}${Constants.apiProviderTimes}/proveedorId?ProveedorId=${providerId}`)
         .pipe(map(data => {
-            return data?.plantas?.map((item: any) =>{
+            return data?.tiemposCargueProveedor?.map((item: any) =>{
                  return newData =  {
                     id: item.id,
                     providerId: item.proveedorId,

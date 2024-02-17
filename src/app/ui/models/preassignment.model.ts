@@ -22,6 +22,9 @@ export interface preassignment {
     buildingAllCost?: boolean,
     orderId?:number,
     state?: string,
-    allowChangesLoanPlant?: boolean
+    allowChangesLoanPlant?: boolean,
+    dateDownload?: Date,
+    dateNext? : Date
+    observation?: string
 }
 

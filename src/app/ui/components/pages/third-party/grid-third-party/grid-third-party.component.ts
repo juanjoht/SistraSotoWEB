@@ -574,11 +574,12 @@ export class GridThirdPartyComponent implements OnInit {
               this.pricesListTab = false;
               this.loadingTimeListTab = false;
               this.buildingListTab = false;
+              this.factoryListTab = false;
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Proveedor Creado', life: 3000 });
             }
           },
           error: error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
           }
       });
     }

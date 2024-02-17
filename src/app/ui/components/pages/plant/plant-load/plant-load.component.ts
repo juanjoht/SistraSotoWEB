@@ -177,10 +177,15 @@ export class PlantLoadComponent implements OnInit {
       objBasic.vehicleId=  this.preassignments[0].vehicleId;
       objBasic.driverId= this.preassignments[0].driverId;
       objBasic.factoryId= this.preassignments[0].factoryId;
+      objBasic.orderId = this.preassignments[0].orderId;
   }
     switch (this.labelState) {
       case 'Inicio Cargue':
           objBasic.state = 'Cargando';
+          if(this.f.anticipatedSelected.value)
+          {
+            objBasic.state = "Pendiente Inicio Ruta";
+          }
         break;
         case 'Completar cargue':
           objBasic.state = 'En Tránsito';
@@ -266,7 +271,7 @@ export class PlantLoadComponent implements OnInit {
                 next: (dataq:any) => {
                     if(dataq !== undefined)
                     {
-                      const capacity = dataq.capacityTon;
+                      const capacity = dataq.capacityM3;
                       this.preassignments[0].amount = this.roundToTwo(unitMass * capacity) || 0;
                       this.f.amount.setValue(this.preassignments[0].amount);
                     }

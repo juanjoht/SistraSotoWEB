@@ -60,6 +60,8 @@ export class RouteEditComponent implements OnInit {
     this.formGroupBasic = this.formBuilder.group({
       name: ['',[Validators.required]],
       runningTime:[0,[Validators.required]],
+      distanceKm: [0,[Validators.required]],
+      returnTime: [0,[Validators.required]],
       originTypeSelected: ['', [Validators.required]],
       originClientSelected: ['', [Validators.required]],
       originSelected: ['', [Validators.required]],
@@ -73,6 +75,8 @@ export class RouteEditComponent implements OnInit {
       this.formGroupBasic = this.formBuilder.group({
         name: [{value: this.routelEdit.name , disabled: this.viewMode},[Validators.required]],
         runningTime:[{value:this.routelEdit.runningTime, disabled: this.viewMode},[Validators.required]],
+        distanceKm:[{value:this.routelEdit.distanceKm, disabled: this.viewMode},[Validators.required]],
+        returnTime: [{value:this.routelEdit.returnTime, disabled: this.viewMode},[Validators.required]],
         originTypeSelected: [{value:this.routelEdit.originType, disabled: this.viewMode}, [Validators.required]],
         originClientSelected: [{value:'', disabled: this.viewMode}, [Validators.required]],
         originSelected: [{value:this.routelEdit.origin, disabled: this.viewMode}, [Validators.required]],

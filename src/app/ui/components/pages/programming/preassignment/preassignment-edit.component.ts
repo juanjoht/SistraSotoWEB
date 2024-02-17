@@ -5,11 +5,14 @@ import { CustomerBasicInfo, CustomerCommercialInfo, CustomerLicensePlate } from 
 import { DriverGeneralInfo } from 'src/app/ui/models/driver.model';
 import { factory } from 'src/app/ui/models/factory.model';
 import { material } from 'src/app/ui/models/material.model';
+import { params } from 'src/app/ui/models/param.model';
 import { preassignment } from 'src/app/ui/models/preassignment.model';
 import { CustomerService } from 'src/app/ui/service/customer.service';
 import { DriverService } from 'src/app/ui/service/driver.service';
 import { FactoryService } from 'src/app/ui/service/factory.service';
 import { MaterialService } from 'src/app/ui/service/material.service';
+import { ParamService } from 'src/app/ui/service/param.service';
+
 
 @Component({
   selector: 'app-preassignment-edit',
@@ -25,6 +28,7 @@ export class PreassignmentEditComponent implements OnInit{
     customerPlates : CustomerLicensePlate[] = [];
     allDrivers: DriverGeneralInfo[] = [];
     allFactories: factory[] = [];
+    noveltyTypes: params[] = [];
     customerCommercialInfo : CustomerCommercialInfo = {};
     formGroupBasic!: FormGroup;
     submittedBasic: boolean = false;
@@ -37,11 +41,15 @@ export class PreassignmentEditComponent implements OnInit{
     isEdit: boolean = false;
     disableUnitMeasureControl: boolean = true
     disableControl: boolean = false;
+    showNewDateDownload: boolean = false;
+    showNewDateNext: boolean = false;
+    showComments: boolean = false;
     constructor(private formBuilder: FormBuilder,
         private materialService: MaterialService,
         private customerService: CustomerService, 
         private driverService: DriverService,
         private factoryService: FactoryService,
+        private paramService: ParamService,
         private messageService: MessageService) { 
         }
   
@@ -50,6 +58,7 @@ export class PreassignmentEditComponent implements OnInit{
       this.getMaterials();
       this.getAllDrivers();
       this.getAllFactories();
+      this.getNoveltyTypes();
       if (Object.keys(this.preassignmentEdit).length === 0){
       this.isEdit = false;
       this.formGroupBasic = this.formBuilder.group({
@@ -64,6 +73,12 @@ export class PreassignmentEditComponent implements OnInit{
         factorySelected: ['',[Validators.required]],
         reasonReject: [''],
         state: [],
+        obs: [''],
+        noveltyTypeSelected: [''],
+        dateDownloadSelected: [''],
+        dateNextSelected: [''],
+        requestNumber :  ['']
+        //noveltyTypeSelected : ['',[Validators.required]]
       });
       }else
       {
@@ -80,10 +95,16 @@ export class PreassignmentEditComponent implements OnInit{
         driverSelected: [{value: this.preassignmentEdit.driverId, disabled: this.disableControl},[Validators.required]],
         factorySelected: [{value: this.preassignmentEdit.factoryId, disabled: this.disableControl},[Validators.required]],
         reasonReject: [''],
+        obs: [''],
         state: [{value: this.preassignmentEdit.state, disabled: false}],
+       // noveltyTypeSelected: [{value: this.preassignmentEdit.driverId, disabled: this.disableControl},[Validators.required]],
+        noveltyTypeSelected: [''],
+        dateDownloadSelected: [{value : ''}],
+        dateNextSelected: [{value : ''}],
+        requestNumber :  [{value: this.preassignmentEdit.id, disabled: true}]
         });
 
-        if(this.action.toLocaleLowerCase() === 'editar' || this.action.toLocaleLowerCase() === 'aprobar' ){
+        if(this.action.toLocaleLowerCase() === 'editar' || this.action.toLocaleLowerCase() === 'aprobar' || this.action.toLocaleLowerCase() === 'registrar novedad'){
           this.f.plateSelected.enable();
           this.f.driverSelected.enable();
         }
@@ -97,9 +118,38 @@ export class PreassignmentEditComponent implements OnInit{
 
       }
     }
+
+    getNoveltyTypes(){
+      this.paramService.getParamByType("Tipo de Novedad").
+      subscribe(
+        {
+          next: (data) => {
+            this.noveltyTypes = data;
+          }
+        }
+      )
+    }
   
     getCustomerList(){
       this.customerService.getCustomerBasic()
+      .subscribe({
+          next: (data:any) => {
+            this.customers = data;
+            if (Object.keys(this.preassignmentEdit).length !== 0){
+              let idClient = this.getClientId(this.customers, this.preassignmentEdit.clientName) as number;
+              this.f.clientSelected.setValue(idClient);
+              this.getBuildingsByClient(idClient);
+              this.getLicensePlateByClient(idClient);
+            }
+          },
+          error: error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message, life: 5000 });
+          }
+      });
+    }
+
+    getCustomerTransporterVehicleList(){
+      return this.customerService.getCustomerTransporterVehicle(this.preassignmentEdit.vehicleId as number)
       .subscribe({
           next: (data:any) => {
             this.customers = data;
@@ -140,6 +190,57 @@ export class PreassignmentEditComponent implements OnInit{
       this.getBuildingsByClient(this.clientID);
       this.getCommercialInfoByClient(this.clientID);  
       this.getLicensePlateByClient(this.clientID);
+    }
+
+    changeNoveltyType(event: any){
+        switch (event.value) {
+          case 'Desvío':
+            this.f.clientSelected.enable();
+            this.f.buildingSelected.enable();
+            this.getCustomerTransporterVehicleList();
+            this.f.obs.removeValidators(Validators.required);
+            this.f.dateDownloadSelected.removeValidators(Validators.required);
+            this.showComments = false;
+            this.showNewDateDownload = false;
+            this.showNewDateNext = false;
+          break;
+          case 'Trasbordo':
+            this.f.clientSelected.disable();
+            this.f.buildingSelected.disable();
+            this.getCustomerList();
+            this.f.obs.setValidators(Validators.required);
+            this.f.dateDownloadSelected.removeValidators(Validators.required);
+            this.showComments = true;
+            this.showNewDateDownload = false;
+            this.showNewDateNext = false;
+          break;
+          case 'Cambio de hora descargue':
+            this.f.clientSelected.disable();
+            this.f.buildingSelected.disable();
+            this.getCustomerList();
+            this.f.obs.setValidators(Validators.required);
+            this.f.dateDownloadSelected.setValidators(Validators.required);
+            this.f.dateNextSelected.removeValidators(Validators.required);
+            this.showComments = true;
+            this.showNewDateDownload = true;
+            this.showNewDateNext = false;
+          break;
+          case 'Cambio de hora próxima disponibilidad':
+            this.f.clientSelected.disable();
+            this.f.buildingSelected.disable();
+            this.getCustomerList();
+            this.f.obs.setValidators(Validators.required);
+            this.f.dateDownloadSelected.removeValidators(Validators.required);
+            this.f.dateNextSelected.setValidators(Validators.required);
+            this.showComments = true;
+            this.showNewDateDownload = false;
+            this.showNewDateNext = true;
+          break;
+          default:
+            this.f.clientSelected.disable();
+            this.f.buildingSelected.disable();
+            break;
+        }
     }
   
     getMaterials(){

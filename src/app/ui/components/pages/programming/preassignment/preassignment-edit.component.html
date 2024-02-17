@@ -1,5 +1,60 @@
 <form [formGroup]="formGroupBasic" >
     <div class="formgrid grid">
+        <div *ngIf="action.toLocaleLowerCase() === 'registrar novedad'" class="field col-12 sm:col-3">
+            <label for="SelectNoveltyType" class="font-bold">Tipo Novedad*</label>
+            <p-dropdown id="SelectNoveltyType" (onChange)="changeNoveltyType($event)" placeholder="Seleccione un Tipo de Novedad" 
+            formControlName="noveltyTypeSelected" [options]="noveltyTypes" optionValue="name"  optionLabel="name" 
+            [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.noveltyTypeSelected.errors }"  >
+            </p-dropdown>
+        </div>
+        <div *ngIf="action.toLocaleLowerCase() === 'registrar novedad'" class="field col-12 sm:col-3">
+            <label for="requestNumberInput" class="font-bold">Número Solicitud</label>
+            <input id="requestNumberInput" type="text" pInputText  formControlName="requestNumber" >
+        </div>
+        <div *ngIf="action.toLocaleLowerCase() === 'registrar novedad' && !showNewDateDownload && !showNewDateNext" class="field col-12 sm:col-3"></div>
+        <div *ngIf="action.toLocaleLowerCase() === 'registrar novedad' && showNewDateDownload" class="field col-12 sm:col-3">
+                <label for="newDateInputDownload" class="font-bold">Nueva Fecha/Hora Descargue*</label>    
+                <p-calendar
+                    [showClear]="true"
+                    [showTime]="true" 
+                    [showSeconds]="true"
+                    [showIcon]="true" class="calendar" [style]="{width:'300px'}"  
+                    [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '270px'}" 
+                    [inputStyle]="{'padding-right': '0'}"
+                    formControlName="dateDownloadSelected"
+                    [minDate]="today"
+                    hourFormat="12" 
+                    [showSeconds]="false"
+                    [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.dateDownloadSelected.errors }">
+                </p-calendar>
+                
+                <small class="ng-dirty ng-invalid"
+                    *ngIf="submittedBasic && f?.dateDownloadSelected?.errors?.required">Nueva Fecha/Hora Descargue es
+                    requerida</small>
+        </div>
+        <div *ngIf="action.toLocaleLowerCase() === 'registrar novedad' && showNewDateNext" class="field col-12 sm:col-3">
+            <label for="newDateInputNext" class="font-bold label-large-date">Nueva Fecha/Hora Próxima Disponibilidad*</label>    
+            <p-calendar
+                [showClear]="true"
+                [showTime]="true" 
+                [showSeconds]="true"
+                [showIcon]="true" 
+                class="calendar" 
+                [style]="{width:'300px'}"  
+                [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '270px'}" 
+                [inputStyle]="{'padding-right': '0'}"
+                formControlName="dateNextSelected"
+                [minDate]="today"
+                hourFormat="12" 
+                [showSeconds]="false"
+                [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.dateNextSelected.errors }">
+            </p-calendar>
+            
+            <small class="ng-dirty ng-invalid"
+                *ngIf="submittedBasic && f?.dateNextSelected?.errors?.required">Nueva Fecha/Hora Próxima Disponibilidad es
+                requerido</small>
+    </div>
+    <div *ngIf="action.toLocaleLowerCase() === 'registrar novedad'" class="field col-12 sm:col-3"></div>
         <div  class="calendar-div" class="field col-12 sm:col-3">
             <label for="dateInput" class="font-bold">Fecha*</label>    
             <p-calendar
@@ -9,11 +64,11 @@
                 [showIcon]="true" class="calendar" [style]="{width:'300px'}"  
                 [panelStyle]="{'overflow': 'scroll',height: '250px', 'z-index': '9999',width: '270px'}" 
                 [inputStyle]="{'padding-right': '0'}"
-                formControlName="dateSelected"
+                formControlName="dateNextSelected"
                 [minDate]="today"
                 hourFormat="12" 
                 [showSeconds]="false"
-                [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.dateSelected.errors }">
+                [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.dateNextSelected.errors }">
             </p-calendar>
             
             <small class="ng-dirty ng-invalid"
@@ -69,6 +124,13 @@
             <label for="factorySelect" class="font-bold">Planta*</label>
             <p-dropdown id="factorySelect" scrollHeight="200px" formControlName="factorySelected"  [options]="allFactories" placeholder="Seleccione una planta" optionValue="id"  optionLabel="name" [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.factorySelected.errors }" ></p-dropdown>
             <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.factorySelected?.errors?.required">Planta es requerida</small>
+        </div>
+        <div *ngIf="showComments" class="field col-9 sm:col-9">
+            <label for="float-input" class="font-bold">Observación*</label>
+            <div>
+                <textarea id="float-input" rows="2" cols="60" pInputTextarea formControlName="obs"  [ngClass]="{ 'is-invalid ng-dirty': submittedBasic && f.obs.errors }"></textarea>
+                <small class="ng-dirty ng-invalid" *ngIf="submittedBasic && f?.obs?.errors?.required">Observación es requerido</small>
+            </div>
         </div>
         <div *ngIf="action === 'Rechazar'" class="field col-12 sm:col-12">
             <label for="float-input" class="font-bold">Motivo Rechazo*</label>

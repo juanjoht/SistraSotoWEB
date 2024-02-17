@@ -87,6 +87,8 @@ export class RouteListComponent implements OnInit {
     let objBasic: route = {
       name: formValues.name.value,
       runningTime: formValues.runningTime.value,
+      distanceKm: formValues.distanceKm.value,
+      returnTime: formValues.returnTime.value,
       originType: formValues.originTypeSelected.value,
       originClient: clientNameOrigin,
       origin: formValues.originSelected.value,

@@ -9,6 +9,8 @@ export interface route{
     id?: number,
     name?: string,
     runningTime?: number,
+    distanceKm?: number,
+    returnTime?:number,
     originType?: string,
     originClient?: string,
     origin?: string,

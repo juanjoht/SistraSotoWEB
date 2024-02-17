@@ -235,18 +235,24 @@ export class PreassignmentListComponent implements OnInit {
     this.saveLabel = 'Guardar'
   }
 
-  edit(preassignment: any, action: string) {
+  edit(preassignment: any, option: string) {
     this.editMode= true;
     this.preassignmentId = preassignment.id as number;
     this.orderId = preassignment.orderId as number;
     this.preassignmentDialog = true;
     this.preassignment = preassignment;
-    this.action = action;
-    if (action === 'Editar'){
-      this.saveLabel = 'Guardar'
-    }else
-    {
-      this.saveLabel = action;
+    this.action = option;
+    switch (option) {
+      case 'Editar':
+        this.saveLabel = 'Guardar'
+      break;
+      case 'RegistroNovedades':
+        this.action = 'Registrar Novedad'
+        this.saveLabel = 'Guardar'
+      break;
+      default:
+        this.saveLabel = option;
+        break;
     }
   }
 
@@ -297,6 +303,23 @@ export class PreassignmentListComponent implements OnInit {
           });
           break;
           case 'Editar':
+            objBasic.id = this.preassignmentId;
+            this.preassignmentService.putPreassignment(objBasic)
+            .subscribe({
+                next: (data) => {
+                  if(data !== null)
+                  {
+                    this.preassignmentDialog = false;
+                    this.getGridData();
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Preasignación Actualizado', life: 3000 });
+                  }
+                },
+                error: error => {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: error?.error?.detail, life: 5000 });
+                }
+          });
+          break;
+          case 'RegistroNovedades':
             objBasic.id = this.preassignmentId;
             this.preassignmentService.putPreassignment(objBasic)
             .subscribe({

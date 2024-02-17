@@ -7,7 +7,7 @@
             <p-checkbox [binary]="true" inputId="allMaterials" (onChange)="saveAll($event)" ></p-checkbox>
             <label for="allMaterials">Todos los Materiales</label>    
         </div>
-            <p-table *ngIf="canRead" [value]="allowedMaterials" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
+            <p-table *ngIf="canRead" [value]="allowedMaterials" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem','height': '20%'}" [columns]="cols" responsiveLayout="scroll" [rows]="10"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} registros"  [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Materiales Permitidos</h5>

@@ -4,6 +4,7 @@ export const Constants = {
     apiChangePw: '/auth/cambiarContrasena',
     apiCustomer: '/cliente',
     apiCustomerList: '/cliente/lista',
+    apiCustomerTransporterVehicle: '/cliente/transportadorVehiculo',
     apiParamStaticDept: '/parametroEstatico/departamentos',
     apiParamStaticCitiesByDept: '/parametroEstatico/municipiosPorDepartamento',
     apiParamsByType: '/parametro/tipo',
